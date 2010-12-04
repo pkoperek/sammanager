@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pl.edu.agh.samm.base</groupId>
+	<artifactId>commons</artifactId>
+	<name>SAMM - Base - Commons</name>
+	<version>0.1-SNAPSHOT</version>
+
+	<dependencies>
+
+                <dependency>
+                        <groupId>com.hp.hpl.jena</groupId>
+                        <artifactId>jena</artifactId>
+                        <version>${jena.version}</version>
+                </dependency>
+                <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>com.springsource.slf4j.api
+                        </artifactId>
+                        <version>${slf4j.version}</version>
+                </dependency>
+
+	</dependencies>
+        <parent>
+                <artifactId>base</artifactId>
+                <groupId>pl.edu.agh.samm</groupId>
+                <version>0.1-SNAPSHOT</version>
+                <relativePath>../parent/pom.xml</relativePath>
+        </parent>
+
+	
+	<build>
+		<resources>
+			<!-- standard Maven folder -->
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${basedir}/.</directory>
+				<includes>
+					<include>META-INF/**/*</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>${basedir}/META-INF</manifestLocation>
+					<instructions>
+						<Export-Package>
+							pl.edu.agh.samm.common.*
+						</Export-Package>
+						<Import-Package>
+							com.hp.hpl.jena.ontology,
+							com.hp.hpl.jena.graph,
+							com.hp.hpl.jena.rdf.model,
+							com.hp.hpl.jena.util.iterator,
+							org.slf4j
+						</Import-Package>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/META-INF</directory>
+							<includes>
+								<include>MANIFEST.MF</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

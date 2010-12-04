@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This file is part of SAMM.
+
+    SAMM is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SAMM is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                      http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+
+	<!-- definitions using elements of the osgi namespace can be included in 
+		this file. There is no requirement to keep these definitions in a separate 
+		file if you do not want to. The rationale for keeping these definitions separate 
+		is to facilitate integration testing of the bundle outside of an OSGi container -->
+
+	<osgi:set id="transportAdaptersSet" interface="pl.edu.agh.samm.common.tadapter.ITransportAdapter">
+		<osgi:listener ref="transportAdapterListener" bind-method="onBind"
+			unbind-method="onUnbind">
+		</osgi:listener>
+	</osgi:set>
+
+	<osgi:set id="knowledgeSet" interface="pl.edu.agh.samm.common.knowledge.IKnowledge"
+		cardinality="1..N">
+		<osgi:listener ref="knowledgeProvider" bind-method="onBind"
+			unbind-method="onUnbind">
+		</osgi:listener>
+	</osgi:set>
+
+	<osgi:service interface="pl.edu.agh.samm.common.core.ICoreManagement"
+		ref="coreManagementBean"></osgi:service>
+
+	<osgi:service interface="pl.edu.agh.samm.common.core.IResourceInstancesManager"
+		ref="resourceInstancesManager" />
+
+	<osgi:reference id="storageService"
+		interface="pl.edu.agh.samm.common.db.IStorageService" />
+
+	<osgi:reference id="estimator"
+		interface="pl.edu.agh.samm.common.estimation.IEstimator" />
+
+	<!-- <osgi:service interface="pl.edu.agh.samm.common.impl.core.IKnowledgeProvider" -->
+	<!-- ref="knowledgeProvider" /> -->
+
+</beans>

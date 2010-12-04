@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+
+   <extension
+         id="pl.edu.agh.samm.eclipse.SAMMApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="pl.edu.agh.samm.eclipse.SAMM">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Resources Perspective"
+            class="pl.edu.agh.samm.eclipse.perspectives.ResourcesPerspective"
+            id="pl.edu.agh.samm.eclipse.perspectives.Resources">
+      </perspective>
+      <perspective
+            class="pl.edu.agh.samm.eclipse.perspectives.VisualizationsPerspective"
+            id="pl.edu.agh.samm.eclipse.perspectives.VisualizationsPerspective"
+            name="Visualizations Perspective">
+      </perspective>
+      <perspective
+            class="pl.edu.agh.samm.eclipse.perspectives.RunningMetricsPerspective"
+            id="pl.edu.agh.samm.eclipse.perspectives.RunningMetricsPerspective"
+            name="Running Metrics Perspective">
+      </perspective>
+      <perspective
+            class="pl.edu.agh.samm.eclipse.perspectives.AlarmsPerspective"
+            id="pl.edu.agh.samm.eclipse.perspectives.AlarmsPerspective"
+            name="Alarms Perspective">
+      </perspective>
+      <perspective
+            class="pl.edu.agh.samm.eclipse.perspectives.SLAPerspective"
+            id="pl.edu.agh.samm.eclipse.perspectives.SLAPerspective"
+            name="SLA Perspective">
+      </perspective>
+      <perspective
+            class="pl.edu.agh.samm.eclipse.perspectives.ActionsPerspective"
+            id="pl.edu.agh.samm.eclipse.perspectives.ActionsPerspective"
+            name="Actions Perspective">
+      </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="pl.edu.agh.samm.eclipse.SAMMApplication"
+            name="SAMM - Semantic-based Autonomous Monitor and Manager">
+         <property
+               name="windowImages"
+               value="icons/alt_window_16.gif,icons/alt_window_32.gif">
+         </property>
+         <property
+               name="appName"
+               value="SAMM - Semantic-based Autonomous Monitor and Manager">
+         </property>
+         <property name="preferenceCustomization" value="plugin_customization.ini"/>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="samm.menus.mainmenu.File"
+               label="File">
+            <command
+                  commandId="pl.edu.agh.samm.eclipse.init"
+                  label="Connect to core"
+                  style="push">
+            </command>
+            <command
+                  commandId="pl.edu.agh.samm.eclipse.commands.AddResource"
+                  label="Add new resource"
+                  style="push">
+            </command>
+            <command
+                  commandId="pl.edu.agh.samm.eclipse.commands.StartInitialLearningCommand"
+                  label="Start initial learning"
+                  style="push">
+            </command>
+            <separator
+                  name="samm.menus.mainmenu.separatorExit"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="pl.edu.agh.samm.eclipse.commands.Exit"
+                  label="Exit"
+                  style="push">
+            </command>
+            
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="pl.edu.agh.samm.eclipse.commands.ExitCommand"
+            id="pl.edu.agh.samm.eclipse.commands.Exit"
+            name="Exit">
+      </command>
+      <command
+            defaultHandler="pl.edu.agh.samm.eclipse.commands.AddVisualizationCommand"
+            id="pl.edu.agh.samm.eclipse.commands.AddVisualization"
+            name="Add new visualization">
+      </command>
+      <command
+            defaultHandler="pl.edu.agh.samm.eclipse.commands.Connect2CoreCommand"
+            id="pl.edu.agh.samm.eclipse.init"
+            name="Connect to SAMM">
+      </command>
+      <command
+            defaultHandler="pl.edu.agh.samm.eclipse.commands.GetWeightsPropertiesCommand"
+            id="pl.edu.agh.samm.eclipse.getweightproperties"
+            name="name">
+      </command>
+      <command
+            defaultHandler="pl.edu.agh.samm.eclipse.commands.AddResourceCommand"
+            id="pl.edu.agh.samm.eclipse.commands.AddResource"
+            name="Add Resource Command">
+      </command>
+      <command
+            defaultHandler="pl.edu.agh.samm.eclipse.commands.StartInitialLearningCommand"
+            id="pl.edu.agh.samm.eclipse.commands.StartInitialLearningCommand"
+            name="InitialLearningCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="pl.edu.agh.samm.eclipse.views.ResourcesView"
+            id="pl.edu.agh.samm.eclipse.views.ResourcesView"
+            name="Resources View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.AlarmsView"
+            id="pl.edu.agh.samm.eclipse.views.AlarmsView"
+            name="Alarms View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.MetricsView"
+            id="pl.edu.agh.samm.eclipse.views.MetricsView"
+            name="Metrics View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.CapabilitiesView"
+            id="pl.edu.agh.samm.eclipse.views.CapabilitiesView"
+            name="Capabilities View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.AddMetricView"
+            id="pl.edu.agh.samm.eclipse.views.AddMetricView"
+            name="Add Metric View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.RunningMetricsView"
+            id="pl.edu.agh.samm.eclipse.views.RunningMetricsView"
+            name="Running Metrics View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.RunningMetricSettingsView"
+            id="pl.edu.agh.samm.eclipse.views.RunningMetricSettingsView"
+            name="Running Metric Settings View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.VisualizationsView"
+            id="pl.edu.agh.samm.eclipse.views.VisualizationsView"
+            name="Visualizations View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.VisualizationChartView"
+            id="pl.edu.agh.samm.eclipse.views.VisualizationChartView"
+            name="Visualization Chart View" 
+            allowMultiple="true"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.LegendView"
+            id="pl.edu.agh.samm.eclipse.views.LegendView"
+            name="Legend View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.LogView"
+            id="pl.edu.agh.samm.eclipse.views.LogView"
+            name="Log View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.VisualizationManagementView"
+            id="pl.edu.agh.samm.eclipse.views.VisualizationManagementView"
+            name="Visualization Management View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.SuggestionsView"
+            id="pl.edu.agh.samm.eclipse.views.SuggestionsView"
+            name="Suggestions View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.DescriptionView"
+            id="pl.edu.agh.samm.eclipse.views.DescriptionView"
+            name="Description View"
+            restorable="true">
+      </view>
+      <view
+            class="pl.edu.agh.samm.eclipse.views.GraphInfoView"
+            id="pl.edu.agh.samm.eclipse.views.GraphInfoView"
+            name="Graph Info View"
+            restorable="true">
+      </view>
+       <view
+            name="Progress View"
+            icon="icons/progress.png"
+            category="org.eclipse.ui"
+            class="org.eclipse.ui.ExtensionFactory:progressView"
+            id="org.eclipse.ui.views.ProgressView">
+         </view>
+       <view
+             class="pl.edu.agh.samm.eclipse.views.ActionsListView"
+             id="pl.edu.agh.samm.eclipse.views.ActionsListView"
+             name="Actions List View"
+             restorable="true">
+       </view>
+      
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="pl.edu.agh.samm.eclipse.application.splashHandlers.ExtensibleSplashHandler"
+            id="pl.edu.agh.samm.eclipse.application.splashHandlers.extensible">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="pl.edu.agh.samm.eclipse.product"
+            splashId="pl.edu.agh.samm.eclipse.splashHandlers.extensible">
+      </splashHandlerProductBinding>
+      <splashHandlerProductBinding
+            productId="pl.edu.agh.samm.eclipse.application.SAMM"
+            splashId="pl.edu.agh.samm.eclipse.application.splashHandlers.extensible">
+      </splashHandlerProductBinding>
+      <splashHandler
+            class="pl.edu.agh.samm.eclipse.product.splashHandlers.ExtensibleSplashHandler"
+            id="pl.edu.agh.samm.eclipse.product.splashHandlers.extensible">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="pl.edu.agh.samm.eclipse.product.product"
+            splashId="pl.edu.agh.samm.eclipse.product.splashHandlers.extensible">
+      </splashHandlerProductBinding>
+      <splashHandler
+            class="pl.edu.agh.samm.eclipse.splashHandlers.ExtensibleSplashHandler"
+            id="pl.edu.agh.samm.eclipse.splashHandlers.extensible">
+      </splashHandler>
+      <splashHandler
+            class="pl.edu.agh.samm.eclipse.splashHandlers.ExtensibleSplashHandler"
+            id="pl.edu.agh.samm.eclipse.splashHandlers.extensible">
+      </splashHandler>
+   </extension>
+   <extension
+         point="pl.edu.agh.samm.eclipse.splashExtension">
+      <splashExtension
+            icon="icons/af.png"
+            id="af"
+            tooltip="Application Framework">
+      </splashExtension>
+      <splashExtension
+            icon="icons/embedded.png"
+            id="embedded"
+            tooltip="Embedded">
+      </splashExtension>
+      <splashExtension
+            icon="icons/enterprise.png"
+            id="enterprise"
+            tooltip="Enterprise">
+      </splashExtension>
+      <splashExtension
+            icon="icons/languages.png"
+            id="languages"
+            tooltip="Languages">
+      </splashExtension>
+      <splashExtension
+            icon="icons/rcp.png"
+            id="rcp"
+            tooltip="RCP">
+      </splashExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="pl.edu.agh.samm.eclipse.editors.SLAEditor"
+            id="pl.edu.agh.samm.eclipse.editors.SLAEditor"
+            name="Service Level Agreement Editor">
+      </editor>
+   </extension>
+
+</plugin>

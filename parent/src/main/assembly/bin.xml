@@ -1,0 +1,121 @@
+<!--
+
+    This file is part of SAMM.
+
+    SAMM is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SAMM is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<!--
+
+    ď»żThis file is part of SAMM.
+
+    SAMM is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SAMM is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<assembly>
+	<id>bin</id>
+	<formats>
+		<format>dir</format>
+<!--		<format>zip</format>
+		<format>tar.bz2</format>-->
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<files>
+		<file>
+			<source>src/main/scripts/run.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<filtered>true</filtered>
+			<fileMode>755</fileMode>
+		</file>
+		<file>
+			<source>src/main/scripts/run-dependencies.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<filtered>true</filtered>
+			<fileMode>755</fileMode>
+		</file>
+		<file>
+			<source>src/main/scripts/hsqldbcp.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<filtered>true</filtered>
+			<fileMode>755</fileMode>
+		</file>
+		<file>
+			<source>src/main/scripts/kill-dependencies.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<filtered>true</filtered>
+			<fileMode>755</fileMode>
+		</file>
+		<file>
+			<source>../base/core/server.policy</source>
+			<outputDirectory>.</outputDirectory>
+		</file>
+		<file>
+			<source>../base/dblistener/ddl/schema.sql</source>
+			<outputDirectory>.</outputDirectory>
+			<destName>sammdb.script</destName>
+		</file>
+	</files>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/configuration</directory>
+			<outputDirectory>osgi/configuration</outputDirectory>
+		</fileSet>
+	</fileSets>
+	<moduleSets>
+		<moduleSet>
+			<includes>
+				<include>pl.edu.agh.samm.base*:*</include>
+			</includes>
+			<binaries>
+				<dependencySets>
+					<dependencySet>
+						<useTransitiveDependencies>false</useTransitiveDependencies>
+						<includes>
+							<include>*:*</include>
+						</includes>
+						<excludes>
+							<exclude>hsqldb:hsqldb*</exclude>
+						</excludes>
+						<scope>runtime</scope>
+					</dependencySet>
+				</dependencySets>
+				<unpack>false</unpack>
+				<outputDirectory>osgi</outputDirectory>
+			</binaries>
+
+		</moduleSet>
+	</moduleSets>
+	<dependencySets>
+		<dependencySet>
+			<includes>
+				<include>hsqldb:hsqldb*</include>
+			</includes>
+			<unpack>false</unpack>
+			<outputDirectory>hsqldb-${hsqldb.version}</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+</assembly>

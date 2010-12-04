@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pl.edu.agh.samm.providers</groupId>
+	<artifactId>jena</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<url>http://jena.sourceforge.net</url>
+
+	<name>SAMM - Providers - com.hp.hpl.jena ${jena.version}</name>
+	<description> 
+	   ${pom.artifactId} wrapper OSGi bundle.   
+	</description>
+
+	<!-- Dependencies OSGi bundle version -->
+	<properties>
+		<jena.version>2.6.2</jena.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.hp.hpl.jena</groupId>
+			<artifactId>jena</artifactId>
+			<version>${jena.version}</version>
+		</dependency>
+	</dependencies>
+	<parent>
+		<artifactId>providers</artifactId>
+		<groupId>pl.edu.agh.samm</groupId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+						<Bundle-Name>${pom.name}</Bundle-Name>
+						<Bundle-Description>${pom.description}</Bundle-Description>
+						<!--<_exportcontents>!log4j*,!slf4j*</_exportcontents>-->
+						<_exportcontents>*</_exportcontents>
+						<_nouses>true</_nouses>
+<!--						<Import-Package>!arq.*,!com.sun.*,!javax.mail.*,!junit.*,!javax.jms.*,!org.relaxng.*,!org.apache.xml.resolver.*,!antlr.parseview,!sun.*,!com.hp.hpl.jena.assembler.test.*,!com.hp.hpl.jena.db.test.*,!com.hp.hpl.jena.graph.test.*,!com.hp.hpl.jena.mem.test.*,!com.hp.hpl.jena.rdf.model.test.*,!com.hp.hpl.jena.test.*,!org.apache.avalon.framework.logger.*,!org.apache.log.*,!org.apache.lucene.*,!org.json.*,!org.apache.log4j,*</Import-Package>-->
+						<Export-Package>com.hp.hpl*</Export-Package>
+						<Import-Package>!com.sun*,!sun*,!*test*,*</Import-Package>
+						<Embed-Dependency>*;scope=compile|runtime;artifactId=!log4j*|slf4j*</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/META-INF</directory>
+							<includes>
+								<include>MANIFEST.MF</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>bundle-bundle</id>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
+
+</project>

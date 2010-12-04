@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pl.edu.agh.samm.base.ra</groupId>
+	<artifactId>corerajmx</artifactId>
+
+	<name>SAMM - Base - Remote Access - Core JMX</name>
+	<version>0.1-SNAPSHOT</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>pl.edu.agh.samm.base</groupId>
+			<artifactId>commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>com.springsource.slf4j.api
+			</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+	</dependencies>
+	<parent>
+		<artifactId>ra</artifactId>
+		<groupId>pl.edu.agh.samm.base</groupId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+	<build>
+		<resources>
+			<!-- standard Maven folder -->
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<!-- plus root folder -->
+			<resource>
+				<directory>${basedir}/.</directory>
+				<includes>
+					<include>plugin.xml</include>
+					<include>META-INF/**/*</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>${basedir}/META-INF</manifestLocation>
+					<instructions>
+						<Export-Package>!pl*</Export-Package>
+						<Private-Package>pl.*</Private-Package>
+						<Import-Package>
+								javax.management,
+								org.slf4j,
+								pl.edu.agh.samm.common.core,
+								pl.edu.agh.samm.common.metrics,
+								pl.edu.agh.samm.common.decision,
+								pl.edu.agh.samm.common.tadapter,
+								pl.edu.agh.samm.common.knowledge,
+								pl.edu.agh.samm.common.estimation,
+								pl.edu.agh.samm.common.action,
+								pl.edu.agh.samm.common.db,
+								pl.edu.agh.samm.common.impl
+						</Import-Package>
+						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
+
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/META-INF</directory>
+							<includes>
+								<include>MANIFEST.MF</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

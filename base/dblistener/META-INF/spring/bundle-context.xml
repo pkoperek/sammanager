@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This file is part of SAMM.
+
+    SAMM is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SAMM is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:jdbc.properties</value>
+		</property>
+	</bean>
+
+	<!--
+		the DataSource (parameterized for configuration via a
+		PropertyPlaceHolderConfigurer)
+	-->
+	<bean id="dataSource" destroy-method="close"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="1" />
+		<property name="maxActive" value="1" />
+		<property name="minIdle" value="1"/>
+		<property name="maxIdle" value="1" />
+	</bean>
+
+	<bean id="abstractDao" class="pl.edu.agh.samm.db.impl.AbstractDao"
+		abstract="true">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="measurementValueDao" parent="abstractDao"
+		class="pl.edu.agh.samm.db.impl.MeasurementValueDAO">
+	</bean>
+
+	<bean id="metricValueDao" parent="abstractDao"
+		class="pl.edu.agh.samm.db.impl.MetricValueDAO">
+	</bean>
+
+	<bean id="storageService" class="pl.edu.agh.samm.db.impl.StorageServiceImpl">
+		<property name="measurementValueDAO" ref="measurementValueDao" />
+		<property name="metricValueDAO" ref="metricValueDao" />
+		<property name="actionExecutionDAO" ref="actionExecutionDao" />
+	</bean>
+
+	<bean id="actionExecutionDao" parent="abstractDao"
+		class="pl.edu.agh.samm.db.impl.ActionExecutionDAO" />
+
+</beans>

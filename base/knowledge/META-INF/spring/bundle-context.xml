@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This file is part of SAMM.
+
+    SAMM is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    SAMM is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--
+		regular spring configuration file defining the beans for this bundle.
+		We've kept the osgi definitions in a separate configuration file so
+		that this file can easily be used for integration testing outside of
+		an OSGi environment
+	-->
+
+	<!-- Knowledge Core Bean -->
+	<bean id="knowledgeBean" class="pl.edu.agh.samm.knowledge.impl.KnowledgeImpl">
+		<property name="ontModelProvider">
+			<ref bean="ontModelProvider" />
+		</property>
+	</bean>
+
+	<!-- Ontology model provider-->
+	<bean id="ontModelProvider" class="pl.edu.agh.samm.knowledge.impl.OntModelProviderImpl"
+		init-method="init">
+	</bean>
+
+</beans>

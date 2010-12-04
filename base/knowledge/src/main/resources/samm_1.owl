@@ -1,0 +1,1184 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY samm_1 "http://www.icsr.agh.edu.pl/samm_1.owl#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.icsr.agh.edu.pl/samm_1.owl#"
+     xml:base="http://www.icsr.agh.edu.pl/samm_1.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:samm_1="http://www.icsr.agh.edu.pl/samm_1.owl#">
+    <owl:Ontology rdf:about=""/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasActionParameter -->
+
+    <owl:ObjectProperty rdf:about="#hasActionParameter">
+        <rdfs:domain rdf:resource="#CAction"/>
+        <rdfs:range rdf:resource="#CActionParameter"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasActionParameterType -->
+
+    <owl:ObjectProperty rdf:about="#hasActionParameterType">
+        <rdfs:domain rdf:resource="#CActionParameter"/>
+        <rdfs:range rdf:resource="#CResourceType"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasChildHardwareOfType -->
+
+    <owl:ObjectProperty rdf:about="#hasChildHardwareOfType">
+        <rdfs:range rdf:resource="#CHardwareType"/>
+        <rdfs:domain rdf:resource="#CNodeType"/>
+        <rdfs:subPropertyOf rdf:resource="#hasChildResourceOfType"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasChildNodeOfType -->
+
+    <owl:ObjectProperty rdf:about="#hasChildNodeOfType">
+        <rdfs:domain rdf:resource="#CClusterType"/>
+        <rdfs:range rdf:resource="#CNodeType"/>
+        <rdfs:subPropertyOf rdf:resource="#hasChildResourceOfType"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasChildResourceOfType -->
+
+    <owl:ObjectProperty rdf:about="#hasChildResourceOfType">
+        <rdfs:comment
+            >Ma dzieci, kt&#243;re s&#261; typu... Podajemy mo&#380;liwe typy dzieci</rdfs:comment>
+        <rdfs:domain rdf:resource="#CResourceType"/>
+        <rdfs:range rdf:resource="#CResourceType"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasChildSoftwareComponentOfType -->
+
+    <owl:ObjectProperty rdf:about="#hasChildSoftwareComponentOfType">
+        <rdfs:range rdf:resource="#CSoftwareComponentType"/>
+        <rdfs:domain rdf:resource="#CSoftwareType"/>
+        <rdfs:subPropertyOf rdf:resource="#hasChildResourceOfType"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasChildSoftwareOfType -->
+
+    <owl:ObjectProperty rdf:about="#hasChildSoftwareOfType">
+        <rdfs:domain rdf:resource="#CNodeType"/>
+        <rdfs:range rdf:resource="#CSoftwareType"/>
+        <rdfs:subPropertyOf rdf:resource="#hasChildResourceOfType"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasResourceType -->
+
+    <owl:ObjectProperty rdf:about="#hasResourceType">
+        <rdfs:range rdf:resource="#CResourceType"/>
+        <rdfs:domain rdf:resource="&owl;Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasResourceTypeCapability -->
+
+    <owl:ObjectProperty rdf:about="#hasResourceTypeCapability">
+        <rdfs:domain rdf:resource="#CResourceType"/>
+        <rdfs:range rdf:resource="#CResourceTypeCapability"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#typeCapabilityIsUsedBy -->
+
+    <owl:ObjectProperty rdf:about="#typeCapabilityIsUsedBy">
+        <rdfs:range rdf:resource="#CMetric"/>
+        <rdfs:domain rdf:resource="#CResourceTypeCapability"/>
+        <owl:inverseOf rdf:resource="#usesTypeCapability"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#usesTypeCapability -->
+
+    <owl:ObjectProperty rdf:about="#usesTypeCapability">
+        <rdfs:domain rdf:resource="#CMetric"/>
+        <rdfs:range rdf:resource="#CResourceTypeCapability"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasAlarmThreshold -->
+
+    <owl:DatatypeProperty rdf:about="#hasAlarmThreshold">
+        <rdfs:domain rdf:resource="#CMetric"/>
+        <rdfs:range rdf:resource="&xsd;double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasCustomClass -->
+
+    <owl:DatatypeProperty rdf:about="#hasCustomClass">
+        <rdfs:domain rdf:resource="#CMetric"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasImplementationClass -->
+
+    <owl:DatatypeProperty rdf:about="#hasImplementationClass">
+        <rdfs:domain rdf:resource="#CAction"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#hasName -->
+
+    <owl:DatatypeProperty rdf:about="#hasName">
+        <rdfs:domain rdf:resource="#CActionParameter"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CAction -->
+
+    <owl:Class rdf:about="#CAction"/>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CActionParameter -->
+
+    <owl:Class rdf:about="#CActionParameter"/>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CCPU -->
+
+    <owl:Class rdf:about="#CCPU">
+        <rdfs:subClassOf rdf:resource="#CHardwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CCPUTypeCapability -->
+
+    <owl:Class rdf:about="#CCPUTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CHardwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CClassLoader -->
+
+    <owl:Class rdf:about="#CClassLoader">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CClusterType -->
+
+    <owl:Class rdf:about="#CClusterType">
+        <rdfs:subClassOf rdf:resource="#CResourceType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CGarbageCollector -->
+
+    <owl:Class rdf:about="#CGarbageCollector">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CHardDisk -->
+
+    <owl:Class rdf:about="#CHardDisk">
+        <rdfs:subClassOf rdf:resource="#CStorage"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CHardDiskTypeCapability -->
+
+    <owl:Class rdf:about="#CHardDiskTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CHardwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CHardwareMetric -->
+
+    <owl:Class rdf:about="#CHardwareMetric">
+        <rdfs:subClassOf rdf:resource="#CMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CHardwareType -->
+
+    <owl:Class rdf:about="#CHardwareType">
+        <rdfs:subClassOf rdf:resource="#CResourceType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CHardwareTypeCapability -->
+
+    <owl:Class rdf:about="#CHardwareTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CResourceTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CJVMMetric -->
+
+    <owl:Class rdf:about="#CJVMMetric">
+        <rdfs:subClassOf rdf:resource="#CSoftwareMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CJVMType -->
+
+    <owl:Class rdf:about="#CJVMType">
+        <rdfs:subClassOf rdf:resource="#CSoftwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CJVMTypeCapability -->
+
+    <owl:Class rdf:about="#CJVMTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CSoftwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CMemory -->
+
+    <owl:Class rdf:about="#CMemory">
+        <rdfs:subClassOf rdf:resource="#CHardwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CMemoryTypeCapability -->
+
+    <owl:Class rdf:about="#CMemoryTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CHardwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CMetric -->
+
+    <owl:Class rdf:about="#CMetric"/>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CNetworkInterface -->
+
+    <owl:Class rdf:about="#CNetworkInterface">
+        <rdfs:subClassOf rdf:resource="#CHardwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CNodeMetric -->
+
+    <owl:Class rdf:about="#CNodeMetric">
+        <rdfs:subClassOf rdf:resource="#CMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CNodeType -->
+
+    <owl:Class rdf:about="#CNodeType">
+        <rdfs:subClassOf rdf:resource="#CResourceType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CNodeTypeCapability -->
+
+    <owl:Class rdf:about="#CNodeTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CResourceTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#COperatingSystemMetric -->
+
+    <owl:Class rdf:about="#COperatingSystemMetric">
+        <rdfs:subClassOf rdf:resource="#CSoftwareMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#COperatingSystemType -->
+
+    <owl:Class rdf:about="#COperatingSystemType">
+        <rdfs:subClassOf rdf:resource="#CSoftwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#COperatingSystemTypeCapability -->
+
+    <owl:Class rdf:about="#COperatingSystemTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CSoftwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CPhysicalMemory -->
+
+    <owl:Class rdf:about="#CPhysicalMemory">
+        <rdfs:subClassOf rdf:resource="#CMemory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CProActiveRuntime -->
+
+    <owl:Class rdf:about="#CProActiveRuntime">
+        <rdfs:subClassOf rdf:resource="#CNodeType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CResourceType -->
+
+    <owl:Class rdf:about="#CResourceType"/>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CResourceTypeCapability -->
+
+    <owl:Class rdf:about="#CResourceTypeCapability"/>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CSoftwareComponentMetric -->
+
+    <owl:Class rdf:about="#CSoftwareComponentMetric">
+        <rdfs:subClassOf rdf:resource="#CSoftwareMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CSoftwareComponentType -->
+
+    <owl:Class rdf:about="#CSoftwareComponentType">
+        <rdfs:subClassOf rdf:resource="#CSoftwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CSoftwareComponentTypeCapability -->
+
+    <owl:Class rdf:about="#CSoftwareComponentTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CSoftwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CSoftwareMetric -->
+
+    <owl:Class rdf:about="#CSoftwareMetric">
+        <rdfs:subClassOf rdf:resource="#CMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CSoftwareType -->
+
+    <owl:Class rdf:about="#CSoftwareType">
+        <rdfs:subClassOf rdf:resource="#CResourceType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CSoftwareTypeCapability -->
+
+    <owl:Class rdf:about="#CSoftwareTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CResourceTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CStorage -->
+
+    <owl:Class rdf:about="#CStorage">
+        <rdfs:subClassOf rdf:resource="#CHardwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CThread -->
+
+    <owl:Class rdf:about="#CThread">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CThreadMetric -->
+
+    <owl:Class rdf:about="#CThreadMetric">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CThreadTypeCapability -->
+
+    <owl:Class rdf:about="#CThreadTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CTomcat -->
+
+    <owl:Class rdf:about="#CTomcat">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CTomcatMetric -->
+
+    <owl:Class rdf:about="#CTomcatMetric">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentMetric"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CTomcatTypeCapability -->
+
+    <owl:Class rdf:about="#CTomcatTypeCapability">
+        <rdfs:subClassOf rdf:resource="#CSoftwareComponentTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CVirtualMemory -->
+
+    <owl:Class rdf:about="#CVirtualMemory">
+        <rdfs:subClassOf rdf:resource="#CMemory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#AvailablePhysicalMemoryMetric -->
+
+    <COperatingSystemMetric rdf:about="#AvailablePhysicalMemoryMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#AvailablePhysicalMemoryTypeCapability"/>
+    </COperatingSystemMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#AvailablePhysicalMemoryTypeCapability -->
+
+    <owl:Thing rdf:about="#AvailablePhysicalMemoryTypeCapability">
+        <rdf:type rdf:resource="#COperatingSystemTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#AvailableVirtualMemoryMetric -->
+
+    <owl:Thing rdf:about="#AvailableVirtualMemoryMetric">
+        <rdf:type rdf:resource="#COperatingSystemMetric"/>
+        <usesTypeCapability rdf:resource="#AvailableVirtualMemoryTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#AvailableVirtualMemoryTypeCapability -->
+
+    <owl:Thing rdf:about="#AvailableVirtualMemoryTypeCapability">
+        <rdf:type rdf:resource="#COperatingSystemTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CPU -->
+
+    <CCPU rdf:about="#CPU">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CCPU>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ClassLoader -->
+
+    <owl:Thing rdf:about="#ClassLoader">
+        <rdf:type rdf:resource="#CClassLoader"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Cluster -->
+
+    <owl:Thing rdf:about="#Cluster">
+        <rdf:type rdf:resource="#CClusterType"/>
+        <hasChildNodeOfType rdf:resource="#Node"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ClusterParameter -->
+
+    <CActionParameter rdf:about="#ClusterParameter">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasActionParameterType rdf:resource="#Cluster"/>
+    </CActionParameter>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CurrentLoadedClassesTypeCapability -->
+
+    <owl:Thing rdf:about="#CurrentLoadedClassesTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#GarbageCollector -->
+
+    <CGarbageCollector rdf:about="#GarbageCollector">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CGarbageCollector>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#HardDrive -->
+
+    <owl:Thing rdf:about="#HardDrive">
+        <rdf:type rdf:resource="#CHardDisk"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#HeapUsageTypeCapability -->
+
+    <owl:Thing rdf:about="#HeapUsageTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVM -->
+
+    <CJVMType rdf:about="#JVM">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasChildSoftwareOfType rdf:resource="#ClassLoader"/>
+        <hasResourceTypeCapability rdf:resource="#CurrentLoadedClassesTypeCapability"/>
+        <hasChildSoftwareOfType rdf:resource="#GarbageCollector"/>
+        <hasResourceTypeCapability rdf:resource="#HeapUsageTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#JVMTotalCPUTimeTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#LiveThreadsCountTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#MajorGCTotalCountTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#MinorGCTotalCountTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#MinorGCTotalTimeTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#NonHeapUsageTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#OpenFileDescriptorCountTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#PermMemoryUsageTypeCapability"/>
+        <hasChildSoftwareComponentOfType rdf:resource="#Thread"/>
+        <hasResourceTypeCapability rdf:resource="#TotalCompilationTimeTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#TotalLoadedClassesTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#TotalStartedThreadsCountTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#TotalUnloadedClassesTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#UptimeTypeCapability"/>
+    </CJVMType>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMCurrentLoadedClassesMetric -->
+
+    <CJVMMetric rdf:about="#JVMCurrentLoadedClassesMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#CurrentLoadedClassesTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMHeapAndNonHeapMetric -->
+
+    <owl:Thing rdf:about="#JVMHeapAndNonHeapMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <hasCustomClass rdf:datatype="&xsd;string"
+            >pl.edu.agh.samm.metrics.custom.HeapAndNonHeapCombinedMetric</hasCustomClass>
+        <usesTypeCapability rdf:resource="#HeapUsageTypeCapability"/>
+        <usesTypeCapability rdf:resource="#NonHeapUsageTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMHeapUsageMetric -->
+
+    <CJVMMetric rdf:about="#JVMHeapUsageMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#HeapUsageTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMLiveThreadsCountTypeMetric -->
+
+    <owl:Thing rdf:about="#JVMLiveThreadsCountTypeMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#LiveThreadsCountTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMMajorGCTotalCountMetric -->
+
+    <CJVMMetric rdf:about="#JVMMajorGCTotalCountMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#MajorGCTotalCountTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMMajorGCTotalTimeMetric -->
+
+    <owl:Thing rdf:about="#JVMMajorGCTotalTimeMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#MajorGCTotalTimeTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMMinorGCTotalCountMetric -->
+
+    <owl:Thing rdf:about="#JVMMinorGCTotalCountMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#MinorGCTotalCountTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMMinorGCTotalTimeMetric -->
+
+    <CJVMMetric rdf:about="#JVMMinorGCTotalTimeMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#MinorGCTotalTimeTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMNonHeapUsageMetric -->
+
+    <owl:Thing rdf:about="#JVMNonHeapUsageMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#NonHeapUsageTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMOpenFileDescriptorCountMetric -->
+
+    <CJVMMetric rdf:about="#JVMOpenFileDescriptorCountMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#OpenFileDescriptorCountTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMPermMemoryUsageMetric -->
+
+    <CJVMMetric rdf:about="#JVMPermMemoryUsageMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#PermMemoryUsageTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMThreadBlockedCountMetric -->
+
+    <CThreadMetric rdf:about="#JVMThreadBlockedCountMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#ThreadBlockedCountTypeCapability"/>
+    </CThreadMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMThreadCPUTimeMetric -->
+
+    <CThreadMetric rdf:about="#JVMThreadCPUTimeMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#ThreadCPUTimeTypeCapability"/>
+    </CThreadMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMThreadUserTimeMetric -->
+
+    <owl:Thing rdf:about="#JVMThreadUserTimeMetric">
+        <rdf:type rdf:resource="#CThreadMetric"/>
+        <usesTypeCapability rdf:resource="#ThreadUserTimeTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMTotalCPUTimeMetric -->
+
+    <owl:Thing rdf:about="#JVMTotalCPUTimeMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#JVMTotalCPUTimeTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMTotalCPUTimeTypeCapability -->
+
+    <CJVMTypeCapability rdf:about="#JVMTotalCPUTimeTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CJVMTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMTotalCompilationTimeMetric -->
+
+    <CJVMMetric rdf:about="#JVMTotalCompilationTimeMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#TotalCompilationTimeTypeCapability"/>
+    </CJVMMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMTotalLoadedClassesMetric -->
+
+    <owl:Thing rdf:about="#JVMTotalLoadedClassesMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#TotalLoadedClassesTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMTotalStartedThreadsCountTypeMetric -->
+
+    <owl:Thing rdf:about="#JVMTotalStartedThreadsCountTypeMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#TotalStartedThreadsCountTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JVMTotalUnloadedClassesMetric -->
+
+    <owl:Thing rdf:about="#JVMTotalUnloadedClassesMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <usesTypeCapability rdf:resource="#TotalUnloadedClassesTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#LiveThreadsCountTypeCapability -->
+
+    <CJVMTypeCapability rdf:about="#LiveThreadsCountTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CJVMTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Load15minTypeCapability -->
+
+    <owl:Thing rdf:about="#Load15minTypeCapability">
+        <rdf:type rdf:resource="#COperatingSystemTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Load1minTypeCapability -->
+
+    <COperatingSystemTypeCapability rdf:about="#Load1minTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </COperatingSystemTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Load5minTypeCapability -->
+
+    <owl:Thing rdf:about="#Load5minTypeCapability">
+        <rdf:type rdf:resource="#COperatingSystemTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MajorGCTotalCountTypeCapability -->
+
+    <CJVMTypeCapability rdf:about="#MajorGCTotalCountTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CJVMTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MajorGCTotalTimeTypeCapability -->
+
+    <owl:Thing rdf:about="#MajorGCTotalTimeTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MinorGCPercentageTimeMetric -->
+
+    <owl:Thing rdf:about="#MinorGCPercentageTimeMetric">
+        <rdf:type rdf:resource="#CJVMMetric"/>
+        <hasCustomClass
+            >pl.edu.agh.samm.metrics.custom.MinorGCPercentageTimeMetric</hasCustomClass>
+        <usesTypeCapability rdf:resource="#MinorGCTotalCountTypeCapability"/>
+        <usesTypeCapability rdf:resource="#UptimeTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MinorGCTotalCountTypeCapability -->
+
+    <owl:Thing rdf:about="#MinorGCTotalCountTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MinorGCTotalTimeTypeCapability -->
+
+    <owl:Thing rdf:about="#MinorGCTotalTimeTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#NetworkInterface -->
+
+    <CNetworkInterface rdf:about="#NetworkInterface">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CNetworkInterface>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Node -->
+
+    <CNodeType rdf:about="#Node">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasChildHardwareOfType rdf:resource="#CPU"/>
+        <hasChildSoftwareOfType rdf:resource="#JVM"/>
+        <hasChildHardwareOfType rdf:resource="#NetworkInterface"/>
+        <hasChildSoftwareOfType rdf:resource="#OperatingSystem"/>
+        <hasChildHardwareOfType rdf:resource="#PhysicalMemory"/>
+        <hasChildSoftwareOfType rdf:resource="#Tomcat"/>
+        <hasChildHardwareOfType rdf:resource="#VirtualMemory"/>
+    </CNodeType>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#NodeParameter -->
+
+    <CActionParameter rdf:about="#NodeParameter">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasActionParameterType rdf:resource="#Node"/>
+    </CActionParameter>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#NonHeapUsageTypeCapability -->
+
+    <owl:Thing rdf:about="#NonHeapUsageTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#OpenFileDescriptorCountTypeCapability -->
+
+    <CJVMTypeCapability rdf:about="#OpenFileDescriptorCountTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CJVMTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#OperatingSystem -->
+
+    <COperatingSystemType rdf:about="#OperatingSystem">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasResourceTypeCapability rdf:resource="#AvailablePhysicalMemoryTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#AvailableVirtualMemoryTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#Load15minTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#Load1minTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#Load5minTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#UptimeTypeCapability"/>
+    </COperatingSystemType>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#PermMemoryUsageTypeCapability -->
+
+    <owl:Thing rdf:about="#PermMemoryUsageTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#PhysicalMemory -->
+
+    <CPhysicalMemory rdf:about="#PhysicalMemory">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CPhysicalMemory>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ProcessingTimeTypeCapability -->
+
+    <CTomcatTypeCapability rdf:about="#ProcessingTimeTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CTomcatTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#RequestCountTypeCapability -->
+
+    <owl:Thing rdf:about="#RequestCountTypeCapability">
+        <rdf:type rdf:resource="#CTomcatTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#StartMVCBasicVMAction -->
+
+    <owl:Thing rdf:about="#StartMVCBasicVMAction">
+        <rdf:type rdf:resource="#CAction"/>
+        <hasActionParameter rdf:resource="#ClusterParameter"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Thread -->
+
+    <CThread rdf:about="#Thread">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasResourceTypeCapability rdf:resource="#ThreadBlockedCountTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#ThreadCPUTimeTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#ThreadUserTimeTypeCapability"/>
+    </CThread>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ThreadBlockedCountTypeCapability -->
+
+    <CThreadTypeCapability rdf:about="#ThreadBlockedCountTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CThreadTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ThreadCPUTimeTypeCapability -->
+
+    <CThreadTypeCapability rdf:about="#ThreadCPUTimeTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CThreadTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ThreadUserTimeTypeCapability -->
+
+    <CThreadTypeCapability rdf:about="#ThreadUserTimeTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CThreadTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Tomcat -->
+
+    <owl:Thing rdf:about="#Tomcat">
+        <rdf:type rdf:resource="#CTomcat"/>
+        <hasResourceTypeCapability rdf:resource="#ProcessingTimeTypeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#RequestCountTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TomcatAvgProcessingTimePerRequestMetric -->
+
+    <owl:Thing rdf:about="#TomcatAvgProcessingTimePerRequestMetric">
+        <rdf:type rdf:resource="#CTomcatMetric"/>
+        <hasCustomClass rdf:datatype="&xsd;string"
+            >pl.edu.agh.samm.metrics.custom.TomcatAvgProcessingTimePerRequestMetric</hasCustomClass>
+        <usesTypeCapability rdf:resource="#ProcessingTimeTypeCapability"/>
+        <usesTypeCapability rdf:resource="#RequestCountTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TomcatRequestCountMetric -->
+
+    <CTomcatMetric rdf:about="#TomcatRequestCountMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#RequestCountTypeCapability"/>
+    </CTomcatMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TotalCompilationTimeTypeCapability -->
+
+    <owl:Thing rdf:about="#TotalCompilationTimeTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TotalLoadedClassesTypeCapability -->
+
+    <owl:Thing rdf:about="#TotalLoadedClassesTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TotalStartedThreadsCountTypeCapability -->
+
+    <CJVMTypeCapability rdf:about="#TotalStartedThreadsCountTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CJVMTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TotalUnloadedClassesTypeCapability -->
+
+    <owl:Thing rdf:about="#TotalUnloadedClassesTypeCapability">
+        <rdf:type rdf:resource="#CJVMTypeCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#TransitoryUptimeMetric -->
+
+    <CSoftwareMetric rdf:about="#TransitoryUptimeMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasCustomClass rdf:datatype="&xsd;string"
+            >pl.edu.agh.samm.metrics.custom.TransitoryUptimeMetric</hasCustomClass>
+        <usesTypeCapability rdf:resource="#UptimeTypeCapability"/>
+    </CSoftwareMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#UptimeMetric -->
+
+    <CSoftwareMetric rdf:about="#UptimeMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#UptimeTypeCapability"/>
+    </CSoftwareMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#UptimeTypeCapability -->
+
+    <CSoftwareTypeCapability rdf:about="#UptimeTypeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CSoftwareTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#VirtualMemory -->
+
+    <CVirtualMemory rdf:about="#VirtualMemory">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CVirtualMemory>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#VirtualNode -->
+
+    <owl:Thing rdf:about="#VirtualNode">
+        <rdf:type rdf:resource="#CNodeType"/>
+        <owl:sameAs rdf:resource="#Node"/>
+    </owl:Thing>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 2.2.1.1138) http://owlapi.sourceforge.net -->
+

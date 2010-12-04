@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
+<booleanAttribute key="append.args" value="true"/>
+<stringAttribute key="application" value="pl.edu.agh.samm.eclipse.SAMMApplication"/>
+<booleanAttribute key="askclear" value="false"/>
+<booleanAttribute key="automaticAdd" value="false"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearwslog" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/SemMon RCP GUI"/>
+<booleanAttribute key="default" value="false"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-SAMM.product"/>
+<mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="GDK_NATIVE_WINDOWS" value="true"/>
+</mapAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console -consoleLog -debug"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.security.manager=java.rmi.RMISecurityManager&#13;&#10;-Djava.security.policy=client.policy"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:pl.edu.agh.samm.eclipse}"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="pl.edu.agh.samm.eclipse.product"/>
+<stringAttribute key="productFile" value="\pl.edu.agh.samm.eclipse\semmon.product"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.core.resources.compatibility@default:false,org.eclipse.core.filesystem.linux.x86_64@default:false,org.eclipse.zest.core@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,com.springsource.org.apache.commons.logging@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.core.filesystem@default:default,org.eclipse.ui.editors@default:default,org.eclipse.core.commands@default:default,org.eclipse.equinox.p2.repository@default:default,org.eclipse.swt.gtk.linux.x86_64@default:false,org.eclipse.zest.layouts@default:default,org.eclipse.core.expressions@default:default,org.eclipse.ecf.ssl@default:false,org.eclipse.text@default:default,org.eclipse.jface@default:default,com.springsource.javax.servlet@default:default,org.eclipse.ui.views@default:default,org.eclipse.ui@default:default,org.eclipse.help@default:default,org.eclipse.osgi.services@default:default,org.apache.geronimo.specs.geronimo-activation_1.1_spec@default:default,org.eclipse.equinox.p2.jarprocessor@default:default,org.ops4j.pax.web.pax-web-jetty-bundle@default:default,org.eclipse.equinox.p2.core@default:default,org.eclipse.ecf.identity@default:default,org.eclipse.ui.workbench@default:default,org.eclipse.equinox.p2.metadata.repository@default:default,org.eclipse.core.databinding@default:default,org.eclipse.jface.text@default:default,org.eclipse.ui.ide@default:default,org.eclipse.core.runtime.compatibility.auth@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.common@2:true,org.eclipse.core.resources@default:default,org.eclipse.core.databinding.observable@default:default,org.eclipse.ui.forms@default:default,jena@default:default,com.ibm.icu@default:default,org.eclipse.ecf.provider.filetransfer@default:default,org.eclipse.equinox.concurrent@default:default,org.eclipse.core.net@default:default,org.eclipse.compare.core@default:default,org.eclipse.equinox.p2.artifact.repository@default:default,org.apache.geronimo.specs.geronimo-javamail_1.4_spec@default:default,org.eclipse.core.filebuffers@default:default,org.eclipse.core.databinding.property@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.ant.core@default:default,org.eclipse.swt@default:default,com.springsource.slf4j.log4j@default:false,org.apache.servicemix.bundles.xmlresolver@default:default,org.eclipse.ui.workbench.texteditor@default:default,org.eclipse.jface.databinding@default:default,org.eclipse.core.runtime@default:true,com.springsource.org.apache.log4j@default:default,jfreechart@default:default,org.eclipse.osgi@-1:true,com.springsource.slf4j.jcl@default:false,org.eclipse.core.variables@default:default,org.eclipse.draw2d@default:default,pellet@default:default,org.eclipse.equinox.p2.engine@default:default,org.eclipse.equinox.security@default:default,org.eclipse.equinox.p2.metadata@default:default,org.eclipse.ecf.provider.filetransfer.ssl@default:false,org.eclipse.equinox.app@default:default,com.springsource.slf4j.api@default:default,org.eclipse.ecf@default:default,org.eclipse.ecf.filetransfer@default:default"/>
+<stringAttribute key="selected_workspace_plugins" value="log4j@default:false,pl.edu.agh.samm.base.commons@default:default,pl.edu.agh.samm.eclipse@default:default"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="true"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<booleanAttribute key="useProduct" value="true"/>
+<booleanAttribute key="usefeatures" value="false"/>
+</launchConfiguration>
