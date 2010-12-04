@@ -4,11 +4,10 @@
 	<groupId>pl.edu.agh.samm.providers</groupId>
 	<artifactId>weka</artifactId>
 	<version>0.1-SNAPSHOT</version>
-	<url>http://www.cs.waikato.ac.nz/ml/weka/</url>
 
 	<name>SAMM - Providers - weka ${weka.version}</name>
 	<description> 
-	   ${pom.artifactId} wrapper OSGi bundle.   
+	   ${pom.artifactId} wrapper OSGi bundle. See http://www.cs.waikato.ac.nz/ml/weka/ for more information.
 	</description>
 
 	<!-- Dependencies OSGi bundle version -->

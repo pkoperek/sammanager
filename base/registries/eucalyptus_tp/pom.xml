@@ -20,11 +20,11 @@
 			</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-                <dependency>
-                        <groupId>pl.edu.agh.samm.providers</groupId>
-                        <artifactId>awssdk</artifactId>
-                        <version>0.1-SNAPSHOT</version>
-                </dependency>
+		<dependency>
+			<groupId>pl.edu.agh.samm.providers</groupId>
+			<artifactId>awssdk</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<parent>
 		<artifactId>registries</artifactId>
@@ -58,16 +58,13 @@
 					<instructions>
 						<Private-Package>pl.*</Private-Package>
 						<Import-Package>
-								pl.edu.agh.samm.common.*,
-								org.springframework.beans.factory.config,
-								org.springframework.*,
-								com.amazonaws.*,
-								org.slf4j
+							pl.edu.agh.samm.common.*,
+							org.springframework.beans.factory.config,
+							org.springframework.*,
+							com.amazonaws.*,
+							org.slf4j
 						</Import-Package>
-						<!--
-							add ,plugin.xml if it's present i.e.
-							src/main/resources,plugin.xml
-						-->
+						<!-- add ,plugin.xml if it's present i.e. src/main/resources,plugin.xml -->
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 
 					</instructions>
@@ -97,8 +94,6 @@
 					</filesets>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
-
 </project>

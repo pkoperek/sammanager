@@ -6,14 +6,13 @@
 	<packaging>pom</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>SAMM - Providers</name>
-	<url>https://gforge.cyfronet.pl/projects/semmon/</url>
 
-        <parent>
-                <artifactId>samm</artifactId>
-                <groupId>pl.edu.agh</groupId>
-                <version>0.1-SNAPSHOT</version>
-                <relativePath>../../parent/pom.xml</relativePath>
-        </parent>
+	<parent>
+		<artifactId>samm</artifactId>
+		<groupId>pl.edu.agh</groupId>
+		<version>0.1-SNAPSHOT</version>
+		<relativePath>../../parent/pom.xml</relativePath>
+	</parent>
 
 	<modules>
 		<module>../jena</module>
@@ -23,5 +22,22 @@
 		<module>../awssdk</module>
 	</modules>
 
+	<distributionManagement>
+		<downloadUrl>http://sammanager.ath.cx/</downloadUrl>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>sammanager.ath.cx</id>
+			<name>SAMM Providers Stable Repository</name>
+			<url>scp://sammanager.ath.cx/srv/http/samm/repo/providers/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>sammanager.ath.cx</id>
+			<name>SAMM Providers Snapshots Repository</name>
+			<url>scp://sammanager.ath.cx/srv/http/samm/repo/providers/snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
 

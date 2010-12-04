@@ -4,11 +4,10 @@
 	<groupId>pl.edu.agh.samm.providers</groupId>
 	<artifactId>jena</artifactId>
 	<version>0.1-SNAPSHOT</version>
-	<url>http://jena.sourceforge.net</url>
 
 	<name>SAMM - Providers - com.hp.hpl.jena ${jena.version}</name>
 	<description> 
-	   ${pom.artifactId} wrapper OSGi bundle.   
+	   ${pom.artifactId} wrapper OSGi bundle. See http://jena.sourceforge.net for more information.
 	</description>
 
 	<!-- Dependencies OSGi bundle version -->

@@ -7,7 +7,6 @@
 	<packaging>pom</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>SAMM - Base</name>
-	<url>https://gforge.cyfronet.pl/projects/semmon/</url>
 
 	<parent>
 		<artifactId>samm</artifactId>

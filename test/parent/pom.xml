@@ -7,7 +7,6 @@
 	<packaging>pom</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>SAMM - Tests</name>
-	<url>https://gforge.cyfronet.pl/projects/semmon/</url>
 
 	<parent>
 		<artifactId>samm</artifactId>
@@ -28,15 +27,15 @@
 			</modules>
 			<build>
 				<plugins>
-			                 <plugin>
-        	        	                <groupId>org.apache.maven.plugins</groupId>
-	                        	        <artifactId>maven-jar-plugin</artifactId>
-        		                        <configuration>
-	                	                        <archive>
-                                	                <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                                			</archive>
-                		                </configuration>
-		                        </plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<configuration>
+							<archive>
+								<manifestFile>META-INF/MANIFEST.MF</manifestFile>
+							</archive>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

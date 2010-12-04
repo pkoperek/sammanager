@@ -53,15 +53,12 @@
 					<instructions>
 						<Private-Package>pl.*</Private-Package>
 						<Import-Package>
-								pl.edu.agh.samm.common.*,
-								org.springframework.beans.factory.config,
-								javax.management,
-								org.slf4j
+							pl.edu.agh.samm.common.*,
+							org.springframework.beans.factory.config,
+							javax.management,
+							org.slf4j
 						</Import-Package>
-						<!--
-							add ,plugin.xml if it's present i.e.
-							src/main/resources,plugin.xml
-						-->
+						<!-- add ,plugin.xml if it's present i.e. src/main/resources,plugin.xml -->
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 
 					</instructions>
