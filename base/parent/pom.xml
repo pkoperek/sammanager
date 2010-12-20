@@ -5,13 +5,13 @@
 	<groupId>pl.edu.agh.samm</groupId>
 	<artifactId>base</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>SAMM - Base</name>
 
 	<parent>
 		<artifactId>samm</artifactId>
 		<groupId>pl.edu.agh</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
@@ -31,19 +31,6 @@
 				<module>../dblistener</module>
 				<module>../ra/parent</module>
 			</modules>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<configuration>
-							<archive>
-								<manifestFile>META-INF/MANIFEST.MF</manifestFile>
-							</archive>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>targetplatform</id>
@@ -84,145 +71,94 @@
 		<dependency>
 			<groupId>org.eclipse.osgi</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
-			<version>${equinox.ver}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- Spring OSGi -->
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.core
-			</artifactId>
-			<version>${spring.osgi.bundle.version}
-			</version>
+			<artifactId>org.springframework.osgi.core</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.extender
-			</artifactId>
-			<version>${spring.osgi.bundle.version}
-			</version>
+			<artifactId>org.springframework.osgi.extender</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.io
-			</artifactId>
-			<version>${spring.osgi.bundle.version}
-			</version>
+			<artifactId>org.springframework.osgi.io</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.aopalliance</groupId>
-			<artifactId>com.springsource.org.aopalliance
-			</artifactId>
-			<version>1.0.0</version>
+			<artifactId>com.springsource.org.aopalliance</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>com.springsource.org.apache.commons.logging</artifactId>
-			<version>1.1.1</version>
-			<scope>runtime</scope>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.commons</groupId> -->
+		<!-- <artifactId>com.springsource.org.apache.commons.logging</artifactId> -->
+		<!-- <scope>runtime</scope> -->
+		<!-- </dependency> -->
 
 		<!-- SPRING-CORE -->
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.core
-			</artifactId>
-			<version>${spring.maven.artifact.version}
-			</version>
+			<artifactId>org.springframework.context</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.context
-			</artifactId>
-			<version>${spring.maven.artifact.version}
-			</version>
+			<artifactId>org.springframework.beans</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans
-			</artifactId>
-			<version>${spring.maven.artifact.version}
-			</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.aop
-			</artifactId>
-			<version>${spring.maven.artifact.version}
-			</version>
+			<artifactId>org.springframework.aop</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.jdbc</artifactId>
-			<version>${spring.maven.artifact.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.transaction</artifactId>
-			<version>${spring.maven.artifact.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.core</artifactId>
-			<version>${spring.maven.artifact.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
-
-		<!--  samm providers -->
+		<!-- samm providers -->
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>jena</artifactId>
-			<version>0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>awssdk</artifactId>
-			<version>0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>weka</artifactId>
-			<version>0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>pellet</artifactId>
-			<version>0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 
 
 		<!-- misc -->
 		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>com.springsource.org.jdom</artifactId>
-			<version>1.1.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.log4j</groupId>
 			<artifactId>com.springsource.org.apache.log4j</artifactId>
-			<version>1.2.15</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>com.springsource.javax.servlet</artifactId>
-			<version>2.5.0</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -234,170 +170,58 @@
 		<!-- SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.log4j
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.log4j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.jcl
-			</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<!-- servicemix bundles -->
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-bundle</artifactId>
-			<version>2.2.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.wsdl4j</artifactId>
-			<version>1.6.1_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xmlresolver</artifactId>
-			<version>1.2_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xmlsec</artifactId>
-			<version>1.3.0_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
-			<version>2.1.12_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.woodstox</artifactId>
-			<version>3.2.7_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.asm</artifactId>
-			<version>2.2.3_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-activation_1.1_spec</artifactId>
-			<version>1.0.2</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-annotation_1.0_spec</artifactId>
-			<version>1.1.1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-javamail_1.4_spec</artifactId>
-			<version>1.6</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-			<version>1.1.2</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>com.springsource.org.jdom</artifactId>
-			<version>1.1.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xmlschema</artifactId>
-			<version>1.4.3_1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.neethi</artifactId>
-			<version>2.0.4_2</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.specs</groupId>
-			<artifactId>org.apache.servicemix.specs.stax-api-1.0</artifactId>
-			<version>1.3.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.specs</groupId>
-			<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
-			<version>1.3.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.specs</groupId>
-			<artifactId>org.apache.servicemix.specs.saaj-api-1.3</artifactId>
-			<version>1.3.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicemix.specs</groupId>
-			<artifactId>org.apache.servicemix.specs.jaxws-api-2.1</artifactId>
-			<version>1.3.0</version>
+			<artifactId>com.springsource.slf4j.jcl</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.osgi</groupId>
 			<artifactId>services</artifactId>
-			<version>3.1.200-v20070605</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.web</groupId>
-			<artifactId>pax-web-jetty-bundle</artifactId>
-			<version>0.7.1</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
-			<version>1.2.2.osgi</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.pool</artifactId>
-			<version>1.5.3</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>com.springsource.org.hsqldb</artifactId>
-			<version>${hsqldb.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>org.eclipse.update.configurator</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>org.eclipse.equinox.launcher</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
-			<version>2.1</version>
+			<scope>runtime</scope>
 		</dependency>
-
 	</dependencies>
 </project>
-

@@ -3,14 +3,26 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.providers</groupId>
 	<artifactId>weka</artifactId>
-	<version>0.1-SNAPSHOT</version>
-
+	<version>${weka.version}</version>
+	<packaging>bundle</packaging>
 	<name>SAMM - Providers - weka ${weka.version}</name>
 	<description> 
 	   ${pom.artifactId} wrapper OSGi bundle. See http://www.cs.waikato.ac.nz/ml/weka/ for more information.
 	</description>
 
+	<parent>
+		<artifactId>providers</artifactId>
+		<groupId>pl.edu.agh.samm</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<weka.version>3.6.1</weka.version>
+	</properties>
+
 	<!-- Dependencies OSGi bundle version -->
+
 
 	<dependencies>
 		<dependency>
@@ -19,12 +31,6 @@
 			<version>${weka.version}</version>
 		</dependency>
 	</dependencies>
-	<parent>
-		<artifactId>providers</artifactId>
-		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
-	</parent>
 
 	<build>
 		<plugins>
@@ -44,42 +50,6 @@
 					</instructions>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>bundle-bundle</id>
-						<phase>package</phase>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-
 </project>

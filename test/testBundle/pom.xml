@@ -5,52 +5,37 @@
 	<groupId>pl.edu.agh.samm.test</groupId>
 	<artifactId>testBundle</artifactId>
 	<name>SAMM - Tests - testBundle</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
+			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>jena</artifactId>
-			<version>${jena.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base.registries</groupId>
 			<artifactId>registryjmx</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<parent>
 		<artifactId>test</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
 	<build>
-		<resources>
-			<!-- standard Maven folder -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>${basedir}/.</directory>
-				<includes>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -66,32 +51,7 @@
 						<Export-Package>!*</Export-Package>
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
-
 </project>

@@ -4,15 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.base.ra</groupId>
 	<artifactId>knowledgerajmx</artifactId>
-
+	<packaging>bundle</packaging>
 	<name>SAMM - Base - Remote Access - Knowledge JMX</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<parent>
+		<artifactId>ra</artifactId>
+		<groupId>pl.edu.agh.samm.base</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
+			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>jena</artifactId>
-			<version>${jena.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
@@ -21,37 +27,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
 	</dependencies>
-	<parent>
-		<artifactId>ra</artifactId>
-		<groupId>pl.edu.agh.samm.base</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
-	</parent>
 	<build>
-		<resources>
-			<!-- standard Maven folder -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!-- plus root folder -->
-			<resource>
-				<directory>${basedir}/.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -61,45 +44,10 @@
 					<manifestLocation>${basedir}/META-INF</manifestLocation>
 					<instructions>
 						<Export-Package>!*</Export-Package>
-						<Import-Package>
-							pl.edu.agh.samm.knowledge,
-							pl.edu.agh.samm.common.knowledge,
-							pl.edu.agh.samm.common.core,
-							javax.management,
-							org.slf4j,
-							com.hp.hpl.jena.*
-						</Import-Package>
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
-
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
-
 </project>

@@ -5,65 +5,41 @@
 	<groupId>pl.edu.agh.samm.base</groupId>
 	<artifactId>knowledge</artifactId>
 	<name>SAMM - Base - Knowledge</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<artifactId>base</artifactId>
+		<groupId>pl.edu.agh.samm</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent</relativePath>
+	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
-			<artifactId>jena</artifactId>
-			<version>${jena.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>pl.edu.agh.samm.providers</groupId>
-			<artifactId>jena</artifactId>
-			<version>0.1-SNAPSHOT</version>
-			<scope>runtime</scope>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>pellet</artifactId>
-			<version>0.1-SNAPSHOT</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>pl.edu.agh.samm.providers</groupId>
+			<artifactId>jena</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>
 	</dependencies>
-	<parent>
-		<artifactId>base</artifactId>
-		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent</relativePath>
-	</parent>
 
 	<build>
-		<resources>
-			<!-- standard Maven folder -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!-- plus root folder -->
-			<resource>
-				<directory>${basedir}/.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -72,7 +48,6 @@
 				<configuration>
 					<manifestLocation>${basedir}/META-INF</manifestLocation>
 					<instructions>
-						<Require-Bundle>pellet, jena</Require-Bundle>
 						<Export-Package>pl.edu.agh.samm.knowledge</Export-Package>
 						<Import-Package>
 							org.slf4j,
@@ -80,40 +55,17 @@
 							pl.edu.agh.samm.common.tadapter,
 							pl.edu.agh.samm.common.knowledge,
 							pl.edu.agh.samm.common.impl,
-							pl.edu.agh.samm.common.metrics</Import-Package>
-						<!--
-							add ,plugin.xml if it's present i.e.
-							src/main/resources,plugin.xml
-						-->
+							pl.edu.agh.samm.common.metrics,
+							com.hp.hpl.jena.graph,
+							com.hp.hpl.jena.ontology,
+							com.hp.hpl.jena.rdf.model,
+							com.hp.hpl.jena.util.iterator,
+							org.mindswap.pellet.jena
+							</Import-Package>
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 

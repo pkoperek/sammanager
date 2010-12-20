@@ -5,28 +5,21 @@
 	<groupId>pl.edu.agh</groupId>
 	<artifactId>samm</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>SAMM</name>
 	<description>Autonomic semantic-based management for distributed
 		applications</description>
 	<url>http://code.google.com/p/sammanager</url>
+
 	<properties>
 		<!-- Spring version -->
-		<spring.maven.artifact.version>
-			2.5.6.A
-		</spring.maven.artifact.version>
-		<spring.osgi.bundle.version>1.2.0
-		</spring.osgi.bundle.version>
-		<slf4j.version>1.5.0</slf4j.version>
+		<spring.maven.artifact.version>3.0.5.RELEASE</spring.maven.artifact.version>
+		<spring.osgi.bundle.version>1.2.1</spring.osgi.bundle.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<!-- platform versions -->
-		<equinox.ver>3.4.2.R34x_v20080826-1230
-		</equinox.ver>
-		<jena.version>2.5.7</jena.version>
-		<weka.version>3.6.1</weka.version>
-		<pellet.version>2.0.1</pellet.version>
-		<hsqldb.version>1.8.0.10</hsqldb.version>
-		<awssdk.version>1.0.005</awssdk.version>
+		<equinox.ver>3.6.0.v20100517</equinox.ver>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<site.deployUrl>scp://sammanager.ath.cx/srv/http/samm/site-snapshot</site.deployUrl>
 	</properties>
 
 	<profiles>
@@ -38,25 +31,31 @@
 		</profile>
 		<profile>
 			<id>targetplatform</id>
-
 			<modules>
 				<module>../base/parent</module>
 			</modules>
 		</profile>
-
 		<profile>
 			<id>development</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-
 			<modules>
 				<module>../base/parent</module>
 				<module>../test/parent</module>
 			</modules>
 		</profile>
 		<profile>
+			<id>gui</id>
+			<modules>
+				<module>../eclipse/parent</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>release</id>
+			<properties>
+				<site.deployUrl>scp://sammanager.ath.cx/srv/http/samm/site</site.deployUrl>
+			</properties>
 			<modules>
 				<module>../base/parent</module>
 			</modules>
@@ -73,14 +72,6 @@
 					</plugin>
 				</plugins>
 			</build>
-			<dependencies>
-				<dependency>
-					<groupId>hsqldb</groupId>
-					<artifactId>hsqldb</artifactId>
-					<version>${hsqldb.version}</version>
-					<scope>runtime</scope>
-				</dependency>
-			</dependencies>
 		</profile>
 	</profiles>
 
@@ -129,7 +120,7 @@
 		<site>
 			<id>sammanager.ath.cx</id>
 			<name>SAMM Website</name>
-			<url>scp://sammanager.ath.cx/srv/http/samm/site</url>
+			<url>${site.deployUrl}</url>
 		</site>
 	</distributionManagement>
 	<reporting>
@@ -137,14 +128,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.2</version>
 				<reportSets>
 					<reportSet>
 						<reports>
 							<report>index</report>
-							<!-- These take a lot of time, temporarily disable -->
-							<!-- <report>dependencies</report> -->
-							<!-- <report>dependency-convergence</report> -->
-							<!-- <report>dependency-management</report> -->
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>dependency-management</report>
 							<report>modules</report>
 							<report>project-team</report>
 							<report>mailing-list</report>
@@ -174,6 +165,7 @@
 		</plugins>
 	</reporting>
 	<build>
+		<defaultGoal>install</defaultGoal>
 		<extensions>
 			<!-- This is probably a bug in maven 3.0.0 that wagon has to be explicitly 
 				defined in extensions -->
@@ -183,10 +175,30 @@
 				<version>1.0-beta-6</version>
 			</extension>
 		</extensions>
+
+		<resources>
+			<!-- standard Maven folder -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/filtered-resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>${basedir}/.</directory>
+				<includes>
+					<include>META-INF/**/*</include>
+				</includes>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -195,6 +207,7 @@
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
+				<version>1.8.0</version>
 				<configuration>
 					<header>src/etc/header.txt</header>
 					<!-- check in modules -->
@@ -216,6 +229,27 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.0-beta-3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.1.0</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/META-INF</directory>
+							<includes>
+								<include>MANIFEST.MF</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -243,9 +277,147 @@
 				<artifactId>commons-lang</artifactId>
 				<version>2.5</version>
 			</dependency>
+			<dependency>
+				<groupId>pl.edu.agh.samm.providers</groupId>
+				<artifactId>jena</artifactId>
+				<version>2.6.3</version>
+			</dependency>
+			<dependency>
+				<groupId>pl.edu.agh.samm.providers</groupId>
+				<artifactId>weka</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>pl.edu.agh.samm.providers</groupId>
+				<artifactId>pellet</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>pl.edu.agh.samm.providers</groupId>
+				<artifactId>jfreechart</artifactId>
+				<version>1.0.13</version>
+			</dependency>
+			<dependency>
+				<groupId>pl.edu.agh.samm.providers</groupId>
+				<artifactId>awssdk</artifactId>
+				<version>1.0.005</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.log4j</groupId>
+				<artifactId>com.springsource.org.apache.log4j</artifactId>
+				<version>1.2.15</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>com.springsource.slf4j.log4j</artifactId>
+				<version>1.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>org.springframework.osgi.core</artifactId>
+				<version>${spring.osgi.bundle.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>org.springframework.osgi.extender</artifactId>
+				<version>${spring.osgi.bundle.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>com.springsource.slf4j.api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+				<version>${equinox.ver}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>services</artifactId>
+				<version>3.1.200-v20070605</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
+				<version>1.2.2.osgi</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aopalliance</groupId>
+				<artifactId>com.springsource.org.aopalliance</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.transaction</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.core</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.aop</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.context</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>org.springframework.osgi.io</artifactId>
+				<version>${spring.osgi.bundle.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.jdbc</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>com.springsource.slf4j.jcl</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.beans</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>com.springsource.org.apache.commons.pool</artifactId>
+				<version>1.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>com.springsource.org.hsqldb</artifactId>
+				<version>1.8.0.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>org.eclipse.update.configurator</artifactId>
+				<version>3.2.1.v20092006</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>org.eclipse.equinox.launcher</artifactId>
+				<version>1.0.1.R33x_v20080118</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse</groupId>
+				<artifactId>org.eclipse.equinox.common</artifactId>
+				<version>3.5.1.R35x_v20090807-1100</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<repositories>
+		<!-- Pellet and such -->
 		<repository>
 			<id>koperek@student</id>
 			<name>Repository @ student</name>
@@ -263,6 +435,13 @@
 				Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
+
+		<!-- Fresh maven Equinox/Eclipse artifacts -->
+		<repository>
+			<id>sonatype.forge</id>
+			<name>Sonatype Maven repo</name>
+			<url>https://repository.sonatype.org/content/groups/forge/</url>
+		</repository>
 	</repositories>
 
 
@@ -270,9 +449,10 @@
 		<pluginRepository>
 			<id>maven-repo</id>
 			<name>maven repo</name>
-			<url>http://repo1.maven.org/maven2/
-			</url>
+			<url>http://repo1.maven.org/maven2/</url>
 		</pluginRepository>
+
+		<!-- maven-license-check -->
 		<pluginRepository>
 			<id>mc-release</id>
 			<name>Local Maven repository of releases</name>

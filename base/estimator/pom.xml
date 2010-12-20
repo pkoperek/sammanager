@@ -5,50 +5,34 @@
 	<groupId>pl.edu.agh.samm.base</groupId>
 	<artifactId>estimator</artifactId>
 	<name>SAMM - Base - Estimator</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<artifactId>base</artifactId>
+		<groupId>pl.edu.agh.samm</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent</relativePath>
+	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
-			<version>${parent.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>weka</artifactId>
-			<version>0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
-	<parent>
-		<artifactId>base</artifactId>
-		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent</relativePath>
-	</parent>
 
 	<build>
-		<resources>
-			<!-- standard Maven folder -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!-- plus root folder -->
-			<resource>
-				<directory>${basedir}/.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -65,10 +49,6 @@
 							pl.edu.agh.samm.common.*,
 							org.springframework.*
 							</Import-Package>
-						<!--
-							add ,plugin.xml if it's present i.e.
-							src/main/resources,plugin.xml
-						-->
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 					</instructions>
 				</configuration>
@@ -82,23 +62,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
-
 </project>

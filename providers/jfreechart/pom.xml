@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.providers</groupId>
 	<artifactId>jfreechart</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>${jfree-version}</version>
 
 	<name>SAMM - Providers - org.jfree ${jfree-version}</name>
 	<description> 
@@ -40,7 +40,7 @@
 	<parent>
 		<artifactId>providers</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 

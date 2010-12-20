@@ -3,16 +3,26 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.providers</groupId>
 	<artifactId>awssdk</artifactId>
-	<version>0.1-SNAPSHOT</version>
-	<url>http://aws.amazon.com/sdkforjava/</url>
+	<version>${awssdk.version}</version>
+	<packaging>bundle</packaging>
 
 	<name>SAMM - Providers - AWS SDK ${awssdk.version}</name>
 	<description> 
-	   ${pom.artifactId} wrapper OSGi bundle.   
+	   ${pom.artifactId} wrapper OSGi bundle. See http://aws.amazon.com/sdkforjava/ for details.
 	</description>
 
-	<!-- Dependencies OSGi bundle version -->
+	<parent>
+		<artifactId>providers</artifactId>
+		<groupId>pl.edu.agh.samm</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
 
+	<properties>
+		<awssdk.version>1.0.005</awssdk.version>
+	</properties>
+
+	<!-- Dependencies OSGi bundle version -->
 	<dependencies>
 		<dependency>
 			<groupId>com.amazonaws</groupId>
@@ -20,12 +30,6 @@
 			<version>${awssdk.version}</version>
 		</dependency>
 	</dependencies>
-	<parent>
-		<artifactId>providers</artifactId>
-		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent/pom.xml</relativePath>
-	</parent>
 
 	<build>
 		<plugins>
@@ -38,47 +42,17 @@
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Bundle-Name>${pom.name}</Bundle-Name>
 						<Bundle-Description>${pom.description}</Bundle-Description>
-						<_exportcontents>*</_exportcontents>
+						<_exportcontents>com.amazonaws*</_exportcontents>
 						<Import-Package>!*</Import-Package>
-						<Embed-Dependency>*;scope=compile|runtime;inline=true</Embed-Dependency>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
 						<Embed-Transitive>true</Embed-Transitive>
 					</instructions>
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>bundle-bundle</id>
-						<phase>package</phase>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
+				<extensions>true</extensions>
 			</plugin>
 		</plugins>
 	</build>

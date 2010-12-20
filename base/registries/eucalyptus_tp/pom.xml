@@ -4,9 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.base.registries</groupId>
 	<artifactId>eucalyptus_tp</artifactId>
-
 	<name>SAMM - Base - Transport Adapters - Eucalyptus</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<artifactId>registries</artifactId>
+		<groupId>pl.edu.agh.samm.base</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent</relativePath>
+	</parent>
 
 	<dependencies>
 		<dependency>
@@ -16,38 +23,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>awssdk</artifactId>
-			<version>0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<parent>
-		<artifactId>registries</artifactId>
-		<groupId>pl.edu.agh.samm.base</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent</relativePath>
-	</parent>
 	<build>
-		<resources>
-			<!-- standard Maven folder -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!-- plus root folder -->
-			<resource>
-				<directory>${basedir}/.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -57,41 +40,17 @@
 					<manifestLocation>${basedir}/META-INF</manifestLocation>
 					<instructions>
 						<Private-Package>pl.*</Private-Package>
+						<Export-Package>!*</Export-Package>
 						<Import-Package>
+							com.hp.hpl.jena.ontology,
 							pl.edu.agh.samm.common.*,
 							org.springframework.beans.factory.config,
 							org.springframework.*,
 							com.amazonaws.*,
 							org.slf4j
 						</Import-Package>
-						<!-- add ,plugin.xml if it's present i.e. src/main/resources,plugin.xml -->
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
-
 					</instructions>
-				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
 				</configuration>
 			</plugin>
 		</plugins>

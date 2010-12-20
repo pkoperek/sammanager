@@ -5,13 +5,13 @@
 	<groupId>pl.edu.agh.samm</groupId>
 	<artifactId>test</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>SAMM - Tests</name>
 
 	<parent>
 		<artifactId>samm</artifactId>
 		<groupId>pl.edu.agh</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+
+<target name="SAMM Target Platform">
+<locations>
+<location includeAllPlatforms="false" includeMode="planner" type="InstallableUnit">
+<unit id="org.eclipse.platform.sdk" version="3.6.1.M20100909-0800"/>
+<unit id="org.eclipse.rcp.sdk.id" version="3.6.0.M20100909-0800"/>
+<unit id="org.eclipse.zest.sdk.feature.group" version="1.2.0.v20100519-2050-67908COKMFAKPYIEUdUVWhXYN8VN"/>
+<repository location="http://download.eclipse.org/releases/helios"/>
+</location>
+</locations>
+</target>

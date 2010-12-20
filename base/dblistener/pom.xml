@@ -5,57 +5,41 @@
 	<groupId>pl.edu.agh.samm.base</groupId>
 	<artifactId>dblistener</artifactId>
 	<name>SAMM - Base - DB Listener</name>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<parent>
+		<artifactId>base</artifactId>
+		<groupId>pl.edu.agh.samm</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
+	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
-			<version>${parent.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api
-			</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.jdbc</artifactId>
-			<version>${spring.maven.artifact.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.transaction</artifactId>
-			<version>${spring.maven.artifact.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.core</artifactId>
-			<version>${spring.maven.artifact.version}</version>
 		</dependency>
 	</dependencies>
-	<parent>
-		<artifactId>base</artifactId>
-		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1-SNAPSHOT</version>
-		<relativePath>../parent</relativePath>
-	</parent>
+
 	<build>
-		<resources>
-			<!-- standard Maven folder -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!-- plus root folder -->
-			<resource>
-				<directory>${basedir}/.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>META-INF/**/*</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -66,45 +50,17 @@
 					<instructions>
 						<Export-Package>!*</Export-Package>
 						<Import-Package>
+							javax.sql,
 							org.slf4j,
 							pl.edu.agh.samm.common.*,
 							org.springframework.*,
-							org.springframework.jdbc.core.*,
+							org.springframework.jdbc.core,
 							org.apache.commons.dbcp;version="[1.2.2.osgi,1.2.2.osgi]",
 							org.hsqldb;version="[1.8.0.10,1.8.0.10]"</Import-Package>
-						<!--
-							add ,plugin.xml if it's present i.e.
-							src/main/resources,plugin.xml
-						-->
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 					</instructions>
-				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>${basedir}/META-INF</directory>
-							<includes>
-								<include>MANIFEST.MF</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-					</filesets>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
