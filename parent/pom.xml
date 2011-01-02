@@ -424,6 +424,12 @@
 			<url>http://student.agh.edu.pl/koperek/maven/</url>
 		</repository>
 		<repository>
+			<id>sammanager.ath.cx</id>
+			<name>SAMM Providers Stable Repository</name>
+			<url>scp://sammanager.ath.cx/srv/http/samm/repo/providers/releases</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
 			<id>com.springsource.repository.bundles.release</id>
 			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle
 				Releases</name>
