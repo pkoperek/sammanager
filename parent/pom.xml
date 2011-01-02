@@ -426,7 +426,7 @@
 		<repository>
 			<id>sammanager.ath.cx</id>
 			<name>SAMM Providers Stable Repository</name>
-			<url>scp://sammanager.ath.cx/srv/http/samm/repo/providers/releases</url>
+			<url>http://sammanager.ath.cx/repo/providers/releases</url>
 			<layout>default</layout>
 		</repository>
 		<repository>
