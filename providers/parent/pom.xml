@@ -32,7 +32,7 @@
 			<layout>default</layout>
 		</repository>
 		<snapshotRepository>
-			<uniqueVersion>true</uniqueVersion>
+			<uniqueVersion>false</uniqueVersion>
 			<id>sammanager.ath.cx</id>
 			<name>SAMM Providers Snapshots Repository</name>
 			<url>scp://sammanager.ath.cx/srv/http/samm/repo/providers/snapshots</url>

@@ -1,8 +1,5 @@
-Manifest-Version: 1.0
 Bundle-ActivationPolicy: lazy
-Tool: Bnd-0.0.357
 Bundle-Name: SemMon - Eclipse - Application
-Created-By: 1.6.0_15 (Sun Microsystems Inc.)
 Require-Bundle: org.eclipse.core.jobs;bundle-version="3.4.100",
  org.eclipse.core.runtime;bundle-version="3.5.0",
  jena;bundle-version="0.1.0",
@@ -10,15 +7,15 @@ Require-Bundle: org.eclipse.core.jobs;bundle-version="3.4.100",
  org.eclipse.zest.core;bundle-version="1.1.0",
  org.eclipse.zest.layouts;bundle-version="1.1.0",
  org.eclipse.ui;bundle-version="3.5.1",
- pl.edu.agh.samm.base.commons;bundle-version="0.1.0",
+ pl.edu.agh.samm.base.commons;bundle-version="0.0.1",
  org.eclipse.text,
  org.eclipse.core.resources,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench.texteditor
-Bundle-Version: 0.1.0.SNAPSHOT
-Bnd-LastModified: 1266261313206
+Bundle-Version: 0.0.1.qualifier
 Bundle-ManifestVersion: 2
 Bundle-Activator: pl.edu.agh.samm.eclipse.SAMMActivator
-Import-Package: org.slf4j;version="1.5"
+Import-Package: org.slf4j
 Bundle-SymbolicName: pl.edu.agh.samm.eclipse;singleton:=true
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

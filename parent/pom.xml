@@ -111,7 +111,7 @@
 			<layout>default</layout>
 		</repository>
 		<snapshotRepository>
-			<uniqueVersion>true</uniqueVersion>
+			<uniqueVersion>false</uniqueVersion>
 			<id>sammanager.ath.cx</id>
 			<name>SAMM Snapshots repository</name>
 			<url>scp://sammanager.ath.cx/srv/http/samm/repo/snapshots</url>
@@ -238,7 +238,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.2</version>
+				<version>2.4.1</version>
 				<configuration>
 					<filesets>
 						<fileset>
