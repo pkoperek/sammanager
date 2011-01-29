@@ -15,4 +15,15 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>client.policy</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
 </project>
