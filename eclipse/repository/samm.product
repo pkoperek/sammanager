@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="SAMM - Semantic-based Autonomous Monitor and Manager" id="pl.edu.agh.samm.eclipse.product" application="pl.edu.agh.samm.eclipse.SAMMApplication" version="0.0.1.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="SAMM - Semantic-based Autonomous Monitor and Manager" uid="pl.edu.agh.samm.eclipse.product" id="pl.edu.agh.samm.eclipse.product" application="pl.edu.agh.samm.eclipse.SAMMApplication" version="0.0.1.qualifier" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -17,7 +17,7 @@
    <splash
       location="pl.edu.agh.samm.eclipse"
       handlerType="extensible" />
-   <launcher name="samm">
+   <launcher>
       <solaris/>
       <win useIco="false">
          <bmp/>
@@ -28,7 +28,9 @@
    </vm>
 
    <plugins>
-      <plugin id="com.ibm.icu"/>
+	<plugin id="jfreechart"/>
+      <plugin id="jena" />
+	<plugin id="com.ibm.icu"/>
       <plugin id="javax.transaction" fragment="true"/>
       <plugin id="org.eclipse.compare.core"/>
       <plugin id="org.eclipse.core.commands"/>
