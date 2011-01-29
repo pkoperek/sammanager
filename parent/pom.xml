@@ -419,11 +419,6 @@
 	<repositories>
 		<!-- Pellet and such -->
 		<repository>
-			<id>koperek@student</id>
-			<name>Repository @ student</name>
-			<url>http://student.agh.edu.pl/koperek/maven/</url>
-		</repository>
-		<repository>
 			<id>sammanager.ath.cx</id>
 			<name>SAMM Providers Stable Repository</name>
 			<url>http://sammanager.ath.cx/repo/providers/releases</url>
