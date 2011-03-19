@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 
 import pl.edu.agh.samm.common.core.IAlarm;
 import pl.edu.agh.samm.common.core.IResourceInstancesManager;
-import pl.edu.agh.samm.common.decision.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.knowledge.ICriterion;
 import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.core.Alarm;
 import pl.edu.agh.samm.core.IMetricFactory;
 import pl.edu.agh.samm.metrics.AbstractCriteriaValidator;

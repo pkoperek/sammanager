@@ -86,7 +86,7 @@ public class TestBean implements IResourceListener, IMetricsManagerListener, IMe
 			String[] strings = resourceString.split(" ");
 			if (strings[1].contains("Thread")) {
 				Set<String> metrics = knowledge.getMetricsForResourceType(strings[1]);
-				IConfiguredMetric metric = coreManagement.createRunningMetricInstance(
+				IConfiguredMetric metric = coreManagement.createMetricInstance(
 						metrics.toArray(new String[0])[0], strings[0]);
 				coreManagement.startMetric(metric);
 				registered = true;

@@ -20,6 +20,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
+
+                <dependency>
+                        <groupId>pl.edu.agh.samm.providers</groupId>
+                        <artifactId>esper</artifactId>
+                </dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
@@ -47,6 +52,7 @@
 					<instructions>
 						<Export-Package>!pl.*</Export-Package>
 						<Import-Package>
+							com.espertech*,
 							pl.edu.agh.samm.*,
 							com.hp.hpl.jena.*,
 							org.apache.commons.math.*,

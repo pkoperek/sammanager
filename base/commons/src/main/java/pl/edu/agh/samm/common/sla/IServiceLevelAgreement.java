@@ -15,7 +15,7 @@
  * along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.edu.agh.samm.common.decision;
+package pl.edu.agh.samm.common.sla;
 
 import java.util.List;
 import java.util.Map;

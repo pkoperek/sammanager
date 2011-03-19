@@ -28,8 +28,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.decision.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -69,7 +69,7 @@ public class CostEvaluationMetricListener implements ICurrentCostEvaluator {
 	 * (non-Javadoc)
 	 * 
 	 * @see pl.edu.agh.samm.core.ICurrentCostEvaluator#setServiceLevelAgreement
-	 * (pl.edu.agh.samm.common.decision.IServiceLevelAgreement)
+	 * (pl.edu.agh.samm.common.sla.IServiceLevelAgreement)
 	 */
 	public void setServiceLevelAgreement(IServiceLevelAgreement serviceLevelAgreement) {
 		this.serviceLevelAgreement = serviceLevelAgreement;

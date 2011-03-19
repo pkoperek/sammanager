@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.decision.IServiceLevelAgreement;
-import pl.edu.agh.samm.common.decision.ServiceLevelAgreement;
 import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
+import pl.edu.agh.samm.common.sla.ServiceLevelAgreement;
 
 /**
  * Interface for managing the Core component
@@ -52,7 +52,8 @@ public interface ICoreManagement {
 	 * @throws SLAException
 	 *             thrown when SLA validation is already running
 	 */
-	void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement) throws SLAException;
+	void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement)
+			throws SLAException;
 
 	/**
 	 * Stops Service Level Agreement validation
@@ -112,7 +113,8 @@ public interface ICoreManagement {
 	 * @throws ResourceNotRegisteredException
 	 *             when resource instance is not registered to Core
 	 */
-	List<String> getResourceCapabilities(String uri) throws ResourceNotRegisteredException;
+	List<String> getResourceCapabilities(String uri)
+			throws ResourceNotRegisteredException;
 
 	// resource changes - node attachment/ontology changes
 
@@ -141,7 +143,8 @@ public interface ICoreManagement {
 	 *            Collection of listener which will be notified when new metric
 	 *            value is computed
 	 */
-	void startMetricAndAddRunningMetricListener(IConfiguredMetric runningMetric,
+	void startMetricAndAddRunningMetricListener(
+			IConfiguredMetric runningMetric,
 			Collection<IMetricListener> listeners);
 
 	/**
@@ -154,7 +157,8 @@ public interface ICoreManagement {
 	 *            listener which will be notified when new metric value is
 	 *            computed
 	 */
-	void startMetricAndAddRunningMetricListener(IConfiguredMetric runningMetric, IMetricListener listener);
+	void startMetricAndAddRunningMetricListener(
+			IConfiguredMetric runningMetric, IMetricListener listener);
 
 	/**
 	 * Check's if given metric is started
@@ -182,7 +186,8 @@ public interface ICoreManagement {
 	 * @throws MetricNotRunningException
 	 *             thrown when given metric is not running
 	 */
-	void updateMetricPollTimeInterval(IConfiguredMetric metric) throws MetricNotRunningException;
+	void updateMetricPollTimeInterval(IConfiguredMetric metric)
+			throws MetricNotRunningException;
 
 	/**
 	 * Adds listener when given metric value changes
@@ -194,8 +199,8 @@ public interface ICoreManagement {
 	 * @throws MetricNotRunningException
 	 *             thrown when given metric is not running
 	 */
-	void addRunningMetricListener(IConfiguredMetric metric, IMetricListener listener)
-			throws MetricNotRunningException;
+	void addRunningMetricListener(IConfiguredMetric metric,
+			IMetricListener listener) throws MetricNotRunningException;
 
 	/**
 	 * Removes listener from metric
@@ -205,7 +210,8 @@ public interface ICoreManagement {
 	 * @param listener
 	 *            listener to remove
 	 */
-	void removeRunningMetricListener(IConfiguredMetric metric, IMetricListener listener);
+	void removeRunningMetricListener(IConfiguredMetric metric,
+			IMetricListener listener);
 
 	/**
 	 * Adds a listener which will be notified when new metric is started or
@@ -231,7 +237,7 @@ public interface ICoreManagement {
 	 *            resource instance URI
 	 * @return metric
 	 */
-	IConfiguredMetric createRunningMetricInstance(String metricURI, String resourceURI);
+	IConfiguredMetric createMetricInstance(String metricURI, String resourceURI);
 
 	/**
 	 * Registers new resource with given URI with given type and passes
@@ -246,7 +252,8 @@ public interface ICoreManagement {
 	 * @throws ResourceAlreadyRegisteredException
 	 *             thrown when resource with given URI already exists
 	 */
-	void registerResource(String uri, String type, Map<String, Object> parameters)
+	void registerResource(String uri, String type,
+			Map<String, Object> parameters)
 			throws ResourceAlreadyRegisteredException;
 
 	/**
@@ -271,19 +278,6 @@ public interface ICoreManagement {
 	 *            listener to remove
 	 */
 	void removeAlarmListener(IAlarmListener listener);
-
-	/**
-	 * Triggers "initial learning" - executes all possible actions with all
-	 * possible parameters (parameters are constructed from resources currently
-	 * known to Core) so that Core could "learn" consequences of these actions.
-	 * During "initial learning" monitored system should be highly loaded so
-	 * that consequences are computed accurately.<br>
-	 * <B>This may be a prolonged process</B>
-	 * 
-	 * @param finishListener
-	 *            listener which will be notified of "learning" status change
-	 */
-	void startLearning(ILearningStageListener finishListener);
 
 	/**
 	 * Adds new/overrides existing resource parameters
@@ -315,4 +309,9 @@ public interface ICoreManagement {
 	 */
 	void removeActionExecutorListener(IActionExecutionListener listener);
 
+	void addRule(Rule rule);
+
+	void clearRules();
+
+	void removeRule(String ruleName);
 }

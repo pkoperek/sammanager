@@ -32,7 +32,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.IKnowledgeProvider;
 import pl.edu.agh.samm.common.core.IResourceInstancesManager;
 import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
@@ -49,31 +48,31 @@ import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
-public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProblemObserver {
+public class RunningMetricsManagerImpl implements IMetricsManager,
+		IMetricProblemObserver {
 
-	private final Logger logger = LoggerFactory.getLogger(RunningMetricsManagerImpl.class);
+	private final Logger logger = LoggerFactory
+			.getLogger(RunningMetricsManagerImpl.class);
 
-	private IKnowledgeProvider knowledgeProvider = null;
+	private IKnowledge knowledgeService = null;
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private List<IMetricsManagerListener> metricManagerListeners = new CopyOnWriteArrayList<IMetricsManagerListener>();
 	private Map<IConfiguredMetric, MetricTask> scheduledTasks = new HashMap<IConfiguredMetric, MetricTask>();
-	private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(10);
+	private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(
+			10);
 
 	private Map<IConfiguredMetric, ScheduledFuture<?>> scheduledFutures = new HashMap<IConfiguredMetric, ScheduledFuture<?>>();
 
-	public IKnowledgeProvider getKnowledgeProvider() {
-		return knowledgeProvider;
-	}
-
-	public void setKnowledgeProvider(IKnowledgeProvider knowledgeProvider) {
-		this.knowledgeProvider = knowledgeProvider;
+	public void setKnowledgeService(IKnowledge knowledgeService) {
+		this.knowledgeService = knowledgeService;
 	}
 
 	public IResourceInstancesManager getResourceInstancesManager() {
 		return resourceInstancesManager;
 	}
 
-	public void setResourceInstancesManager(IResourceInstancesManager resourceInstancesManager) {
+	public void setResourceInstancesManager(
+			IResourceInstancesManager resourceInstancesManager) {
 		this.resourceInstancesManager = resourceInstancesManager;
 	}
 
@@ -88,9 +87,11 @@ public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProble
 			metricManagerListeners.add(listener);
 			if (scheduledTasks.size() > 0) {
 				try {
-					listener.notifyNewMetricsStarted(new HashSet<IConfiguredMetric>(scheduledTasks.keySet()));
+					listener.notifyNewMetricsStarted(new HashSet<IConfiguredMetric>(
+							scheduledTasks.keySet()));
 				} catch (Exception e) {
-					logger.error("Metric Manager Listener thrown an exception!", e);
+					logger.error(
+							"Metric Manager Listener thrown an exception!", e);
 				}
 			}
 		}
@@ -109,8 +110,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProble
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void addMetricListener(IConfiguredMetric metric, IMetricListener listener)
-			throws MetricNotRunningException {
+	public void addMetricListener(IConfiguredMetric metric,
+			IMetricListener listener) throws MetricNotRunningException {
 		if (scheduledTasks.containsKey(metric)) {
 			MetricTask metricTask = scheduledTasks.get(metric);
 			metricTask.addMetricListener(listener);
@@ -127,7 +128,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProble
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void removeMetricListener(IConfiguredMetric metric, IMetricListener listener) {
+	public void removeMetricListener(IConfiguredMetric metric,
+			IMetricListener listener) {
 		if (scheduledTasks.containsKey(metric)) {
 			MetricTask metricTask = scheduledTasks.get(metric);
 			metricTask.removeMetricListener(listener);
@@ -200,19 +202,23 @@ public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProble
 	 * (pl.edu.agh.samm.common.impl.metrics.IMetric, java.util.Collection)
 	 */
 	@Override
-	public void startMetricAndAddRunningMetricListener(IConfiguredMetric metric,
-			Collection<IMetricListener> listeners) {
+	public void startMetricAndAddRunningMetricListener(
+			IConfiguredMetric metric, Collection<IMetricListener> listeners) {
 		logger.info("Starting metric: " + metric);
 		MetricTask task = null;
 		if (!scheduledTasks.containsKey(metric)) {
-			IKnowledge knowledge = knowledgeProvider.getDefaultKnowledgeSource();
-			List<String> usedCapabilities = knowledge.getUsedCapabilities(metric.getMetricURI());
-			Resource resource = resourceInstancesManager.getResourceForURI(metric.getResourceURI());
-			if (knowledge.isCustomMetric(metric.getMetricURI())) {
-				String customClassName = knowledge.getClassNameForCustomMetric(metric.getMetricURI());
-				task = new CustomMetricTask(metric, usedCapabilities, resource, customClassName);
+			List<String> usedCapabilities = knowledgeService
+					.getUsedCapabilities(metric.getMetricURI());
+			Resource resource = resourceInstancesManager
+					.getResourceForURI(metric.getResourceURI());
+			if (knowledgeService.isCustomMetric(metric.getMetricURI())) {
+				String customClassName = knowledgeService
+						.getClassNameForCustomMetric(metric.getMetricURI());
+				task = new CustomMetricTask(metric, usedCapabilities, resource,
+						customClassName);
 			} else {
-				task = new SingleCapabilityMetricTask(metric, usedCapabilities, resource);
+				task = new SingleCapabilityMetricTask(metric, usedCapabilities,
+						resource);
 			}
 			task.init();
 
@@ -228,8 +234,10 @@ public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProble
 
 		if (!scheduledTasks.containsKey(metric)) {
 			task.setProblemObserver(this);
-			ScheduledFuture<?> future = scheduledExecutorService.scheduleAtFixedRate(task, 0L,
-					metric.getMetricPollTimeInterval(), TimeUnit.MILLISECONDS);
+			ScheduledFuture<?> future = scheduledExecutorService
+					.scheduleAtFixedRate(task, 0L,
+							metric.getMetricPollTimeInterval(),
+							TimeUnit.MILLISECONDS);
 			scheduledTasks.put(metric, task);
 			scheduledFutures.put(metric, future);
 
@@ -238,7 +246,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager, IMetricProble
 	}
 
 	@Override
-	public void updateMetricPollTime(IConfiguredMetric metric) throws MetricNotRunningException {
+	public void updateMetricPollTime(IConfiguredMetric metric)
+			throws MetricNotRunningException {
 		stopMetric(metric);
 		startMetric(metric);
 	}

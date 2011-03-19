@@ -15,19 +15,24 @@
  * along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.edu.agh.samm.common.core;
+package pl.edu.agh.samm.core;
 
-import pl.edu.agh.samm.common.knowledge.IKnowledge;
+import pl.edu.agh.samm.common.core.Rule;
+import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 
 /**
+ * Rules processing engine
+ * 
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public interface IKnowledgeProvider {
-	IKnowledge getDefaultKnowledgeSource();
+public interface IRuleProcessor {
+	void setupSLA(IServiceLevelAgreement serviceLevelAgreement);
+	
+	void addRule(Rule rule);
 
-	IKnowledge getKnowledgeSourceForURI(String uri);
+	void clearRules();
 
-	IKnowledge getKnowledgeSourceForMetricURI(String metricUri);
+	void removeRule(String ruleName);
 }

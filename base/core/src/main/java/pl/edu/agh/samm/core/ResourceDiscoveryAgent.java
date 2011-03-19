@@ -23,7 +23,6 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.IKnowledgeProvider;
 import pl.edu.agh.samm.common.core.IResourceEvent;
 import pl.edu.agh.samm.common.core.IResourceInstancesManager;
 import pl.edu.agh.samm.common.core.Resource;
@@ -40,9 +39,10 @@ import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
  */
 public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourceDiscoveryAgent.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ResourceDiscoveryAgent.class);
 
-	private IKnowledgeProvider knowledgeProvider = null;
+	private IKnowledge knowledgeService = null;
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private Set<ITransportAdapter> transportAdapters = null;
 
@@ -54,19 +54,16 @@ public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 		this.transportAdapters = transportAdapters;
 	}
 
-	public IKnowledgeProvider getKnowledgeProvider() {
-		return knowledgeProvider;
-	}
-
-	public void setKnowledgeProvider(IKnowledgeProvider knowledgeProvider) {
-		this.knowledgeProvider = knowledgeProvider;
+	public void setKnowledgeProvider(IKnowledge knowledgeService) {
+		this.knowledgeService = knowledgeService;
 	}
 
 	public IResourceInstancesManager getResourceInstancesManager() {
 		return resourceInstancesManager;
 	}
 
-	public void setResourceInstancesManager(IResourceInstancesManager resourceInstancesManager) {
+	public void setResourceInstancesManager(
+			IResourceInstancesManager resourceInstancesManager) {
 		this.resourceInstancesManager = resourceInstancesManager;
 	}
 
@@ -89,20 +86,20 @@ public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 
 	@Override
 	public List<String> getResourceCapabilities(Resource resource) {
-		IKnowledge knowledge = knowledgeProvider.getDefaultKnowledgeSource();
-		return knowledge.getCapabilitiesOfResourceType(resource.getType());
+		return knowledgeService.getCapabilitiesOfResourceType(resource
+				.getType());
 	}
 
 	@Override
 	public void processEvent(IResourceEvent event) {
 		logger.info("Got event: " + event);
-		IKnowledge knowledge = knowledgeProvider.getDefaultKnowledgeSource();
 
 		// this should be executed from a separate thread / executor
 		if (event.getType().equals(ResourceEventType.RESOURCES_ADDED)) {
 			Resource resource = (Resource) event.getAttachment();
 
-			List<String> types = knowledge.getChildrenResourceTypes(resource.getType());
+			List<String> types = knowledgeService
+					.getChildrenResourceTypes(resource.getType());
 
 			// for every transport check if it supports the url
 			for (ITransportAdapter adapter : transportAdapters) {
@@ -112,7 +109,8 @@ public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 						adapter.discoverChildren(resource, types);
 						resource.addTransportAdapter(adapter);
 					} catch (Exception e) {
-						logger.error("Exception for transport adapter: " + adapter + " caught!", e);
+						logger.error("Exception for transport adapter: "
+								+ adapter + " caught!", e);
 					}
 				}
 			}
@@ -122,10 +120,12 @@ public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 			for (ITransportAdapter adapter : resource.getTransportAdapters()) {
 				adapter.unregisterResource(resource);
 			}
-		} else if (event.getType().equals(ResourceEventType.RESOURCES_PROPERTIES_CHANGED)) {
+		} else if (event.getType().equals(
+				ResourceEventType.RESOURCES_PROPERTIES_CHANGED)) {
 			Resource resource = (Resource) event.getAttachment();
 
-			List<String> types = knowledge.getChildrenResourceTypes(resource.getType());
+			List<String> types = knowledgeService
+					.getChildrenResourceTypes(resource.getType());
 
 			// for every transport check if it supports the url
 			for (ITransportAdapter adapter : transportAdapters) {
@@ -137,7 +137,8 @@ public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 						adapter.discoverChildren(resource, types);
 						resource.addTransportAdapter(adapter);
 					} catch (Exception e) {
-						logger.error("Exception for transport adapter: " + adapter + " caught!", e);
+						logger.error("Exception for transport adapter: "
+								+ adapter + " caught!", e);
 					}
 				}
 			}

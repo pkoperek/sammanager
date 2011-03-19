@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.core.IKnowledgeProvider;
 import pl.edu.agh.samm.common.knowledge.ICriterion;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
 import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
@@ -34,33 +33,25 @@ import pl.edu.agh.samm.metrics.AbstractCriteriaValidator;
  */
 public class KnowledgeAlarmsMetricListener extends AbstractCriteriaValidator {
 
-	private IKnowledgeProvider knowledgeProvider = null;
+	private IKnowledge knowledgeService= null;
 	private Map<String, ICriterion> acceptationCriteria = new HashMap<String, ICriterion>();
 
 	public void init() {
-		IKnowledge knowledge = knowledgeProvider.getDefaultKnowledgeSource();
-		List<String> metricsWithDefinedLimits = knowledge.getMetricsWithDefinedLimits();
+		List<String> metricsWithDefinedLimits = knowledgeService.getMetricsWithDefinedLimits();
 
 		for (String metricURI : metricsWithDefinedLimits) {
-			ICriterion criterion = knowledge.getMetricValueAcceptationCriterion(metricURI);
+			ICriterion criterion = knowledgeService.getMetricValueAcceptationCriterion(metricURI);
 
 			acceptationCriteria.put(metricURI, criterion);
 		}
 	}
 
 	/**
-	 * @return the knowledgeProvider
-	 */
-	public IKnowledgeProvider getKnowledgeProvider() {
-		return knowledgeProvider;
-	}
-
-	/**
 	 * @param knowledgeProvider
 	 *            the knowledgeProvider to set
 	 */
-	public void setKnowledgeProvider(IKnowledgeProvider knowledgeProvider) {
-		this.knowledgeProvider = knowledgeProvider;
+	public void setKnowledgeService(IKnowledge knowledgeService) {
+		this.knowledgeService = knowledgeService;
 	}
 
 	@Override

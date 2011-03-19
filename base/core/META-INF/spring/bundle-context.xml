@@ -47,10 +47,6 @@
 		<property name="actionExecutor" ref="actionExecutor" />
 	</bean>
 
-	<!-- Listener for changes of knowledge sources set -->
-	<bean id="knowledgeProvider" class="pl.edu.agh.samm.core.KnowledgeProviderImpl">
-	</bean>
-
 	<!-- Listener for changes of registries set -->
 	<bean id="transportAdapterListener" class="pl.edu.agh.samm.core.TransportAdapterListener">
 		<property name="registryListener" ref="coreManagementBean"></property>
@@ -62,8 +58,8 @@
 		<property name="resourceInstancesManager">
 			<ref bean="resourceInstancesManager" />
 		</property>
-		<property name="knowledgeProvider">
-			<ref bean="knowledgeProvider" />
+		<property name="knowledgeService">
+			<ref bean="knowledgeService" />
 		</property>
 	</bean>
 
@@ -79,8 +75,8 @@
 		<property name="transportAdapters">
 			<ref bean="transportAdaptersSet" />
 		</property>
-		<property name="knowledgeProvider">
-			<ref bean="knowledgeProvider" />
+		<property name="knowledgeService">
+			<ref bean="knowledgeService" />
 		</property>
 	</bean>
 
@@ -96,7 +92,7 @@
 	<!-- Knowledge Alarms Metric Listener -->
 	<bean id="knowledgeAlarmsMetricListener" parent="abstractCriteriaValidator"
 		class="pl.edu.agh.samm.core.KnowledgeAlarmsMetricListener">
-		<property name="knowledgeProvider" ref="knowledgeProvider"></property>
+		<property name="knowledgeService" ref="knowledgeService"></property>
 	</bean>
 
 	<!-- SLA Validator -->
@@ -133,27 +129,6 @@
 	<bean id="actionExecutor" class="pl.edu.agh.samm.core.ActionExecutorImpl">
 		<property name="storageService" ref="storageService" />
 		<property name="transportAdapters" ref="transportAdaptersSet" />
-	</bean>
-
-	<bean id="commonActionsOperations" class="pl.edu.agh.samm.core.CommonActionOperations"
-		abstract="true">
-		<property name="knowledgeProvider" ref="knowledgeProvider" />
-		<property name="resourceInstancesManager" ref="resourceInstancesManager" />
-	</bean>
-
-	<bean id="experimentator" class="pl.edu.agh.samm.core.ExperimentatiorImpl"
-		parent="commonActionsOperations" init-method="init">
-		<property name="actionExecutor" ref="actionExecutor" />
-		<property name="storageService" ref="storageService" />
-		<property name="metricFactory" ref="metricFactory" />
-		<property name="runningMetricsManager" ref="runningMetricsManager" />
-	</bean>
-
-	<bean id="decisionMaker" class="pl.edu.agh.samm.core.DecisionMakerImpl"
-		parent="commonActionsOperations" init-method="init">
-		<property name="actionExecutor" ref="actionExecutor" />
-		<property name="experimentator" ref="experimentator" />
-		<property name="estimator" ref="estimator" />
 	</bean>
 
 </beans>

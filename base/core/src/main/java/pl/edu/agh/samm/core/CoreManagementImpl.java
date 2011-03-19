@@ -30,24 +30,22 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.samm.common.core.IActionExecutionListener;
 import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.core.ILearningStageListener;
 import pl.edu.agh.samm.common.core.IResourceInstancesManager;
 import pl.edu.agh.samm.common.core.IResourceListener;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
+import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.core.SLAException;
-import pl.edu.agh.samm.common.decision.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.impl.StringHelper;
 import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryEvent;
 import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryListener;
 import pl.edu.agh.samm.common.tadapter.ResourceDiscoveryEventType;
-import pl.edu.agh.samm.metrics.ICriteriaValidator;
 import pl.edu.agh.samm.metrics.IMetricsManager;
-import pl.edu.agh.samm.sla.ISLAValidator;
 
 /**
  * The Core element of SAMM.
@@ -56,22 +54,21 @@ import pl.edu.agh.samm.sla.ISLAValidator;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreManagement {
+public class CoreManagementImpl implements IResourceDiscoveryListener,
+		ICoreManagement {
 
-	private static final Logger logger = LoggerFactory.getLogger(CoreManagementImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(CoreManagementImpl.class);
 
 	private Map<IResourceListener, IResourceListener> resourceListenersProxies = new HashMap<IResourceListener, IResourceListener>();
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private IMetricsManager runningMetricsManager = null;
 	private IResourceDiscoveryAgent resourceDiscoveryAgent = null;
 	private IMetricFactory metricFactory = null;
-	private ISLAValidator slaValidator = null;
-	private ICriteriaValidator knowledgeAlarmsMetricListener = null;
 	private IServiceLevelAgreement serviceLevelAgreement = null;
 	private ICurrentCostEvaluator currentCostEvaluator = null;
-	private IExperimentator experimentator = null;
 	private boolean slaValidationRunning = false;
-	private IDecisionMaker decisionMaker = null;
+	private IRuleProcessor ruleProcessor = null;
 	private IActionExecutor actionExecutor = null;
 
 	/**
@@ -90,33 +87,18 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	}
 
 	/**
-	 * @return the knowledgeAlarmsMetricListener
+	 * @return the ruleProcessor
 	 */
-	public ICriteriaValidator getKnowledgeAlarmsMetricListener() {
-		return knowledgeAlarmsMetricListener;
+	public IRuleProcessor getRuleProcessor() {
+		return ruleProcessor;
 	}
 
 	/**
-	 * @return the decisionMaker
+	 * @param ruleProcessor
+	 *            the ruleProcessor to set
 	 */
-	public IDecisionMaker getDecisionMaker() {
-		return decisionMaker;
-	}
-
-	/**
-	 * @param decisionMaker
-	 *            the decisionMaker to set
-	 */
-	public void setDecisionMaker(IDecisionMaker decisionMaker) {
-		this.decisionMaker = decisionMaker;
-	}
-
-	/**
-	 * @param knowledgeAlarmsMetricListener
-	 *            the knowledgeAlarmsMetricListener to set
-	 */
-	public void setKnowledgeAlarmsMetricListener(ICriteriaValidator knowledgeAlarmsMetricListener) {
-		this.knowledgeAlarmsMetricListener = knowledgeAlarmsMetricListener;
+	public void setDecisionMaker(IRuleProcessor decisionMaker) {
+		this.ruleProcessor = decisionMaker;
 	}
 
 	public IResourceDiscoveryAgent getResourceDiscoveryAgent() {
@@ -131,7 +113,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 		this.metricFactory = metricFactory;
 	}
 
-	public void setResourceDiscoveryAgent(IResourceDiscoveryAgent resourceDiscoveryAgent) {
+	public void setResourceDiscoveryAgent(
+			IResourceDiscoveryAgent resourceDiscoveryAgent) {
 		this.resourceDiscoveryAgent = resourceDiscoveryAgent;
 	}
 
@@ -150,7 +133,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 		resourceInstancesManager.addResourceListener(proxyListener);
 
 		// send all currently available resources
-		for (String resource : resourceInstancesManager.getAllRegisteredResources()) {
+		for (String resource : resourceInstancesManager
+				.getAllRegisteredResources()) {
 			try {
 				listener.processEvent(new InitialResourceEvent(resource));
 			} catch (Exception e) {
@@ -161,7 +145,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 
 	@Override
 	public void removeResourceListener(IResourceListener listener) {
-		IResourceListener proxyListener = resourceListenersProxies.get(listener);
+		IResourceListener proxyListener = resourceListenersProxies
+				.get(listener);
 		if (proxyListener != null) {
 			resourceInstancesManager.removeResourceListener(listener);
 		}
@@ -171,12 +156,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 		return resourceInstancesManager;
 	}
 
-	public void setResourceInstancesManager(IResourceInstancesManager resourceInstancesManager) {
+	public void setResourceInstancesManager(
+			IResourceInstancesManager resourceInstancesManager) {
 		this.resourceInstancesManager = resourceInstancesManager;
-	}
-
-	public void setSlaValidator(ISLAValidator slaValidator) {
-		this.slaValidator = slaValidator;
 	}
 
 	public CoreManagementImpl() {
@@ -188,14 +170,16 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 */
 	public void init() {
 		logger.info("Core Bean initialization");
-		this.resourceInstancesManager.addResourceListener(resourceDiscoveryAgent);
+		this.resourceInstancesManager
+				.addResourceListener(resourceDiscoveryAgent);
 	}
 
 	/**
 	 * Destroys Core
 	 */
 	public void destroy() {
-		this.resourceInstancesManager.removeResourceListener(resourceDiscoveryAgent);
+		this.resourceInstancesManager
+				.removeResourceListener(resourceDiscoveryAgent);
 		logger.info("Core Bean destroyed");
 	}
 
@@ -230,8 +214,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void addRunningMetricListener(IConfiguredMetric metric, IMetricListener listener)
-			throws MetricNotRunningException {
+	public void addRunningMetricListener(IConfiguredMetric metric,
+			IMetricListener listener) throws MetricNotRunningException {
 		this.runningMetricsManager.addMetricListener(metric, listener);
 	}
 
@@ -243,7 +227,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * (pl.edu.agh.samm.common.impl.metrics.IMetricsManagerListener)
 	 */
 	@Override
-	public void addRunningMetricsManagerListener(IMetricsManagerListener listener) {
+	public void addRunningMetricsManagerListener(
+			IMetricsManagerListener listener) {
 		this.runningMetricsManager.addMetricsManagerListener(listener);
 	}
 
@@ -255,7 +240,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void removeRunningMetricListener(IConfiguredMetric metric, IMetricListener listener) {
+	public void removeRunningMetricListener(IConfiguredMetric metric,
+			IMetricListener listener) {
 		this.runningMetricsManager.removeMetricListener(metric, listener);
 	}
 
@@ -267,7 +253,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * (pl.edu.agh.samm.common.impl.metrics.IMetricsManagerListener)
 	 */
 	@Override
-	public void removeRunningMetricsManagerListener(IMetricsManagerListener listener) {
+	public void removeRunningMetricsManagerListener(
+			IMetricsManagerListener listener) {
 		this.runningMetricsManager.removeMetricsManagerListener(listener);
 	}
 
@@ -279,9 +266,11 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * (pl.edu.agh.samm.common.impl.metrics.IMetric, java.util.Collection)
 	 */
 	@Override
-	public void startMetricAndAddRunningMetricListener(IConfiguredMetric runningMetric,
+	public void startMetricAndAddRunningMetricListener(
+			IConfiguredMetric runningMetric,
 			Collection<IMetricListener> listeners) {
-		this.runningMetricsManager.startMetricAndAddRunningMetricListener(runningMetric, listeners);
+		this.runningMetricsManager.startMetricAndAddRunningMetricListener(
+				runningMetric, listeners);
 	}
 
 	/*
@@ -293,8 +282,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void startMetricAndAddRunningMetricListener(IConfiguredMetric runningMetric,
-			IMetricListener listener) {
+	public void startMetricAndAddRunningMetricListener(
+			IConfiguredMetric runningMetric, IMetricListener listener) {
 		if (listener != null) {
 			Collection<IMetricListener> listeners = new LinkedList<IMetricListener>();
 			listeners.add(listener);
@@ -323,17 +312,21 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	}
 
 	@Override
-	public void registerResource(String uri, String type, Map<String, Object> parameters)
+	public void registerResource(String uri, String type,
+			Map<String, Object> parameters)
 			throws ResourceAlreadyRegisteredException {
 		logger.info("Registering uri: " + uri);
 
 		String parentURI = StringHelper.getParentURI(uri);
-		boolean resourceRegistered = this.resourceInstancesManager.isResourceRegistered(parentURI);
+		boolean resourceRegistered = this.resourceInstancesManager
+				.isResourceRegistered(parentURI);
 		if (resourceRegistered) {
 			try {
-				this.resourceInstancesManager.addChildResource(parentURI, uri, type, parameters);
+				this.resourceInstancesManager.addChildResource(parentURI, uri,
+						type, parameters);
 			} catch (ResourceNotRegisteredException e) {
-				logger.error("Resource " + parentURI + " was claimed to be registered, not found during "
+				logger.error("Resource " + parentURI
+						+ " was claimed to be registered, not found during "
 						+ uri + " registration.", e);
 			}
 		} else {
@@ -352,17 +345,20 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 
 	@Override
 	public void processEvent(IResourceDiscoveryEvent event) {
-		if (event.getEventType().equals(ResourceDiscoveryEventType.NEW_RESOURCES_DISCOVERED)) {
+		if (event.getEventType().equals(
+				ResourceDiscoveryEventType.NEW_RESOURCES_DISCOVERED)) {
 			String parentUri = event.getParentResourceURI();
 			List<String> resources = event.getResources();
 			try {
 				for (String resource : resources) {
-					this.resourceInstancesManager.addChildResource(parentUri, resource, event
-							.getResourcesTypes().get(resource), event.getResourcesProperties().get(resource));
+					this.resourceInstancesManager.addChildResource(parentUri,
+							resource, event.getResourcesTypes().get(resource),
+							event.getResourcesProperties().get(resource));
 					startMetricsForNewResource(resource);
 				}
 			} catch (ResourceNotRegisteredException e) {
-				logger.error("Event contains parent URI which is not registered!", e);
+				logger.error(
+						"Event contains parent URI which is not registered!", e);
 			}
 		}
 	}
@@ -371,15 +367,16 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 		if (isSLAValidationRunning()) {
 			for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
 				if (Pattern.matches(pattern, resourceURI)) {
-					List<String> metrics = serviceLevelAgreement.getMetricsForResource(pattern);
+					List<String> metrics = serviceLevelAgreement
+							.getMetricsForResource(pattern);
 
 					for (String metricURI : metrics) {
-						IConfiguredMetric configuredMetric = this.createRunningMetricInstance(metricURI,
-								resourceURI);
+						IConfiguredMetric configuredMetric = this
+								.createMetricInstance(metricURI, resourceURI);
 						List<IMetricListener> listeners = new LinkedList<IMetricListener>();
 						listeners.add(currentCostEvaluator);
-						listeners.add(slaValidator);
-						this.startMetricAndAddRunningMetricListener(configuredMetric, listeners);
+						this.startMetricAndAddRunningMetricListener(
+								configuredMetric, listeners);
 					}
 				}
 			}
@@ -388,36 +385,39 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	}
 
 	@Override
-	public IConfiguredMetric createRunningMetricInstance(String metricURI, String resourceURI) {
+	public IConfiguredMetric createMetricInstance(String metricURI,
+			String resourceURI) {
 		return metricFactory.createMetric(metricURI, resourceURI);
 	}
 
 	@Override
-	public List<String> getResourceCapabilities(String uri) throws ResourceNotRegisteredException {
+	public List<String> getResourceCapabilities(String uri)
+			throws ResourceNotRegisteredException {
 		return this.resourceInstancesManager.getResourceCapabilities(uri);
 	}
 
 	@Override
-	public void updateMetricPollTimeInterval(IConfiguredMetric metric) throws MetricNotRunningException {
+	public void updateMetricPollTimeInterval(IConfiguredMetric metric)
+			throws MetricNotRunningException {
 		runningMetricsManager.updateMetricPollTime(metric);
 	}
 
 	@Override
 	public void addAlarmListener(IAlarmListener listener) {
-		knowledgeAlarmsMetricListener.addAlarmListener(listener);
-		slaValidator.addAlarmListener(listener);
+		// TODO: Implement me!
 	}
 
 	@Override
 	public void removeAlarmListener(IAlarmListener listener) {
-		knowledgeAlarmsMetricListener.removeAlarmListener(listener);
-		slaValidator.removeAlarmListener(listener);
+		// TODO: Implement me!
 	}
 
 	@Override
-	public void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement) throws SLAException {
+	public void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement)
+			throws SLAException {
 		if (slaValidationRunning) {
-			throw new SLAException("SLA Validation already running! Please update instead of starting!");
+			throw new SLAException(
+					"SLA Validation already running! Please update instead of starting!");
 		}
 
 		logger.info("Starting SLA Validation: " + serviceLevelAgreement);
@@ -445,58 +445,64 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * 
 	 * @param serviceLevelAgreement
 	 */
-	private void configureMonitoringForSLA(IServiceLevelAgreement serviceLevelAgreement) {
+	private void configureMonitoringForSLA(
+			IServiceLevelAgreement serviceLevelAgreement) {
 		this.currentCostEvaluator.setupSLA(serviceLevelAgreement);
-		this.slaValidator.setupSLA(serviceLevelAgreement);
-		this.decisionMaker.setupSLA(serviceLevelAgreement);
+		this.ruleProcessor.setupSLA(serviceLevelAgreement);
 		for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
 
-			for (String resourceURI : resourceInstancesManager.getAllRegisteredResources()) {
+			for (String resourceURI : resourceInstancesManager
+					.getAllRegisteredResources()) {
 				if (Pattern.matches(pattern, resourceURI)) {
-					String resourceType = serviceLevelAgreement.getResourceType(pattern);
-					Map<String, Object> parameters = serviceLevelAgreement.getParameters(pattern);
+					String resourceType = serviceLevelAgreement
+							.getResourceType(pattern);
+					Map<String, Object> parameters = serviceLevelAgreement
+							.getParameters(pattern);
 
 					try {
-						this.registerResource(resourceURI, resourceType, parameters);
+						this.registerResource(resourceURI, resourceType,
+								parameters);
 					} catch (ResourceAlreadyRegisteredException e) {
 						// if we already monitor this resource - nothing
 						// happens...
 						// try to add metrics for it...
 					}
 
-					List<String> metrics = serviceLevelAgreement.getMetricsForResource(pattern);
+					List<String> metrics = serviceLevelAgreement
+							.getMetricsForResource(pattern);
 
 					for (String metricURI : metrics) {
-						IConfiguredMetric configuredMetric = this.createRunningMetricInstance(metricURI,
-								resourceURI);
+						IConfiguredMetric configuredMetric = this
+								.createMetricInstance(metricURI, resourceURI);
 						List<IMetricListener> listeners = new LinkedList<IMetricListener>();
 						listeners.add(currentCostEvaluator);
-						listeners.add(slaValidator);
-						this.startMetricAndAddRunningMetricListener(configuredMetric, listeners);
+						this.startMetricAndAddRunningMetricListener(
+								configuredMetric, listeners);
 					}
 				}
 			}
 		}
 	}
 
-	private void unconfigureMonitoringForSLA(IServiceLevelAgreement serviceLevelAgreement) {
+	private void unconfigureMonitoringForSLA(
+			IServiceLevelAgreement serviceLevelAgreement) {
 		this.currentCostEvaluator.setupSLA(null);
-		this.slaValidator.setupSLA(null);
-		this.decisionMaker.setupSLA(null);
+		this.ruleProcessor.setupSLA(null);
 		for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
 
-			for (String resourceURI : resourceInstancesManager.getAllRegisteredResources()) {
+			for (String resourceURI : resourceInstancesManager
+					.getAllRegisteredResources()) {
 				if (Pattern.matches(pattern, resourceURI)) {
-					List<String> metrics = serviceLevelAgreement.getMetricsForResource(pattern);
+					List<String> metrics = serviceLevelAgreement
+							.getMetricsForResource(pattern);
 					if (metrics == null) {
 						continue;
 					}
 					for (String metricURI : metrics) {
-						IConfiguredMetric configuredMetric = this.createRunningMetricInstance(metricURI,
-								resourceURI);
-						this.runningMetricsManager.removeMetricListener(configuredMetric,
-								currentCostEvaluator);
-						this.runningMetricsManager.removeMetricListener(configuredMetric, slaValidator);
+						IConfiguredMetric configuredMetric = this
+								.createMetricInstance(metricURI, resourceURI);
+						this.runningMetricsManager.removeMetricListener(
+								configuredMetric, currentCostEvaluator);
 						this.stopMetric(configuredMetric);
 					}
 				}
@@ -512,7 +518,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 			this.unconfigureMonitoringForSLA(serviceLevelAgreement);
 			this.slaValidationRunning = false;
 		} else {
-			throw new SLAException("SLA Validation not running! Please start SLA validation first!");
+			throw new SLAException(
+					"SLA Validation not running! Please start SLA validation first!");
 		}
 	}
 
@@ -537,21 +544,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	 * @param currentCostEvaluator
 	 *            the currentCostEvaluator to set
 	 */
-	public void setCurrentCostEvaluator(ICurrentCostEvaluator currentCostEvaluator) {
+	public void setCurrentCostEvaluator(
+			ICurrentCostEvaluator currentCostEvaluator) {
 		this.currentCostEvaluator = currentCostEvaluator;
-	}
-
-	@Override
-	public void startLearning(ILearningStageListener finishListener) {
-		experimentator.executeInitialLearning(finishListener);
-	}
-
-	/**
-	 * @param experimentator
-	 *            the experimentator to set
-	 */
-	public void setExperimentator(IExperimentator experimentator) {
-		this.experimentator = experimentator;
 	}
 
 	@Override
@@ -570,5 +565,20 @@ public class CoreManagementImpl implements IResourceDiscoveryListener, ICoreMana
 	@Override
 	public void removeActionExecutorListener(IActionExecutionListener listener) {
 		this.actionExecutor.removeActionExecutorListener(listener);
+	}
+
+	@Override
+	public void addRule(Rule rule) {
+		ruleProcessor.addRule(rule);
+	}
+
+	@Override
+	public void clearRules() {
+		ruleProcessor.clearRules();
+	}
+
+	@Override
+	public void removeRule(String ruleName) {
+		ruleProcessor.removeRule(ruleName);
 	}
 }
