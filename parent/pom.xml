@@ -259,6 +259,12 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<version>3.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.8.1</version>
@@ -290,6 +296,11 @@
 				<artifactId>weka</artifactId>
 				<version>3.6.1</version>
 			</dependency>
+                        <dependency>
+                                <groupId>pl.edu.agh.samm.providers</groupId>
+                                <artifactId>esper</artifactId>
+                                <version>4.1.0</version>
+                        </dependency>
 			<dependency>
 				<groupId>pl.edu.agh.samm.providers</groupId>
 				<artifactId>pellet</artifactId>
