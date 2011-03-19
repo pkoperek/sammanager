@@ -64,8 +64,4 @@ public interface ITransportAdapter {
 	 */
 	void executeAction(Action actionToExecute) throws ActionNotSupportedException;
 
-	// Collection<? extends String> discoverResourceCapabilities(
-	// Resource resource, List<String> capabilitiesTypes)
-	// throws ResourceNotRegisteredException;
-
 }
