@@ -20,12 +20,12 @@ package pl.edu.agh.samm.common.metrics;
 import pl.edu.agh.samm.common.impl.StringHelper;
 
 /**
- * Default implementation of {@link IConfiguredMetric}
+ * Default implementation of {@link IMetric}
  * 
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
-public class MetricImpl implements IConfiguredMetric {
+public class MetricImpl implements IMetric {
 	private static final long serialVersionUID = -5768117605198157976L;
 
 	/**
@@ -61,8 +61,8 @@ public class MetricImpl implements IConfiguredMetric {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof IConfiguredMetric) {
-			IConfiguredMetric metric = (IConfiguredMetric) o;
+		if (o instanceof IMetric) {
+			IMetric metric = (IMetric) o;
 			// ignore poll time interval
 			return (metricURI.equals(metric.getMetricURI())) && (resourceURI.equals(metric.getResourceURI()));
 		}

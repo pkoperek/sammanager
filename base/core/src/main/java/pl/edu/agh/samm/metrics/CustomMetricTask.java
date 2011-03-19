@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.ICustomMetric;
 
 /**
@@ -38,7 +38,7 @@ public class CustomMetricTask extends MetricTask {
 	private String customClassName = null;
 	private ICustomMetric customMetricInstance = null;
 
-	public CustomMetricTask(IConfiguredMetric metric, List<String> usedCapabilities, Resource resource,
+	public CustomMetricTask(IMetric metric, List<String> usedCapabilities, Resource resource,
 			String customClassName) {
 		super(metric, usedCapabilities, resource);
 		this.customClassName = customClassName;

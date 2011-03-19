@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
 
 /**
@@ -39,7 +39,7 @@ public class SingleCapabilityMetricTask extends MetricTask {
 	private String usedCapability;
 	private Resource resource;
 
-	public SingleCapabilityMetricTask(IConfiguredMetric metric, List<String> usedCapabilities,
+	public SingleCapabilityMetricTask(IMetric metric, List<String> usedCapabilities,
 			Resource resource) {
 		super(metric, usedCapabilities, resource);
 	}

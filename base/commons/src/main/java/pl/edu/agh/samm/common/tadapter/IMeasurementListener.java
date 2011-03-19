@@ -23,5 +23,5 @@ package pl.edu.agh.samm.common.tadapter;
  * 
  */
 public interface IMeasurementListener {
-	void processEvent(ICapabilityEvent event);
+	void processMeasurementEvent(IMeasurementEvent event);
 }

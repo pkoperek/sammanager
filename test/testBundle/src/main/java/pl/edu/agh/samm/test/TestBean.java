@@ -30,7 +30,8 @@ import pl.edu.agh.samm.common.core.IResourceEvent;
 import pl.edu.agh.samm.common.core.IResourceListener;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
@@ -41,7 +42,8 @@ import pl.edu.agh.samm.common.metrics.ResourceEventType;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public class TestBean implements IResourceListener, IMetricsManagerListener, IMetricListener {
+public class TestBean implements IResourceListener, IMetricsManagerListener,
+		IMetricListener {
 	private ICoreManagement coreManagement;
 	private Logger logger = LoggerFactory.getLogger(TestBean.class);
 	private boolean registered = false;
@@ -70,7 +72,8 @@ public class TestBean implements IResourceListener, IMetricsManagerListener, IMe
 		Map<String, Object> params = new HashMap<String, Object>();
 		// coreManagement.registerNode("jmx://cluster01", params);
 		params = new HashMap<String, Object>();
-		params.put("JMXURL", "service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi");
+		params.put("JMXURL",
+				"service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi");
 		coreManagement.registerResource("jmx://cluster01/node01",
 				"http://www.icsr.agh.edu.pl/samm_1.owl#Node", params);
 
@@ -81,12 +84,14 @@ public class TestBean implements IResourceListener, IMetricsManagerListener, IMe
 	public void processEvent(IResourceEvent event) {
 		logger.info("*** Got: " + event);
 
-		if (event.getType().equals(ResourceEventType.RESOURCES_ADDED) && !registered) {
+		if (event.getType().equals(ResourceEventType.RESOURCES_ADDED)
+				&& !registered) {
 			String resourceString = (String) event.getAttachment();
 			String[] strings = resourceString.split(" ");
 			if (strings[1].contains("Thread")) {
-				Set<String> metrics = knowledge.getMetricsForResourceType(strings[1]);
-				IConfiguredMetric metric = coreManagement.createMetricInstance(
+				Set<String> metrics = knowledge
+						.getMetricsForResourceType(strings[1]);
+				IMetric metric = coreManagement.createMetricInstance(
 						metrics.toArray(new String[0])[0], strings[0]);
 				coreManagement.startMetric(metric);
 				registered = true;
@@ -95,16 +100,16 @@ public class TestBean implements IResourceListener, IMetricsManagerListener, IMe
 	}
 
 	@Override
-	public void notifyMetricsHasStopped(Collection<IConfiguredMetric> stoppedMetrics) {
+	public void notifyMetricsHasStopped(Collection<IMetric> stoppedMetrics) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void notifyNewMetricsStarted(Collection<IConfiguredMetric> startedMetrics) {
+	public void notifyNewMetricsStarted(Collection<IMetric> startedMetrics) {
 		logger.info("***** Metric has started! " + startedMetrics);
 
-		for (IConfiguredMetric metric : startedMetrics) {
+		for (IMetric metric : startedMetrics) {
 			try {
 				coreManagement.addRunningMetricListener(metric, this);
 			} catch (MetricNotRunningException e) {
@@ -115,8 +120,9 @@ public class TestBean implements IResourceListener, IMetricsManagerListener, IMe
 	}
 
 	@Override
-	public void notifyMetricValue(IConfiguredMetric metric, Number value) {
-		logger.info("***** GOT VALUE ***** " + metric + " : " + value);
+	public void processMetricEvent(IMetricEvent event) {
+		logger.info("***** GOT VALUE ***** " + event.getMetric() + " : "
+				+ event.getValue());
 	}
 
 }

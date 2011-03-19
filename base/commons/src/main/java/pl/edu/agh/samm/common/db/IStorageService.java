@@ -24,7 +24,7 @@ import java.util.Set;
 
 import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.action.ActionExecution;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.MeasurementValue;
 
 /**
@@ -36,7 +36,7 @@ public interface IStorageService {
 
 	void storeActionExecution(Action executedAction, Date startDate, Date endDate);
 
-	void storeMetricValue(IConfiguredMetric metric, Number value);
+	void storeMetricValue(IMetric metric, Number value);
 
 	void storeMeasurement(String instanceURI, String capabilityURI, Date timestamp, Object value);
 
@@ -58,7 +58,7 @@ public interface IStorageService {
 	List<MeasurementValue> getHistoricalMeasurementValues(String resourceURI, String capabilityURI,
 			Date startTime, Date endTime);
 
-	List<IConfiguredMetric> getAllKnownMetrics();
+	List<IMetric> getAllKnownMetrics();
 
 	List<Number> getHistoricalMetricValues(String metricURI, String resourceURI);
 }

@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.action.ActionExecution;
 import pl.edu.agh.samm.common.db.IStorageService;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.MeasurementValue;
 import pl.edu.agh.samm.common.metrics.MetricValue;
 
@@ -73,7 +73,7 @@ public class StorageServiceImpl implements IStorageService {
 	 * .metrics.IConfiguredMetric, java.lang.Number)
 	 */
 	@Override
-	public void storeMetricValue(IConfiguredMetric metric, Number value) {
+	public void storeMetricValue(IMetric metric, Number value) {
 		MetricValue mv = new MetricValue();
 		mv.setMetricUri(metric.getMetricURI());
 		mv.setResourceUri(metric.getResourceURI());
@@ -174,7 +174,7 @@ public class StorageServiceImpl implements IStorageService {
 	}
 
 	@Override
-	public List<IConfiguredMetric> getAllKnownMetrics() {
+	public List<IMetric> getAllKnownMetrics() {
 		return metricValueDAO.getKnownMetrics();
 	}
 

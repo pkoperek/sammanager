@@ -25,11 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.db.IStorageService;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.tadapter.ICapabilityEvent;
+import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
 import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
 
 /**
@@ -37,9 +38,11 @@ import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public class DBListener implements IMeasurementListener, IMetricListener, IMetricsManagerListener {
+public class DBListener implements IMeasurementListener, IMetricListener,
+		IMetricsManagerListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(DBListener.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(DBListener.class);
 
 	private ICoreManagement coreManagement = null;
 	private IStorageService storageService = null;
@@ -57,27 +60,22 @@ public class DBListener implements IMeasurementListener, IMetricListener, IMetri
 	}
 
 	@Override
-	public void processEvent(ICapabilityEvent event) {
-		storageService.storeMeasurement(event.getInstanceUri(), event.getCapabilityUri(), new Date(),
-				event.getValue());
+	public void processMeasurementEvent(IMeasurementEvent event) {
+		storageService.storeMeasurement(event.getInstanceUri(),
+				event.getCapabilityUri(), new Date(), event.getValue());
 	}
 
 	@Override
-	public void notifyMetricValue(IConfiguredMetric metric, Number value) throws Exception {
-		storageService.storeMetricValue(metric, value);
-	}
+	public void notifyMetricsHasStopped(Collection<IMetric> stoppedMetrics) {
 
-	@Override
-	public void notifyMetricsHasStopped(Collection<IConfiguredMetric> stoppedMetrics) {
-
-		for (IConfiguredMetric metric : stoppedMetrics) {
+		for (IMetric metric : stoppedMetrics) {
 			coreManagement.removeRunningMetricListener(metric, this);
 		}
 	}
 
 	@Override
-	public void notifyNewMetricsStarted(Collection<IConfiguredMetric> startedMetrics) {
-		for (IConfiguredMetric metric : startedMetrics) {
+	public void notifyNewMetricsStarted(Collection<IMetric> startedMetrics) {
+		for (IMetric metric : startedMetrics) {
 			try {
 				coreManagement.addRunningMetricListener(metric, this);
 			} catch (MetricNotRunningException e) {
@@ -89,6 +87,12 @@ public class DBListener implements IMeasurementListener, IMetricListener, IMetri
 
 	public void setCoreManagement(ICoreManagement coreManagement) {
 		this.coreManagement = coreManagement;
+	}
+
+	@Override
+	public void processMetricEvent(IMetricEvent metricEvent) throws Exception {
+		storageService.storeMetricValue(metricEvent.getMetric(),
+				metricEvent.getValue());
 	}
 
 }

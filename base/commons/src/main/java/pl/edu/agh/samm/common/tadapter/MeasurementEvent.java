@@ -18,18 +18,46 @@
 package pl.edu.agh.samm.common.tadapter;
 
 /**
+ * Describes a single measurement
+ * 
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public interface ICapabilityEvent {
-	CapabilityEventType getCapabilityEventType();
+public class MeasurementEvent implements IMeasurementEvent {
 
-	String getCapabilityUri();
+	private Object value;
+	private String resourceInstance;
+	private String resourceType;
+	private String capabilityUri;
 
-	String getInstanceUri();
+	public MeasurementEvent(
+			String capabilityUri, String resourceInstanceUri,
+			String resourceTypeUri, Object value) {
+		this.capabilityUri = capabilityUri;
+		this.resourceType = resourceTypeUri;
+		this.resourceInstance = resourceInstanceUri;
+		this.value = value;
+	}
 
-	String getResourceType();
+	@Override
+	public String getCapabilityUri() {
+		return capabilityUri;
+	}
 
-	Object getValue();
+	@Override
+	public String getInstanceUri() {
+		return resourceInstance;
+	}
+
+	@Override
+	public Object getValue() {
+		return value;
+	}
+
+	@Override
+	public String getResourceType() {
+		return resourceType;
+	}
+
 }

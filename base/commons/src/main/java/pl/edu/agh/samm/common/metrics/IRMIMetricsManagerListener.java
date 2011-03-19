@@ -37,11 +37,11 @@ public interface IRMIMetricsManagerListener extends IMetricsManagerListener, Rem
 	 * element.
 	 * 
 	 * @param startedMetrics
-	 *            {@link Collection} of {@link IConfiguredMetric} already
+	 *            {@link Collection} of {@link IMetric} already
 	 *            started metrics
 	 */
 	@Override
-	void notifyNewMetricsStarted(Collection<IConfiguredMetric> startedMetrics) throws RemoteException;
+	void notifyNewMetricsStarted(Collection<IMetric> startedMetrics) throws RemoteException;
 
 	/**
 	 * Notifies Subscriber about collection of already stopped metrics on the
@@ -52,5 +52,5 @@ public interface IRMIMetricsManagerListener extends IMetricsManagerListener, Rem
 	 * @param stoppedMetrics
 	 */
 	@Override
-	void notifyMetricsHasStopped(Collection<IConfiguredMetric> stoppedMetrics) throws RemoteException;
+	void notifyMetricsHasStopped(Collection<IMetric> stoppedMetrics) throws RemoteException;
 }

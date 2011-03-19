@@ -22,6 +22,13 @@ package pl.edu.agh.samm.common.tadapter;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public enum CapabilityEventType {
-	NEW_CAPABILITY_VALUE;
+public interface IMeasurementEvent {
+
+	String getCapabilityUri();
+
+	String getInstanceUri();
+
+	String getResourceType();
+
+	Object getValue();
 }

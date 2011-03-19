@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
-public interface IConfiguredMetric extends Serializable {
+public interface IMetric extends Serializable {
 
 	/**
 	 * Returns URI of {@link MetricOntSchema#AbstractMetricClass} class of URI

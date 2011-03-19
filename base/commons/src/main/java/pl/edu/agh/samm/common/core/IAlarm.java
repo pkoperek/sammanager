@@ -19,7 +19,7 @@ package pl.edu.agh.samm.common.core;
 
 import java.util.List;
 
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -31,14 +31,14 @@ public interface IAlarm {
 	/**
 	 * @return the metric
 	 */
-	IConfiguredMetric getMetric();
+	IMetric getMetric();
 
 	/**
 	 * @return the metricsToStart
 	 */
-	List<IConfiguredMetric> getMetricsToStart();
+	List<IMetric> getMetricsToStart();
 
 	String getDescription();
 
-	Number getSuggestedMetricRank(IConfiguredMetric suggestedMetric);
+	Number getSuggestedMetricRank(IMetric suggestedMetric);
 }

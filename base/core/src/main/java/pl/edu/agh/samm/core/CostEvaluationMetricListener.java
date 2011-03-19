@@ -28,7 +28,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 
 /**
@@ -38,20 +39,23 @@ import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
  */
 public class CostEvaluationMetricListener implements ICurrentCostEvaluator {
 
-	private static Logger logger = LoggerFactory.getLogger(CostEvaluationMetricListener.class);
+	private static Logger logger = LoggerFactory
+			.getLogger(CostEvaluationMetricListener.class);
 
-	private Map<IConfiguredMetric, Double> actualValues = Collections
-			.synchronizedMap(new HashMap<IConfiguredMetric, Double>());
+	private Map<IMetric, Double> actualValues = Collections
+			.synchronizedMap(new HashMap<IMetric, Double>());
 	private IServiceLevelAgreement serviceLevelAgreement = null;
 
-	private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+	private ScheduledExecutorService executor = Executors
+			.newSingleThreadScheduledExecutor();
 
 	public void init() {
 		executor.scheduleAtFixedRate(new Runnable() {
 
 			@Override
 			public void run() {
-				logger.info("Current cost of running system: " + getCurrentCostEvaluation());
+				logger.info("Current cost of running system: "
+						+ getCurrentCostEvaluation());
 
 			}
 
@@ -71,35 +75,9 @@ public class CostEvaluationMetricListener implements ICurrentCostEvaluator {
 	 * @see pl.edu.agh.samm.core.ICurrentCostEvaluator#setServiceLevelAgreement
 	 * (pl.edu.agh.samm.common.sla.IServiceLevelAgreement)
 	 */
-	public void setServiceLevelAgreement(IServiceLevelAgreement serviceLevelAgreement) {
+	public void setServiceLevelAgreement(
+			IServiceLevelAgreement serviceLevelAgreement) {
 		this.serviceLevelAgreement = serviceLevelAgreement;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pl.edu.agh.samm.common.metrics.IMetricListener#notifyMetricValue(pl
-	 * .edu.agh.samm.common.metrics.IConfiguredMetric, java.lang.Number)
-	 */
-	@Override
-	public void notifyMetricValue(IConfiguredMetric metric, Number value) {
-		if (serviceLevelAgreement != null) {
-			String metricURI = metric.getMetricURI();
-			String resourceURI = metric.getResourceURI();
-
-			for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
-				if (Pattern.matches(pattern, resourceURI)) {
-					Number multiplier = serviceLevelAgreement.getMetricCost(pattern, metricURI);
-
-					if (multiplier != null) {
-						Double valueToStore = multiplier.doubleValue() * value.doubleValue();
-
-						actualValues.put(metric, valueToStore);
-					}
-					break;
-				}
-			}
-		}
 	}
 
 	/*
@@ -118,9 +96,33 @@ public class CostEvaluationMetricListener implements ICurrentCostEvaluator {
 	}
 
 	@Override
-	public synchronized void setupSLA(IServiceLevelAgreement serviceLevelAgreement) {
+	public synchronized void setupSLA(
+			IServiceLevelAgreement serviceLevelAgreement) {
 		actualValues.clear();
 		this.serviceLevelAgreement = serviceLevelAgreement;
+	}
+
+	@Override
+	public void processMetricEvent(IMetricEvent metricEvent) throws Exception {
+		if (serviceLevelAgreement != null) {
+			String metricURI = metricEvent.getMetric().getMetricURI();
+			String resourceURI = metricEvent.getMetric().getResourceURI();
+
+			for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
+				if (Pattern.matches(pattern, resourceURI)) {
+					Number multiplier = serviceLevelAgreement.getMetricCost(
+							pattern, metricURI);
+
+					if (multiplier != null) {
+						Double valueToStore = multiplier.doubleValue()
+								* metricEvent.getValue().doubleValue();
+
+						actualValues.put(metricEvent.getMetric(), valueToStore);
+					}
+					break;
+				}
+			}
+		}
 	}
 
 }

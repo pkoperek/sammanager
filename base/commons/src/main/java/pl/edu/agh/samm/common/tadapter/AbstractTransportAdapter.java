@@ -33,17 +33,20 @@ public abstract class AbstractTransportAdapter implements ITransportAdapter {
 
 	protected List<IResourceDiscoveryListener> registryListeners = new ArrayList<IResourceDiscoveryListener>();
 	protected List<IMeasurementListener> capabilityListeners = new ArrayList<IMeasurementListener>();
-	private static final Logger logger = LoggerFactory.getLogger(AbstractTransportAdapter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(AbstractTransportAdapter.class);
 
 	@Override
-	public void addTransportAdapterListener(final IResourceDiscoveryListener listener) {
+	public void addTransportAdapterListener(
+			final IResourceDiscoveryListener listener) {
 		if (!registryListeners.contains(listener)) {
 			registryListeners.add(listener);
 		}
 	}
 
 	@Override
-	public void removeTransportAdapterListener(IResourceDiscoveryListener listener) {
+	public void removeTransportAdapterListener(
+			IResourceDiscoveryListener listener) {
 		registryListeners.remove(listener);
 	}
 
@@ -55,25 +58,28 @@ public abstract class AbstractTransportAdapter implements ITransportAdapter {
 	}
 
 	@Override
-	public void removeMeasurementListener(IMeasurementListener capabilityListener) {
+	public void removeMeasurementListener(
+			IMeasurementListener capabilityListener) {
 		capabilityListeners.remove(capabilityListener);
 	}
 
-	protected void fireNewCapabilityValueEvent(String capabilityUri, String resourceInstanceUri,
-			String resourceTypeUri, Object value) {
+	protected void fireNewCapabilityValueEvent(String capabilityUri,
+			String resourceInstanceUri, String resourceTypeUri, Object value) {
 		if (value != null) {
-			ICapabilityEvent event = new CapabilityEvent(CapabilityEventType.NEW_CAPABILITY_VALUE,
-					capabilityUri, resourceInstanceUri, resourceTypeUri, value);
+			IMeasurementEvent event = new MeasurementEvent(capabilityUri,
+					resourceInstanceUri, resourceTypeUri, value);
 			fireEvent(event);
 		}
 	}
 
-	protected void fireEvent(ICapabilityEvent event) {
+	protected void fireEvent(IMeasurementEvent event) {
 		for (IMeasurementListener listener : capabilityListeners) {
 			try {
-				listener.processEvent(event);
+				listener.processMeasurementEvent(event);
 			} catch (Throwable t) {
-				logger.error("Listener thrown an exception during CapabilityEvent processing!", t);
+				logger.error(
+						"Listener thrown an exception during MeasurementEvent processing!",
+						t);
 			}
 		}
 	}
@@ -83,15 +89,19 @@ public abstract class AbstractTransportAdapter implements ITransportAdapter {
 			try {
 				listener.processEvent(event);
 			} catch (Throwable t) {
-				logger.error("Listener thrown an exception during ResourceDiscoveryEvent processing!", t);
+				logger.error(
+						"Listener thrown an exception during ResourceDiscoveryEvent processing!",
+						t);
 			}
 		}
 	}
 
-	protected void fireNewResourcesEvent(String parentURI, Map<String, String> types,
+	protected void fireNewResourcesEvent(String parentURI,
+			Map<String, String> types,
 			Map<String, Map<String, Object>> properties) {
 		IResourceDiscoveryEvent event = new ResourceDiscoveryEvent(
-				ResourceDiscoveryEventType.NEW_RESOURCES_DISCOVERED, types, properties, parentURI);
+				ResourceDiscoveryEventType.NEW_RESOURCES_DISCOVERED, types,
+				properties, parentURI);
 		fireEvent(event);
 	}
 }

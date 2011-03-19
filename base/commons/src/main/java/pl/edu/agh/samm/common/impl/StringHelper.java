@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 
 /**
  * Provides utilities for processing strings
@@ -85,7 +85,7 @@ public class StringHelper {
 		return name;
 	}
 
-	public static String getMetricName(IConfiguredMetric metric) {
+	public static String getMetricName(IMetric metric) {
 		String name = getNameFromURI(metric.getMetricURI()) + " " + metric.getResourceURI();
 		return name;
 	}

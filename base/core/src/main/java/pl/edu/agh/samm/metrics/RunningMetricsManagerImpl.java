@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.samm.common.core.IResourceInstancesManager;
 import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
@@ -57,11 +57,11 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	private IKnowledge knowledgeService = null;
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private List<IMetricsManagerListener> metricManagerListeners = new CopyOnWriteArrayList<IMetricsManagerListener>();
-	private Map<IConfiguredMetric, MetricTask> scheduledTasks = new HashMap<IConfiguredMetric, MetricTask>();
+	private Map<IMetric, MetricTask> scheduledTasks = new HashMap<IMetric, MetricTask>();
 	private ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(
 			10);
 
-	private Map<IConfiguredMetric, ScheduledFuture<?>> scheduledFutures = new HashMap<IConfiguredMetric, ScheduledFuture<?>>();
+	private Map<IMetric, ScheduledFuture<?>> scheduledFutures = new HashMap<IMetric, ScheduledFuture<?>>();
 
 	public void setKnowledgeService(IKnowledge knowledgeService) {
 		this.knowledgeService = knowledgeService;
@@ -77,7 +77,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	}
 
 	@Override
-	public Collection<IConfiguredMetric> getRunningMetrics() {
+	public Collection<IMetric> getRunningMetrics() {
 		return scheduledTasks.keySet();
 	}
 
@@ -87,7 +87,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 			metricManagerListeners.add(listener);
 			if (scheduledTasks.size() > 0) {
 				try {
-					listener.notifyNewMetricsStarted(new HashSet<IConfiguredMetric>(
+					listener.notifyNewMetricsStarted(new HashSet<IMetric>(
 							scheduledTasks.keySet()));
 				} catch (Exception e) {
 					logger.error(
@@ -110,7 +110,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void addMetricListener(IConfiguredMetric metric,
+	public void addMetricListener(IMetric metric,
 			IMetricListener listener) throws MetricNotRunningException {
 		if (scheduledTasks.containsKey(metric)) {
 			MetricTask metricTask = scheduledTasks.get(metric);
@@ -128,7 +128,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void removeMetricListener(IConfiguredMetric metric,
+	public void removeMetricListener(IMetric metric,
 			IMetricListener listener) {
 		if (scheduledTasks.containsKey(metric)) {
 			MetricTask metricTask = scheduledTasks.get(metric);
@@ -136,8 +136,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 		}
 	}
 
-	protected void fireNewMetricHasStarted(IConfiguredMetric metric) {
-		Collection<IConfiguredMetric> collection = new ArrayList<IConfiguredMetric>();
+	protected void fireNewMetricHasStarted(IMetric metric) {
+		Collection<IMetric> collection = new ArrayList<IMetric>();
 		collection.add(metric);
 		for (IMetricsManagerListener listener : metricManagerListeners) {
 			try {
@@ -148,8 +148,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 		}
 	}
 
-	protected void fireMetricHasStopped(IConfiguredMetric metric) {
-		Collection<IConfiguredMetric> collection = new ArrayList<IConfiguredMetric>();
+	protected void fireMetricHasStopped(IMetric metric) {
+		Collection<IMetric> collection = new ArrayList<IMetric>();
 		collection.add(metric);
 		for (IMetricsManagerListener listener : metricManagerListeners) {
 			try {
@@ -167,7 +167,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * .edu.agh.samm.common.metrics.IRunningMetric)
 	 */
 	@Override
-	public void startMetric(IConfiguredMetric runningMetric) {
+	public void startMetric(IMetric runningMetric) {
 		startMetricAndAddRunningMetricListener(runningMetric, null);
 	}
 
@@ -178,7 +178,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * .edu.agh.samm.common.metrics.IRunningMetric)
 	 */
 	@Override
-	public void stopMetric(IConfiguredMetric metric) {
+	public void stopMetric(IMetric metric) {
 		logger.info("Stopping metric: " + metric);
 		if (scheduledTasks.containsKey(metric)) {
 			scheduledTasks.remove(metric);
@@ -190,7 +190,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	}
 
 	@Override
-	public boolean isMetricRunning(IConfiguredMetric metric) {
+	public boolean isMetricRunning(IMetric metric) {
 		return scheduledTasks.containsKey(metric);
 	}
 
@@ -203,7 +203,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 */
 	@Override
 	public void startMetricAndAddRunningMetricListener(
-			IConfiguredMetric metric, Collection<IMetricListener> listeners) {
+			IMetric metric, Collection<IMetricListener> listeners) {
 		logger.info("Starting metric: " + metric);
 		MetricTask task = null;
 		if (!scheduledTasks.containsKey(metric)) {
@@ -246,14 +246,14 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	}
 
 	@Override
-	public void updateMetricPollTime(IConfiguredMetric metric)
+	public void updateMetricPollTime(IMetric metric)
 			throws MetricNotRunningException {
 		stopMetric(metric);
 		startMetric(metric);
 	}
 
 	@Override
-	public void problemOcurred(IConfiguredMetric metric, Exception e) {
+	public void problemOcurred(IMetric metric, Exception e) {
 		// we don't care what kind of exception was thrown right now - just kill
 		// the metric
 		stopMetric(metric);

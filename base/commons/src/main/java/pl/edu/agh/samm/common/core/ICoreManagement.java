@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
@@ -131,7 +131,7 @@ public interface ICoreManagement {
 	/**
 	 * Starts (starts polling data) monitoring given metric
 	 */
-	void startMetric(IConfiguredMetric metric);
+	void startMetric(IMetric metric);
 
 	/**
 	 * Starts a metric (starts to poll data) and adds listeners for that metric
@@ -144,7 +144,7 @@ public interface ICoreManagement {
 	 *            value is computed
 	 */
 	void startMetricAndAddRunningMetricListener(
-			IConfiguredMetric runningMetric,
+			IMetric runningMetric,
 			Collection<IMetricListener> listeners);
 
 	/**
@@ -158,7 +158,7 @@ public interface ICoreManagement {
 	 *            computed
 	 */
 	void startMetricAndAddRunningMetricListener(
-			IConfiguredMetric runningMetric, IMetricListener listener);
+			IMetric runningMetric, IMetricListener listener);
 
 	/**
 	 * Check's if given metric is started
@@ -167,7 +167,7 @@ public interface ICoreManagement {
 	 *            metric to check if is running
 	 * @return true wehn metric is started, false otherwise
 	 */
-	boolean isMetricRunning(IConfiguredMetric metric);
+	boolean isMetricRunning(IMetric metric);
 
 	/**
 	 * Stops computing value of a metric
@@ -175,7 +175,7 @@ public interface ICoreManagement {
 	 * @param metric
 	 *            metric to stop
 	 */
-	void stopMetric(IConfiguredMetric metric);
+	void stopMetric(IMetric metric);
 
 	/**
 	 * Updates metric's polling time. New polling time should be set in the
@@ -186,7 +186,7 @@ public interface ICoreManagement {
 	 * @throws MetricNotRunningException
 	 *             thrown when given metric is not running
 	 */
-	void updateMetricPollTimeInterval(IConfiguredMetric metric)
+	void updateMetricPollTimeInterval(IMetric metric)
 			throws MetricNotRunningException;
 
 	/**
@@ -199,7 +199,7 @@ public interface ICoreManagement {
 	 * @throws MetricNotRunningException
 	 *             thrown when given metric is not running
 	 */
-	void addRunningMetricListener(IConfiguredMetric metric,
+	void addRunningMetricListener(IMetric metric,
 			IMetricListener listener) throws MetricNotRunningException;
 
 	/**
@@ -210,7 +210,7 @@ public interface ICoreManagement {
 	 * @param listener
 	 *            listener to remove
 	 */
-	void removeRunningMetricListener(IConfiguredMetric metric,
+	void removeRunningMetricListener(IMetric metric,
 			IMetricListener listener);
 
 	/**
@@ -237,7 +237,7 @@ public interface ICoreManagement {
 	 *            resource instance URI
 	 * @return metric
 	 */
-	IConfiguredMetric createMetricInstance(String metricURI, String resourceURI);
+	IMetric createMetricInstance(String metricURI, String resourceURI);
 
 	/**
 	 * Registers new resource with given URI with given type and passes

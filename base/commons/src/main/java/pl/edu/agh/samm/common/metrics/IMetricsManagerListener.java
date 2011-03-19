@@ -35,10 +35,10 @@ public interface IMetricsManagerListener {
 	 * element.
 	 * 
 	 * @param startedMetrics
-	 *            {@link Collection} of {@link IConfiguredMetric} already
+	 *            {@link Collection} of {@link IMetric} already
 	 *            started metrics
 	 */
-	void notifyNewMetricsStarted(Collection<IConfiguredMetric> startedMetrics) throws Exception;
+	void notifyNewMetricsStarted(Collection<IMetric> startedMetrics) throws Exception;
 
 	/**
 	 * Notifies Subscriber about collection of already stopped metrics on the
@@ -48,5 +48,5 @@ public interface IMetricsManagerListener {
 	 * 
 	 * @param stoppedMetrics
 	 */
-	void notifyMetricsHasStopped(Collection<IConfiguredMetric> stoppedMetrics) throws Exception;
+	void notifyMetricsHasStopped(Collection<IMetric> stoppedMetrics) throws Exception;
 }

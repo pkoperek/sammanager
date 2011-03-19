@@ -17,8 +17,11 @@
 
 package pl.edu.agh.samm.core;
 
+import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.Rule;
+import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
+import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
 
 /**
  * Rules processing engine
@@ -27,12 +30,16 @@ import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public interface IRuleProcessor {
+public interface IRuleProcessor extends IMetricListener, IMeasurementListener {
 	void setupSLA(IServiceLevelAgreement serviceLevelAgreement);
-	
+
 	void addRule(Rule rule);
 
 	void clearRules();
 
 	void removeRule(String ruleName);
+
+	void addAlarmListener(IAlarmListener alarmListener);
+
+	void removeAlarmListener(IAlarmListener alarmListener);
 }

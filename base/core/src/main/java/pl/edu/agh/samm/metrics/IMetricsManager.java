@@ -20,7 +20,7 @@ package pl.edu.agh.samm.metrics;
 import java.rmi.RemoteException;
 import java.util.Collection;
 
-import pl.edu.agh.samm.common.metrics.IConfiguredMetric;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
@@ -38,7 +38,7 @@ public interface IMetricsManager {
 	 * 
 	 * @return Running metrics
 	 */
-	Collection<IConfiguredMetric> getRunningMetrics();
+	Collection<IMetric> getRunningMetrics();
 
 	/**
 	 * Subscribes to the events of changes in the collection of currently
@@ -71,7 +71,7 @@ public interface IMetricsManager {
 	 * @param listener
 	 *            Listener to add
 	 */
-	void addMetricListener(IConfiguredMetric metric, IMetricListener listener)
+	void addMetricListener(IMetric metric, IMetricListener listener)
 			throws MetricNotRunningException;
 
 	/**
@@ -83,7 +83,7 @@ public interface IMetricsManager {
 	 * @param listeners
 	 *            Listeners to add. If null - no listener added
 	 */
-	void startMetricAndAddRunningMetricListener(IConfiguredMetric metric,
+	void startMetricAndAddRunningMetricListener(IMetric metric,
 			Collection<IMetricListener> listeners);
 
 	/**
@@ -95,7 +95,7 @@ public interface IMetricsManager {
 	 *            Listener to remove. If null - no listener removed.
 	 * 
 	 */
-	void removeMetricListener(IConfiguredMetric metric, IMetricListener listener);
+	void removeMetricListener(IMetric metric, IMetricListener listener);
 
 	/**
 	 * Starts a new thread to monitor a metric
@@ -103,7 +103,7 @@ public interface IMetricsManager {
 	 * @param metric
 	 *            Metric to be observed
 	 */
-	void startMetric(IConfiguredMetric metric);
+	void startMetric(IMetric metric);
 
 	/**
 	 * Stops observing a specific metric
@@ -113,17 +113,17 @@ public interface IMetricsManager {
 	 * @throws MetricNotRunningException
 	 *             Exception thrown when requested metric is not started
 	 */
-	void stopMetric(IConfiguredMetric metric);
+	void stopMetric(IMetric metric);
 
 	/**
 	 * Remote interface method for
-	 * {@link IConfiguredMetric#setMetricPollTimeInterval(long)}.
+	 * {@link IMetric#setMetricPollTimeInterval(long)}.
 	 * 
 	 * @param metric
 	 * @param pollTimeInterval
 	 * @throws RemoteException
 	 */
-	void updateMetricPollTime(IConfiguredMetric metric) throws MetricNotRunningException;
+	void updateMetricPollTime(IMetric metric) throws MetricNotRunningException;
 
 	/**
 	 * Indicates that a metric is running or not
@@ -132,6 +132,6 @@ public interface IMetricsManager {
 	 *            Metric to be checked
 	 * @return True is metric is observed, false otherwise
 	 */
-	boolean isMetricRunning(IConfiguredMetric metric);
+	boolean isMetricRunning(IMetric metric);
 
 }
