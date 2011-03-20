@@ -42,7 +42,8 @@ public class MetricImpl implements IMetric {
 		this(metricURI, resourceURI, DEFAULT_METRIC_POLL_TIME_INTERVAL);
 	}
 
-	public MetricImpl(String metricURI, String resourceURI, long metricPollTimeInterval) {
+	public MetricImpl(String metricURI, String resourceURI,
+			long metricPollTimeInterval) {
 
 		if (metricPollTimeInterval <= 0) {
 			metricPollTimeInterval = DEFAULT_METRIC_POLL_TIME_INTERVAL;
@@ -55,7 +56,9 @@ public class MetricImpl implements IMetric {
 	@Override
 	public long setMetricPollTimeInterval(long interval) {
 		long previous = metricPollTimeInterval;
-		this.metricPollTimeInterval = interval;
+		if (interval > 0) {
+			this.metricPollTimeInterval = interval;
+		}
 		return previous;
 	}
 
@@ -64,7 +67,8 @@ public class MetricImpl implements IMetric {
 		if (o instanceof IMetric) {
 			IMetric metric = (IMetric) o;
 			// ignore poll time interval
-			return (metricURI.equals(metric.getMetricURI())) && (resourceURI.equals(metric.getResourceURI()));
+			return (metricURI.equals(metric.getMetricURI()))
+					&& (resourceURI.equals(metric.getResourceURI()));
 		}
 
 		return super.equals(o);
