@@ -15,7 +15,7 @@
 		<!-- Spring version -->
 		<spring.maven.artifact.version>3.0.5.RELEASE</spring.maven.artifact.version>
 		<spring.osgi.bundle.version>1.2.1</spring.osgi.bundle.version>
-		<slf4j.version>1.6.1</slf4j.version>
+		<slf4j.version>1.5.0</slf4j.version>
 		<!-- platform versions -->
 		<equinox.ver>3.6.0.v20100517</equinox.ver>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -258,6 +258,21 @@
 	</build>
 	<dependencyManagement>
 		<dependencies>
+			<dependency> 
+				<groupId>org.slf4j</groupId> 
+				<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId> 
+				<version>${slf4j.version}</version> 
+			</dependency>
+        	        <dependency>
+	                        <groupId>org.springframework.osgi</groupId>
+                        	<artifactId>org.springframework.osgi.test</artifactId>
+                	        <version>${spring.osgi.bundle.version}</version>
+        	        </dependency>
+	                <dependency>
+                        	<groupId>org.springframework.osgi</groupId>
+                	        <artifactId>org.springframework.osgi.mock</artifactId>
+        	                <version>${spring.osgi.bundle.version}</version>
+	                </dependency>
 			<dependency>
 				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
@@ -325,8 +340,13 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>com.springsource.slf4j.log4j</artifactId>
-				<version>1.5.0</version>
+				<version>${slf4j.version}</version>
 			</dependency>
+	                <dependency> 
+                        	<groupId>org.apache.commons</groupId>
+                	        <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+				<version>1.1.1</version>
+	                </dependency>
 			<dependency>
 				<groupId>org.springframework.osgi</groupId>
 				<artifactId>org.springframework.osgi.core</artifactId>
@@ -387,9 +407,24 @@
 				<artifactId>org.springframework.osgi.io</artifactId>
 				<version>${spring.osgi.bundle.version}</version>
 			</dependency>
+                        <dependency>
+                                <groupId>org.springframework.osgi</groupId>
+                                <artifactId>org.springframework.osgi.extensions.annotation</artifactId>
+                                <version>${spring.osgi.bundle.version}</version>
+                        </dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>org.springframework.jdbc</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.asm</artifactId>
+				<version>${spring.maven.artifact.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>org.springframework.test</artifactId>
 				<version>${spring.maven.artifact.version}</version>
 			</dependency>
 			<dependency>
@@ -408,15 +443,20 @@
 				<version>1.5.3</version>
 			</dependency>
 			<dependency>
+				<groupId>org.objectweb.asm</groupId>
+				<artifactId>com.springsource.org.objectweb.asm</artifactId>
+				<version>2.2.3</version>
+			</dependency>
+			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>com.springsource.org.hsqldb</artifactId>
 				<version>1.8.0.10</version>
 			</dependency>
-			<dependency>
+			<!--<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>org.eclipse.update.configurator</artifactId>
 				<version>3.2.1.v20092006</version>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>org.eclipse.equinox.launcher</artifactId>

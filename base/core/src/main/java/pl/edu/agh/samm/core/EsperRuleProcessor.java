@@ -3,9 +3,13 @@
  */
 package pl.edu.agh.samm.core;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pl.edu.agh.samm.common.core.IAlarm;
 import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.metrics.IMetricEvent;
@@ -24,6 +28,7 @@ public class EsperRuleProcessor implements IRuleProcessor {
 			.getLogger(EsperRuleProcessor.class);
 
 	private EPServiceProvider epService = null;
+	private List<IAlarmListener> alarmListeners = new CopyOnWriteArrayList<IAlarmListener>();
 
 	public void setEpService(EPServiceProvider epService) {
 		this.epService = epService;
@@ -64,16 +69,25 @@ public class EsperRuleProcessor implements IRuleProcessor {
 		epService.getEPRuntime().sendEvent(event);
 	}
 
+	protected void fireAlarm(IAlarm alarm) {
+		for (IAlarmListener alarmListener : alarmListeners) {
+			try {
+				alarmListener.handleAlarm(alarm);
+			} catch (Exception e) {
+				logger.error("Alarm Listener: " + alarmListener
+						+ " thrown an exception!", e);
+			}
+		}
+	}
+
 	@Override
 	public void addAlarmListener(IAlarmListener alarmListener) {
-		// TODO Auto-generated method stub
-
+		this.alarmListeners.add(alarmListener);
 	}
 
 	@Override
 	public void removeAlarmListener(IAlarmListener alarmListener) {
-		// TODO Auto-generated method stub
-
+		this.alarmListeners.remove(alarmListener);
 	}
 
 	@Override

@@ -13,11 +13,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-	<!-- definitions using elements of the osgi namespace can be included in 
-		this file. There is no requirement to keep these definitions in a separate 
-		file if you do not want to. The rationale for keeping these definitions separate 
-		is to facilitate integration testing of the bundle outside of an OSGi container -->
-
 	<osgi:set id="transportAdaptersSet"
 		interface="pl.edu.agh.samm.common.tadapter.ITransportAdapter">
 		<osgi:listener ref="transportAdapterListener"
@@ -28,16 +23,10 @@
 	<osgi:reference id="knowledgeService"
 		interface="pl.edu.agh.samm.common.knowledge.IKnowledge" />
 
-	<osgi:service interface="pl.edu.agh.samm.common.core.ICoreManagement"
-		ref="coreManagementBean"></osgi:service>
-
-	<osgi:service interface="pl.edu.agh.samm.common.core.IResourceInstancesManager"
-		ref="resourceInstancesManager" />
-
 	<osgi:reference id="storageService"
 		interface="pl.edu.agh.samm.common.db.IStorageService" />
 
-	<osgi:reference id="estimator"
-		interface="pl.edu.agh.samm.common.estimation.IEstimator" />
+	<osgi:service interface="pl.edu.agh.samm.common.core.ICoreManagement"
+		ref="coreManagementBean"></osgi:service>
 
 </beans>

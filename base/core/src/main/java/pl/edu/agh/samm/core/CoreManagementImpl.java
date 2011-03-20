@@ -190,8 +190,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	 * .agh. samm.common.metrics.IMetric)
 	 */
 	@Override
-	public void startMetric(IMetric runningMetric) {
-		this.runningMetricsManager.startMetric(runningMetric);
+	public void startMetric(IMetric metric) {
+		this.runningMetricsManager.startMetric(metric);
 	}
 
 	/*

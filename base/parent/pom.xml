@@ -94,11 +94,11 @@
 			<artifactId>com.springsource.org.aopalliance</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.apache.commons</groupId> -->
-		<!-- <artifactId>com.springsource.org.apache.commons.logging</artifactId> -->
-		<!-- <scope>runtime</scope> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- SPRING-CORE -->
 		<dependency>
@@ -133,6 +133,11 @@
 		</dependency>
 
 		<!-- samm providers -->
+                <dependency>
+                        <groupId>pl.edu.agh.samm.providers</groupId>
+                        <artifactId>esper</artifactId>
+                        <scope>runtime</scope>
+                </dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>jena</artifactId>
@@ -178,11 +183,11 @@
 			<artifactId>com.springsource.slf4j.log4j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>com.springsource.slf4j.jcl</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.eclipse.osgi</groupId>
 			<artifactId>services</artifactId>
@@ -203,11 +208,11 @@
 			<artifactId>com.springsource.org.hsqldb</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>org.eclipse.update.configurator</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>org.eclipse.equinox.launcher</artifactId>

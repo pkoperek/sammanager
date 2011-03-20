@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    This file is part of SAMM.
-
-    SAMM is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    SAMM is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
-
--->
+<!-- This file is part of SAMM. SAMM is free software: you can redistribute 
+	it and/or modify it under the terms of the GNU General Public License as 
+	published by the Free Software Foundation, either version 3 of the License, 
+	or (at your option) any later version. SAMM is distributed in the hope that 
+	it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+	of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+	Public License for more details. You should have received a copy of the GNU 
+	General Public License along with SAMM. If not, see <http://www.gnu.org/licenses/>. -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -38,12 +28,7 @@
 		<property name="resourceDiscoveryAgent">
 			<ref bean="resourceDiscoveryAgent" />
 		</property>
-		<property name="slaValidator" ref="slaValidator" />
 		<property name="metricFactory" ref="metricFactory" />
-		<property name="knowledgeAlarmsMetricListener" ref="knowledgeAlarmsMetricListener" />
-		<property name="currentCostEvaluator" ref="currentCostEvaluator" />
-		<property name="experimentator" ref="experimentator" />
-		<property name="decisionMaker" ref="decisionMaker" />
 		<property name="actionExecutor" ref="actionExecutor" />
 	</bean>
 
@@ -83,46 +68,11 @@
 	<!-- Metric factory -->
 	<bean id="metricFactory" class="pl.edu.agh.samm.core.MetricFactoryImpl" />
 
-	<!-- Abstract Criteria validator -->
-	<bean id="abstractCriteriaValidator" abstract="true"
-		class="pl.edu.agh.samm.metrics.AbstractCriteriaValidator">
-		<property name="suggestedMetricsComputationEngine" ref="suggestedMetricComputationEngine" />
-	</bean>
-
-	<!-- Knowledge Alarms Metric Listener -->
-	<bean id="knowledgeAlarmsMetricListener" parent="abstractCriteriaValidator"
-		class="pl.edu.agh.samm.core.KnowledgeAlarmsMetricListener">
-		<property name="knowledgeService" ref="knowledgeService"></property>
-	</bean>
-
-	<!-- SLA Validator -->
-	<bean id="slaValidator" class="pl.edu.agh.samm.sla.SLAValidatingMetricListener"
-		parent="abstractCriteriaValidator">
-		<property name="metricFactory" ref="metricFactory" />
-		<property name="resourceInstancesManager" ref="resourceInstancesManager" />
-		<property name="suggestedMetricsComputationEngine" ref="suggestedMetricComputationEngine" />
-	</bean>
-
-	<!-- Suggested Metrics Computation Engine -->
-	<bean id="suggestedMetricComputationEngine"
-		class="pl.edu.agh.samm.metrics.SuggestedMetricsComputationEngineImpl"
-		init-method="init" destroy-method="destroy">
-		<property name="cacheRefreshRate">
-			<description>After how many minutes cache should be refreshed
-			</description>
-			<value>5</value>
-		</property>
-		<property name="storageService" ref="storageService" />
-	</bean>
-
 	<!-- DB Listener -->
-	<bean id="dbListener" class="pl.edu.agh.samm.core.DBListener" init-method="init">
+	<bean id="dbListener" class="pl.edu.agh.samm.core.DBListener"
+		init-method="init">
 		<property name="coreManagement" ref="coreManagementBean" />
 		<property name="storageService" ref="storageService" />
-	</bean>
-
-	<!-- Current cost evaluator - cost evaluation metric listener -->
-	<bean id="currentCostEvaluator" class="pl.edu.agh.samm.core.CostEvaluationMetricListener" init-method="init">
 	</bean>
 
 	<!-- ActionExecutor -->
