@@ -58,8 +58,6 @@ public interface IKnowledge {
 
 	List<String> getMetricsWithDefinedLimits();
 
-	ICriterion getMetricValueAcceptationCriterion(String metricURI);
-
 	List<String> getAllAvailableActions();
 
 	List<String> getParametersOfAction(String actionURI);

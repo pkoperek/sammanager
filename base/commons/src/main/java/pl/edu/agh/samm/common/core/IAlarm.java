@@ -17,28 +17,16 @@
 
 package pl.edu.agh.samm.common.core;
 
-import java.util.List;
-
 import pl.edu.agh.samm.common.metrics.IMetric;
 
 /**
- * @author Pawel Koperek <pkoperek@gmail.com>
- * @author Mateusz Kupisz <mkupisz@gmail.com>
+ * @author koperek
  * 
  */
 public interface IAlarm {
-
-	/**
-	 * @return the metric
-	 */
 	IMetric getMetric();
 
-	/**
-	 * @return the metricsToStart
-	 */
-	List<IMetric> getMetricsToStart();
+	String getRuleName();
 
-	String getDescription();
-
-	Number getSuggestedMetricRank(IMetric suggestedMetric);
+	Number getValue();
 }

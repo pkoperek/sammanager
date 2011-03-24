@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 
 import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.knowledge.ICriterion;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
 import pl.edu.agh.samm.knowledge.IOntModelProvider;
 
@@ -180,11 +179,6 @@ public class KnowledgeImpl implements IKnowledge {
 			}
 		}
 		return retVal;
-	}
-
-	@Override
-	public ICriterion getMetricValueAcceptationCriterion(String metricURI) {
-		throw new RuntimeException("Not implemented!");
 	}
 
 	@Override

@@ -20,8 +20,6 @@ package pl.edu.agh.samm.common.sla;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.knowledge.ICriterion;
-
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
@@ -66,7 +64,7 @@ public interface IServiceLevelAgreement {
 	 *            metric URI
 	 * @return criteria for given resource pattern and metric
 	 */
-	ICriterion getCriterionForResourceMetric(String pattern, String metricURI);
+	//ICriterion getCriterionForResourceMetric(String pattern, String metricURI);
 
 	/**
 	 * Gets metric cost for given resource instance URI RegExp pattern and

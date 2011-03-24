@@ -24,8 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.knowledge.ICriterion;
-
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
@@ -44,7 +42,7 @@ public class ServiceLevelAgreement implements IServiceLevelAgreement, Serializab
 	private Map<String, List<String>> metricsForResources = new HashMap<String, List<String>>();
 
 	// resource uri -> {metric uri -> criterion}
-	private Map<String, Map<String, ICriterion>> metricsCriteria = new HashMap<String, Map<String, ICriterion>>();
+//	private Map<String, Map<String, ICriterion>> metricsCriteria = new HashMap<String, Map<String, ICriterion>>();
 
 	// resource uri -> {metric uri -> cost}
 	private Map<String, Map<String, Number>> resourcesMetricsCosts = new HashMap<String, Map<String, Number>>();
@@ -52,15 +50,15 @@ public class ServiceLevelAgreement implements IServiceLevelAgreement, Serializab
 	// resource uri -> resource type
 	private Map<String, String> resourceTypes = new HashMap<String, String>();
 
-	@Override
-	public ICriterion getCriterionForResourceMetric(String resourceURI, String metricURI) {
-		Map<String, ICriterion> metricCriteria = metricsCriteria.get(resourceURI);
-		if (metricCriteria != null) {
-			return metricCriteria.get(metricURI);
-		}
-
-		return null;
-	}
+//	@Override
+//	public ICriterion getCriterionForResourceMetric(String resourceURI, String metricURI) {
+//		Map<String, ICriterion> metricCriteria = metricsCriteria.get(resourceURI);
+//		if (metricCriteria != null) {
+//			return metricCriteria.get(metricURI);
+//		}
+//
+//		return null;
+//	}
 
 	public void addInvolvedResource(String uri, String resourceType) {
 		involvedResources.add(uri);
@@ -70,7 +68,7 @@ public class ServiceLevelAgreement implements IServiceLevelAgreement, Serializab
 	public void clear() {
 		clearInvolvedResources();
 		this.parameters.clear();
-		this.metricsCriteria.clear();
+//		this.metricsCriteria.clear();
 		this.metricsForResources.clear();
 		this.resourcesMetricsCosts.clear();
 	}
@@ -120,24 +118,24 @@ public class ServiceLevelAgreement implements IServiceLevelAgreement, Serializab
 		parameters.remove(uri);
 		resourceTypes.remove(uri);
 		metricsForResources.remove(uri);
-		metricsCriteria.remove(uri);
+//		metricsCriteria.remove(uri);
 		resourcesMetricsCosts.remove(uri);
 	}
 
-	public void addCriterionForResourceMetric(String selectedResource, String selectedMetric,
-			ICriterion criterion) {
-
-		// add actual criterion
-		Map<String, ICriterion> criteria = metricsCriteria.get(selectedResource);
-		if (criteria == null) {
-			criteria = new HashMap<String, ICriterion>();
-			metricsCriteria.put(selectedResource, criteria);
-		}
-		criteria.put(selectedMetric, criterion);
-
-		// add metric for resource
-		addMetricForResource(selectedResource, selectedMetric);
-	}
+//	public void addCriterionForResourceMetric(String selectedResource, String selectedMetric,
+//			ICriterion criterion) {
+//
+//		// add actual criterion
+//		Map<String, ICriterion> criteria = metricsCriteria.get(selectedResource);
+//		if (criteria == null) {
+//			criteria = new HashMap<String, ICriterion>();
+//			metricsCriteria.put(selectedResource, criteria);
+//		}
+//		criteria.put(selectedMetric, criterion);
+//
+//		// add metric for resource
+//		addMetricForResource(selectedResource, selectedMetric);
+//	}
 
 	private void addMetricForResource(String selectedResource, String selectedMetric) {
 		List<String> metricsForResource = metricsForResources.get(selectedResource);
@@ -152,17 +150,20 @@ public class ServiceLevelAgreement implements IServiceLevelAgreement, Serializab
 		}
 	}
 
-	public void removeCriterionForResourceMetric(String selectedResource, String selectedMetric) {
-		Map<String, ICriterion> criteria = metricsCriteria.get(selectedResource);
-		if (criteria != null) {
-			criteria.remove(selectedMetric);
-			if (criteria.size() == 0) {
-				metricsCriteria.remove(selectedResource);
-				List<String> metricsForResource = metricsForResources.get(selectedResource);
-				metricsForResource.remove(selectedMetric);
-			}
-		}
-	}
+	//
+	// public void removeCriterionForResourceMetric(String selectedResource,
+	// String selectedMetric) {
+	// Map<String, ICriterion> criteria = metricsCriteria.get(selectedResource);
+	// if (criteria != null) {
+	// criteria.remove(selectedMetric);
+	// if (criteria.size() == 0) {
+	// metricsCriteria.remove(selectedResource);
+	// List<String> metricsForResource =
+	// metricsForResources.get(selectedResource);
+	// metricsForResource.remove(selectedMetric);
+	// }
+	// }
+	// }
 
 	public void setResourceMetricCost(String selectedResource, String selectedMetric, Number cost) {
 		Map<String, Number> resourceMetricsCost = resourcesMetricsCosts.get(selectedResource);

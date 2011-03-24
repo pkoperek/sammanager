@@ -12,11 +12,17 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.samm.common.core.IAlarm;
 import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.Rule;
+import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
 
+import com.espertech.esper.client.EPAdministrator;
+import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
+import com.espertech.esper.client.EPStatement;
+import com.espertech.esper.client.EventBean;
+import com.espertech.esper.client.UpdateListener;
 
 /**
  * @author koperek
@@ -29,9 +35,18 @@ public class EsperRuleProcessor implements IRuleProcessor {
 
 	private EPServiceProvider epService = null;
 	private List<IAlarmListener> alarmListeners = new CopyOnWriteArrayList<IAlarmListener>();
+	private EPRuntime runtime = null;
+	private EPAdministrator administrator = null;
+	private IActionExecutor actionExecutor = null;
+
+	public void setActionExecutor(IActionExecutor actionExecutor) {
+		this.actionExecutor = actionExecutor;
+	}
 
 	public void setEpService(EPServiceProvider epService) {
 		this.epService = epService;
+		this.runtime = epService.getEPRuntime();
+		this.administrator = epService.getEPAdministrator();
 	}
 
 	/*
@@ -49,24 +64,95 @@ public class EsperRuleProcessor implements IRuleProcessor {
 	}
 
 	@Override
-	public void addRule(Rule rule) {
-		// TODO Auto-generated method stub
+	public void addRule(final Rule rule) {
+		// get all info from rule
+		final String ruleName = rule.getName();
+		String resourceURI = rule.getResourceUri();
+		String resourceTypeURI = rule.getResourceTypeUri();
+		String metricURI = rule.getMetricUri();
+		String condition = rule.getCondition();
+		String statementString = "select metric, value from IMetricEvent";
+
+		// create the filter
+		String filter = "";
+
+		if (resourceURI != null) {
+			filter += "metric.resourceURI = '" + resourceURI + "'";
+		}
+
+		if (metricURI != null) {
+			if (!filter.equals("")) {
+				filter += " and ";
+			}
+			filter += "metric.metricURI = '" + metricURI + "'";
+		}
+
+		if (resourceTypeURI != null) {
+			if (!filter.equals("")) {
+				filter += " and ";
+			}
+			filter += "resourceType = '" + resourceTypeURI + "'";
+		}
+		
+		if (!filter.equals("")) {
+			statementString += "(" + filter + ")";
+		}
+
+		// where clause
+		if (condition != null) {
+			statementString += " where " + condition;
+		}
+
+		logger.debug("Adding rule: " + statementString);
+
+		// create the statement and add a listener
+		EPStatement statement = administrator.createEPL(statementString,
+				ruleName);
+		statement.addListener(new UpdateListener() {
+
+			@Override
+			public void update(EventBean[] newEvents, EventBean[] oldEvents) {
+				// according to javadoc
+				// http://esper.codehaus.org/esper-4.1.0/doc/api/com/espertech/esper/client/UpdateListener.html#update%28com.espertech.esper.client.EventBean[],%20com.espertech.esper.client.EventBean[]%29
+				// newEvents may be null!
+				if (newEvents != null) {
+					for (EventBean event : newEvents) {
+						// log all info
+						if (logger.isDebugEnabled()) {
+							logger.debug("Event: " + event);
+							logger.debug("Event rule: " + ruleName);
+							logger.debug("Event metric: " + event.get("metric"));
+							logger.debug("Event value: " + event.get("value"));
+						}
+
+						Number value = (Number) event.get("value");
+						IMetric metric = (IMetric) event.get("metric");
+						IAlarm alarm = new Alarm(metric, ruleName, value);
+						fireAlarm(alarm);
+
+						if (rule.getActionToExecute() != null) {
+							actionExecutor.executeRequest(rule
+									.getActionToExecute());
+						}
+					}
+				}
+			}
+		});
 	}
 
 	@Override
 	public void clearRules() {
-		// TODO Auto-generated method stub
-
+		administrator.destroyAllStatements();
 	}
 
 	@Override
 	public void removeRule(String ruleName) {
-		// TODO Auto-generated method stub
-
+		EPStatement statement = administrator.getStatement(ruleName);
+		statement.destroy();
 	}
 
 	protected void processEvent(Object event) {
-		epService.getEPRuntime().sendEvent(event);
+		runtime.sendEvent(event);
 	}
 
 	protected void fireAlarm(IAlarm alarm) {
@@ -74,7 +160,7 @@ public class EsperRuleProcessor implements IRuleProcessor {
 			try {
 				alarmListener.handleAlarm(alarm);
 			} catch (Exception e) {
-				logger.error("Alarm Listener: " + alarmListener
+				logger.error("SuggestedMetricsAlarm Listener: " + alarmListener
 						+ " thrown an exception!", e);
 			}
 		}
@@ -92,12 +178,12 @@ public class EsperRuleProcessor implements IRuleProcessor {
 
 	@Override
 	public void processMetricEvent(IMetricEvent event) throws Exception {
-		epService.getEPRuntime().sendEvent(event);
+		processEvent(event);
 	}
 
 	@Override
 	public void processMeasurementEvent(IMeasurementEvent event) {
-		epService.getEPRuntime().sendEvent(event);
+		processEvent(event);
 	}
 
 }

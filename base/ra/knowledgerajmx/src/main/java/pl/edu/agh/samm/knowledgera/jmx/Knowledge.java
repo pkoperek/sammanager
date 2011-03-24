@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.knowledge.ICriterion;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
 
 import com.hp.hpl.jena.ontology.OntModel;
@@ -205,16 +204,6 @@ public class Knowledge implements KnowledgeMBean {
 	@Override
 	public List<String> getMetricsWithDefinedLimits() {
 		return knowledge.getMetricsWithDefinedLimits();
-	}
-
-	/**
-	 * @param metricURI
-	 * @return
-	 * @see pl.edu.agh.samm.common.knowledge.IKnowledge#getMetricValueAcceptationCriterion(java.lang.String)
-	 */
-	@Override
-	public ICriterion getMetricValueAcceptationCriterion(String metricURI) {
-		return knowledge.getMetricValueAcceptationCriterion(metricURI);
 	}
 
 	/**

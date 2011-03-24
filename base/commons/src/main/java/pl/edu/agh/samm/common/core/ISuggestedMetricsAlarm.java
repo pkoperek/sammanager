@@ -15,13 +15,30 @@
  * along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.edu.agh.samm.common.knowledge;
+package pl.edu.agh.samm.common.core;
+
+import java.util.List;
+
+import pl.edu.agh.samm.common.metrics.IMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public interface ICriterion {
-	boolean meetsCriterion(Number value);
+public interface ISuggestedMetricsAlarm {
+
+	/**
+	 * @return the metric
+	 */
+	IMetric getMetric();
+
+	/**
+	 * @return the metricsToStart
+	 */
+	List<IMetric> getMetricsToStart();
+
+	String getDescription();
+
+	Number getSuggestedMetricRank(IMetric suggestedMetric);
 }

@@ -96,7 +96,8 @@ public abstract class MetricTask implements Runnable {
 				// set listeners classloader
 				Thread.currentThread().setContextClassLoader(
 						metricListenersClassLoaders.get(i));
-				listener.processMetricEvent(new MetricEvent(metric, value));
+				listener.processMetricEvent(new MetricEvent(metric, value,
+						resource.getType()));
 			} catch (Throwable e) {
 				logger.warn("Error while notifying listener", e);
 			}
