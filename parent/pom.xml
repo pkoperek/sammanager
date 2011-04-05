@@ -422,6 +422,11 @@
 				<artifactId>org.springframework.asm</artifactId>
 				<version>${spring.maven.artifact.version}</version>
 			</dependency>
+			<dependency> 
+				<groupId>org.springframework</groupId> 
+				<artifactId>org.springframework.expression</artifactId> 
+				<version>${spring.maven.artifact.version}</version> 
+			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>org.springframework.test</artifactId>

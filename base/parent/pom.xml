@@ -99,7 +99,7 @@
 			<artifactId>com.springsource.org.apache.commons.logging</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
+                
 		<!-- SPRING-CORE -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -131,6 +131,17 @@
 			<artifactId>org.springframework.core</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+                <dependency> 
+                        <groupId>org.springframework</groupId> 
+                        <artifactId>org.springframework.expression</artifactId> 
+			<scope>runtime</scope>
+                </dependency>
+		<dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>org.springframework.asm</artifactId>
+			<scope>runtime</scope>
+                </dependency>
+
 
 		<!-- samm providers -->
                 <dependency>
