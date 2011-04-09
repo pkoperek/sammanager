@@ -25,9 +25,9 @@ import pl.edu.agh.samm.common.core.ICoreManagement;
  * @author koperek
  * 
  */
-public class PropertyFileConfigurator {
+public class FileConfigurator {
 	private static final Logger logger = LoggerFactory
-			.getLogger(PropertyFileConfigurator.class);
+			.getLogger(FileConfigurator.class);
 
 	private ICoreManagement coreManagement = null;
 
@@ -35,6 +35,15 @@ public class PropertyFileConfigurator {
 
 	public void init() {
 		logger.info("Starting Property File Configurator!");
+
+		String configFilePath = System.getProperty(PROPERTIES_FILENAME_KEY);
+
+		if (configFilePath == null) {
+			logger.warn("No config file specified! Please use the -D"
+					+ PROPERTIES_FILENAME_KEY + " VM option!");
+		} else {
+			
+		}
 
 		logger.info("Starting Property File Configurator finished!");
 	}
