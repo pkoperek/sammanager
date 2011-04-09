@@ -43,7 +43,9 @@
 						<Export-Package>!*</Export-Package>
 						<Import-Package>
 							com.hp.hpl.jena.ontology,
-							pl.edu.agh.samm.common.*,
+							pl.edu.agh.samm.common.core,
+							pl.edu.agh.samm.common.action,
+							pl.edu.agh.samm.common.tadapter,
 							org.springframework.beans.factory.config,
 							org.springframework.*,
 							com.amazonaws.*,

@@ -32,7 +32,7 @@ import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
 public interface IMetricsManager {
-
+	
 	/**
 	 * Returns a collection of currently running metrics on the Core system.
 	 * 

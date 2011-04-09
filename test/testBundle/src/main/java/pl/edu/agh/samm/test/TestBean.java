@@ -25,10 +25,12 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.IResourceEvent;
 import pl.edu.agh.samm.common.core.IResourceListener;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
 import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricEvent;
@@ -73,7 +75,14 @@ public class TestBean implements IResourceListener, IMetricsManagerListener,
 		// coreManagement.registerNode("jmx://cluster01", params);
 		params = new HashMap<String, Object>();
 		params.put("JMXURL",
-				"service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi");
+				"service:jmx:rmi:///jndi/rmi://localhost:60000/jmxrmi");
+		Rule r = new Rule("testRule_1");
+		Action action = new Action();
+		action.setActionURI("http://www.icsr.agh.edu.pl/samm_1.owl#StartVMAction");
+		r.setActionToExecute(action);
+		
+		coreManagement.addRule(r);
+		
 		coreManagement.registerResource("jmx://cluster01/node01",
 				"http://www.icsr.agh.edu.pl/samm_1.owl#Node", params);
 

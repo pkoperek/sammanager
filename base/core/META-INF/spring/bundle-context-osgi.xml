@@ -27,6 +27,7 @@
 		interface="pl.edu.agh.samm.common.db.IStorageService" />
 
 	<osgi:service interface="pl.edu.agh.samm.common.core.ICoreManagement"
-		ref="coreManagementBean"></osgi:service>
+		ref="coreManagementBean" context-class-loader="service-provider">
+	</osgi:service>
 
 </beans>

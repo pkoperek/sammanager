@@ -23,6 +23,8 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pl.edu.agh.samm.common.action.ActionExecution;
+import pl.edu.agh.samm.common.core.IActionExecutionListener;
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.db.IStorageService;
 import pl.edu.agh.samm.common.metrics.IMetric;
@@ -38,11 +40,11 @@ import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public class DBListener implements IMeasurementListener, IMetricListener,
-		IMetricsManagerListener {
+public class MeasurementMetricDBListener implements IMeasurementListener,
+		IMetricListener, IMetricsManagerListener {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(DBListener.class);
+			.getLogger(MeasurementMetricDBListener.class);
 
 	private ICoreManagement coreManagement = null;
 	private IStorageService storageService = null;

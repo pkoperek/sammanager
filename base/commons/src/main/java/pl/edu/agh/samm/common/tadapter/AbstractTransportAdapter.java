@@ -78,8 +78,9 @@ public abstract class AbstractTransportAdapter implements ITransportAdapter {
 				listener.processMeasurementEvent(event);
 			} catch (Throwable t) {
 				logger.error(
-						"Listener thrown an exception during MeasurementEvent processing!",
+						"Listener thrown an exception during MeasurementEvent processing! Removing from listeners list!",
 						t);
+				capabilityListeners.remove(listener);
 			}
 		}
 	}

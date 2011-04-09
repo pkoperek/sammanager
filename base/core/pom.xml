@@ -21,10 +21,10 @@
 			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
 
-                <dependency>
-                        <groupId>pl.edu.agh.samm.providers</groupId>
-                        <artifactId>esper</artifactId>
-                </dependency>
+		<dependency>
+			<groupId>pl.edu.agh.samm.providers</groupId>
+			<artifactId>esper</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
@@ -39,16 +39,16 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
 		</dependency>
-                <dependency>
-                        <groupId>org.easymock</groupId>
-                        <artifactId>easymock</artifactId>
-                        <scope>test</scope>
-                </dependency>
-               <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
 			<scope>test</scope>
-                </dependency>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -61,12 +61,17 @@
 				<configuration>
 					<manifestLocation>${basedir}/META-INF</manifestLocation>
 					<instructions>
+						<Require-Bundle></Require-Bundle>
 						<Export-Package>!pl.*</Export-Package>
+						<!-- net.sf.cglib.reflect - for Esper rule engine org.springframework.beans.factory.config 
+							- for MethodInvokingFactoryBean in pom.xml -->
 						<Import-Package>
 							com.espertech*,
+							org.springframework.beans.factory.config,
 							pl.edu.agh.samm.*,
 							com.hp.hpl.jena.*,
 							org.apache.commons.math.*,
+							net.sf.cglib.reflect,
 							org.slf4j</Import-Package>
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 					</instructions>

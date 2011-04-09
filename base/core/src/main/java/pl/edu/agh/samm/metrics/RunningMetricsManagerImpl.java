@@ -67,6 +67,10 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 		this.knowledgeService = knowledgeService;
 	}
 
+	public IKnowledge getKnowledgeService() {
+		return knowledgeService;
+	}
+
 	public IResourceInstancesManager getResourceInstancesManager() {
 		return resourceInstancesManager;
 	}
@@ -110,8 +114,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void addMetricListener(IMetric metric,
-			IMetricListener listener) throws MetricNotRunningException {
+	public void addMetricListener(IMetric metric, IMetricListener listener)
+			throws MetricNotRunningException {
 		if (scheduledTasks.containsKey(metric)) {
 			MetricTask metricTask = scheduledTasks.get(metric);
 			metricTask.addMetricListener(listener);
@@ -128,8 +132,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void removeMetricListener(IMetric metric,
-			IMetricListener listener) {
+	public void removeMetricListener(IMetric metric, IMetricListener listener) {
 		if (scheduledTasks.containsKey(metric)) {
 			MetricTask metricTask = scheduledTasks.get(metric);
 			metricTask.removeMetricListener(listener);
@@ -202,8 +205,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	 * (pl.edu.agh.samm.common.impl.metrics.IMetric, java.util.Collection)
 	 */
 	@Override
-	public void startMetricAndAddRunningMetricListener(
-			IMetric metric, Collection<IMetricListener> listeners) {
+	public void startMetricAndAddRunningMetricListener(IMetric metric,
+			Collection<IMetricListener> listeners) {
 		logger.info("Starting metric: " + metric);
 		MetricTask task = null;
 		if (!scheduledTasks.containsKey(metric)) {

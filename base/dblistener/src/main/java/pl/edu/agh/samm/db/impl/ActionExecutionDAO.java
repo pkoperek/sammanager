@@ -39,7 +39,8 @@ import pl.edu.agh.samm.db.impl.mapper.ActionExecutionExtractor;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public class ActionExecutionDAO extends AbstractDao implements IActionExecutionDAO {
+public class ActionExecutionDAO extends AbstractDao implements
+		IActionExecutionDAO {
 
 	private static final String SQL_INSERT = "INSERT INTO action_execution(action_uri, start_time, end_time) VALUES (:actionUri, :start, :end)";
 
@@ -48,10 +49,11 @@ public class ActionExecutionDAO extends AbstractDao implements IActionExecutionD
 	private static final String SQL_QUERY_ACTION_URIS = "SELECT distinct action_uri FROM action_execution";
 
 	private static final String SQL_QUERY_ACTION_EXECUTIONS = "SELECT action_execution.id as id, "
-			+ "action_uri, start_time, end_time, param_name, " + "param_value "
+			+ "action_uri, start_time, end_time, param_name, "
+			+ "param_value "
 			+ "FROM action_execution, action_parameter "
-			+ "WHERE action_execution.id=action_parameter.action_id " + "AND action_uri=:actionUri "
-			+ "ORDER BY 1";
+			+ "WHERE action_execution.id=action_parameter.action_id "
+			+ "AND action_uri=:actionUri " + "ORDER BY 1";
 
 	@Override
 	public void store(ActionExecution execution) {
@@ -67,28 +69,37 @@ public class ActionExecutionDAO extends AbstractDao implements IActionExecutionD
 
 		List<Object[]> batchParams = new LinkedList<Object[]>();
 
-		for (Map.Entry<String, String> entry : execution.getAction().getParameterValues().entrySet()) {
-			batchParams.add(new Object[] { actionId, entry.getKey(), entry.getValue() });
-		}
+		// if there are any parameters - store them too
+		if (execution.getAction().getParameterValues() != null) {
+			for (Map.Entry<String, String> entry : execution.getAction()
+					.getParameterValues().entrySet()) {
+				batchParams.add(new Object[] { actionId, entry.getKey(),
+						entry.getValue() });
+			}
 
-		getSimpleJdbcTemplate().batchUpdate(SQL_INSERT_PARAM, batchParams);
+			getSimpleJdbcTemplate().batchUpdate(SQL_INSERT_PARAM, batchParams);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ActionExecution> getAllActionExecutions(String actionUri) {
-		SqlParameterSource sps = new MapSqlParameterSource("actionUri", actionUri);
-		return (List<ActionExecution>) getSimpleJdbcTemplate().getNamedParameterJdbcOperations().query(
-				SQL_QUERY_ACTION_EXECUTIONS, sps, new ActionExecutionExtractor());
+		SqlParameterSource sps = new MapSqlParameterSource("actionUri",
+				actionUri);
+		return (List<ActionExecution>) getSimpleJdbcTemplate()
+				.getNamedParameterJdbcOperations().query(
+						SQL_QUERY_ACTION_EXECUTIONS, sps,
+						new ActionExecutionExtractor());
 	}
 
 	@Override
 	public Set<String> loadAllActionsUris() {
-		return new HashSet<String>(getSimpleJdbcTemplate().query(SQL_QUERY_ACTION_URIS,
-				new ParameterizedRowMapper<String>() {
+		return new HashSet<String>(getSimpleJdbcTemplate().query(
+				SQL_QUERY_ACTION_URIS, new ParameterizedRowMapper<String>() {
 
 					@Override
-					public String mapRow(ResultSet arg0, int arg1) throws SQLException {
+					public String mapRow(ResultSet arg0, int arg1)
+							throws SQLException {
 						return arg0.getString(1);
 					}
 				}, Collections.emptyMap()));

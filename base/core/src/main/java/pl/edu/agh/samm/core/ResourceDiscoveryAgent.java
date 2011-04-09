@@ -46,16 +46,20 @@ public class ResourceDiscoveryAgent implements IResourceDiscoveryAgent {
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private Set<ITransportAdapter> transportAdapters = null;
 
+	public void setKnowledgeService(IKnowledge knowledgeService) {
+		this.knowledgeService = knowledgeService;
+	}
+
+	public IKnowledge getKnowledgeService() {
+		return knowledgeService;
+	}
+
 	public Set<ITransportAdapter> getTransportAdapters() {
 		return transportAdapters;
 	}
 
 	public void setTransportAdapters(Set<ITransportAdapter> transportAdapters) {
 		this.transportAdapters = transportAdapters;
-	}
-
-	public void setKnowledgeProvider(IKnowledge knowledgeService) {
-		this.knowledgeService = knowledgeService;
 	}
 
 	public IResourceInstancesManager getResourceInstancesManager() {

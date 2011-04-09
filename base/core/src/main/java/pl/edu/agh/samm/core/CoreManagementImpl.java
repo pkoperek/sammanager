@@ -70,6 +70,7 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	private boolean slaValidationRunning = false;
 	private IRuleProcessor ruleProcessor = null;
 	private IActionExecutor actionExecutor = null;
+	private RuleProcessorInputListener ruleProcessorInputListener = null;
 
 	/**
 	 * @return the actionExecutor
@@ -172,6 +173,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 		logger.info("Core Bean initialization");
 		this.resourceInstancesManager
 				.addResourceListener(resourceDiscoveryAgent);
+		this.ruleProcessorInputListener = new RuleProcessorInputListener(
+				ruleProcessor, runningMetricsManager);
+		this.ruleProcessorInputListener.enable();
 	}
 
 	/**
@@ -181,6 +185,7 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 		this.resourceInstancesManager
 				.removeResourceListener(resourceDiscoveryAgent);
 		logger.info("Core Bean destroyed");
+		this.ruleProcessorInputListener.disable();
 	}
 
 	/*
@@ -266,8 +271,7 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	 * (pl.edu.agh.samm.common.impl.metrics.IMetric, java.util.Collection)
 	 */
 	@Override
-	public void startMetricAndAddRunningMetricListener(
-			IMetric runningMetric,
+	public void startMetricAndAddRunningMetricListener(IMetric runningMetric,
 			Collection<IMetricListener> listeners) {
 		this.runningMetricsManager.startMetricAndAddRunningMetricListener(
 				runningMetric, listeners);
@@ -282,8 +286,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
 	 */
 	@Override
-	public void startMetricAndAddRunningMetricListener(
-			IMetric runningMetric, IMetricListener listener) {
+	public void startMetricAndAddRunningMetricListener(IMetric runningMetric,
+			IMetricListener listener) {
 		if (listener != null) {
 			Collection<IMetricListener> listeners = new LinkedList<IMetricListener>();
 			listeners.add(listener);
@@ -371,8 +375,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 							.getMetricsForResource(pattern);
 
 					for (String metricURI : metrics) {
-						IMetric configuredMetric = this
-								.createMetricInstance(metricURI, resourceURI);
+						IMetric configuredMetric = this.createMetricInstance(
+								metricURI, resourceURI);
 						List<IMetricListener> listeners = new LinkedList<IMetricListener>();
 						listeners.add(currentCostEvaluator);
 						this.startMetricAndAddRunningMetricListener(
@@ -385,8 +389,7 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	}
 
 	@Override
-	public IMetric createMetricInstance(String metricURI,
-			String resourceURI) {
+	public IMetric createMetricInstance(String metricURI, String resourceURI) {
 		return metricFactory.createMetric(metricURI, resourceURI);
 	}
 
@@ -472,8 +475,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 							.getMetricsForResource(pattern);
 
 					for (String metricURI : metrics) {
-						IMetric configuredMetric = this
-								.createMetricInstance(metricURI, resourceURI);
+						IMetric configuredMetric = this.createMetricInstance(
+								metricURI, resourceURI);
 						List<IMetricListener> listeners = new LinkedList<IMetricListener>();
 						listeners.add(currentCostEvaluator);
 						this.startMetricAndAddRunningMetricListener(
@@ -499,8 +502,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 						continue;
 					}
 					for (String metricURI : metrics) {
-						IMetric configuredMetric = this
-								.createMetricInstance(metricURI, resourceURI);
+						IMetric configuredMetric = this.createMetricInstance(
+								metricURI, resourceURI);
 						this.runningMetricsManager.removeMetricListener(
 								configuredMetric, currentCostEvaluator);
 						this.stopMetric(configuredMetric);
@@ -581,4 +584,5 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	public void removeRule(String ruleName) {
 		ruleProcessor.removeRule(ruleName);
 	}
+
 }

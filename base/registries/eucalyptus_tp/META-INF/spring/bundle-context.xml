@@ -37,6 +37,7 @@
 		class="pl.edu.agh.samm.tadapter.eucalyptus.EucalyptusTransportAdapter">
 		<property name="coreManagement" ref="coreManagement" />
 		<property name="MVCBasicImageId" value="${mvcbasic.imageid}" />
+		<property name="startVMActionImageId" value="${startvm.imageid}" />
 	</bean>
 
 </beans>

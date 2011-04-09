@@ -30,12 +30,33 @@
 		</property>
 		<property name="metricFactory" ref="metricFactory" />
 		<property name="actionExecutor" ref="actionExecutor" />
+		<property name="ruleProcessor" ref="esperRuleEngine" />
+	</bean>
+
+	<!-- Rule engine and dependencies -->
+	<bean id="epServiceConfig" class="pl.edu.agh.samm.core.EsperRuleProcessor"
+		factory-method="getDefaultConfiguration"></bean>
+
+	<bean id="defaultEpService"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod">
+			<value>com.espertech.esper.client.EPServiceProviderManager.getDefaultProvider</value>
+		</property>
+		<property name="arguments">
+			<ref bean="epServiceConfig" />
+		</property>
+
+	</bean>
+
+	<bean id="esperRuleEngine" class="pl.edu.agh.samm.core.EsperRuleProcessor">
+		<property name="actionExecutor" ref="actionExecutor" />
+		<property name="epService" ref="defaultEpService" />
 	</bean>
 
 	<!-- Listener for changes of registries set -->
 	<bean id="transportAdapterListener" class="pl.edu.agh.samm.core.TransportAdapterListener">
 		<property name="registryListener" ref="coreManagementBean"></property>
-		<property name="measurementListener" ref="dbListener" />
+		<property name="measurementListener" ref="mmDBListener" />
 	</bean>
 
 	<!-- Running Metrics Manager -->
@@ -68,16 +89,21 @@
 	<!-- Metric factory -->
 	<bean id="metricFactory" class="pl.edu.agh.samm.core.MetricFactoryImpl" />
 
-	<!-- DB Listener -->
-	<bean id="dbListener" class="pl.edu.agh.samm.core.DBListener"
+	<!-- DB Listeners -->
+	<bean id="mmDBListener" class="pl.edu.agh.samm.core.MeasurementMetricDBListener"
 		init-method="init">
 		<property name="coreManagement" ref="coreManagementBean" />
 		<property name="storageService" ref="storageService" />
 	</bean>
 
+	<bean id="actionExecutionDBListener" class="pl.edu.agh.samm.core.ActionExecutionDBListener"
+		init-method="init">
+		<property name="actionExecutor" ref="actionExecutor" />
+		<property name="storageService" ref="storageService" />
+	</bean>
+
 	<!-- ActionExecutor -->
 	<bean id="actionExecutor" class="pl.edu.agh.samm.core.ActionExecutorImpl">
-		<property name="storageService" ref="storageService" />
 		<property name="transportAdapters" ref="transportAdaptersSet" />
 	</bean>
 

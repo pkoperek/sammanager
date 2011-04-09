@@ -17,6 +17,7 @@ import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
 
+import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
@@ -38,6 +39,13 @@ public class EsperRuleProcessor implements IRuleProcessor {
 	private EPRuntime runtime = null;
 	private EPAdministrator administrator = null;
 	private IActionExecutor actionExecutor = null;
+
+	public static Configuration getDefaultConfiguration() {
+		Configuration configuration = new Configuration();
+		configuration.addEventType(IMeasurementEvent.class);
+		configuration.addEventType(IMetricEvent.class);
+		return configuration;
+	}
 
 	public void setActionExecutor(IActionExecutor actionExecutor) {
 		this.actionExecutor = actionExecutor;
@@ -93,7 +101,7 @@ public class EsperRuleProcessor implements IRuleProcessor {
 			}
 			filter += "resourceType = '" + resourceTypeURI + "'";
 		}
-		
+
 		if (!filter.equals("")) {
 			statementString += "(" + filter + ")";
 		}

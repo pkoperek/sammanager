@@ -31,8 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.action.Action;
+import pl.edu.agh.samm.common.action.ActionExecution;
 import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.db.IStorageService;
 import pl.edu.agh.samm.common.tadapter.ActionNotSupportedException;
 import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
 
@@ -42,12 +42,11 @@ import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
  */
 public class ActionExecutorImpl implements IActionExecutor {
 
-	private static final Logger logger = LoggerFactory.getLogger(ActionExecutorImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ActionExecutorImpl.class);
 
 	private ExecutorService executor = Executors.newCachedThreadPool();
 	private List<IActionExecutionListener> listeners = new CopyOnWriteArrayList<IActionExecutionListener>();
-
-	private IStorageService storageService;
 
 	/**
 	 * This field should be thread safe! SpringDM's osgi:set is thread-safe
@@ -63,9 +62,8 @@ public class ActionExecutorImpl implements IActionExecutor {
 	 */
 	@Override
 	public void executeRequest(Action actionToExecute) {
-
-		ActionExecutionRunnable command = new ActionExecutionRunnable(actionToExecute);
-
+		ActionExecutionRunnable command = new ActionExecutionRunnable(
+				actionToExecute);
 		executor.execute(command);
 	}
 
@@ -84,35 +82,37 @@ public class ActionExecutorImpl implements IActionExecutor {
 
 	}
 
-	public void setStorageService(IStorageService storageService) {
-		this.storageService = storageService;
-	}
-
 	public void setTransportAdapters(Set<ITransportAdapter> transportAdapters) {
 		this.transportAdapters = transportAdapters;
 	}
 
 	private void executeAction(Action action) {
+		Date start = null;
+		Date end = null;
+		boolean executed = false;
 		try {
 
 			for (ITransportAdapter adapter : transportAdapters) {
 				if (adapter.isActionSupported(action.getActionURI())) {
 					logger.info("Executing action " + action);
-					Date start = new Date();
+					start = new Date();
 					adapter.executeAction(action);
-					Date end = new Date();
+					end = new Date();
 					logger.info("Done executing action " + action);
-					storageService.storeActionExecution(action, start, end);
+					executed = true;
 					break;
 				}
 			}
-			fireActionExecuted(action);
+
 		} catch (RuntimeException e) {
 			logger.error("Error running action", e);
 		} catch (ActionNotSupportedException e) {
 			logger.error("Bad TransportAdapter action implementation", e);
 		}
 
+		if (executed) {
+			fireActionExecuted(new ActionExecution(action, start, end));
+		}
 	}
 
 	@Override
@@ -135,13 +135,14 @@ public class ActionExecutorImpl implements IActionExecutor {
 		this.listeners.remove(listener);
 	}
 
-	protected void fireActionExecuted(Action action) {
+	protected void fireActionExecuted(ActionExecution actionExecution) {
 		for (IActionExecutionListener listener : listeners) {
 			try {
-				listener.notifyActionExecution(action);
+				listener.notifyActionExecution(actionExecution);
 			} catch (Exception e) {
-				logger.error("Listener failed on notification about action execution! (" + action.toString()
-						+ ")", e);
+				logger.error(
+						"Listener failed on notification about action execution! ("
+								+ actionExecution.toString() + ")", e);
 			}
 		}
 	}

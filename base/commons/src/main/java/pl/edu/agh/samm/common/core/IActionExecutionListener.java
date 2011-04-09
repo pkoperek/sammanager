@@ -17,7 +17,7 @@
 
 package pl.edu.agh.samm.common.core;
 
-import pl.edu.agh.samm.common.action.Action;
+import pl.edu.agh.samm.common.action.ActionExecution;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -26,6 +26,7 @@ import pl.edu.agh.samm.common.action.Action;
  */
 public interface IActionExecutionListener {
 
-	void notifyActionExecution(Action executedAction) throws Exception;
+	void notifyActionExecution(ActionExecution actionExecution)
+			throws Exception;
 
 }

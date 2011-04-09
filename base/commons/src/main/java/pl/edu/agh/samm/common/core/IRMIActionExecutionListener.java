@@ -20,15 +20,17 @@ package pl.edu.agh.samm.common.core;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-import pl.edu.agh.samm.common.action.Action;
+import pl.edu.agh.samm.common.action.ActionExecution;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public interface IRMIActionExecutionListener extends Remote, IActionExecutionListener {
+public interface IRMIActionExecutionListener extends Remote,
+		IActionExecutionListener {
 
 	@Override
-	void notifyActionExecution(Action executedAction) throws RemoteException;
+	void notifyActionExecution(ActionExecution actionExecution)
+			throws RemoteException;
 }
