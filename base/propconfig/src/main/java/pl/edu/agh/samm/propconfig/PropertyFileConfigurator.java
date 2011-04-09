@@ -31,8 +31,12 @@ public class PropertyFileConfigurator {
 
 	private ICoreManagement coreManagement = null;
 
+	public static final String PROPERTIES_FILENAME_KEY = "configFile";
+
 	public void init() {
 		logger.info("Starting Property File Configurator!");
+		
+		logger.info("Starting Property File Configurator finished!");
 	}
 
 	public void setCoreManagement(ICoreManagement coreManagement) {
