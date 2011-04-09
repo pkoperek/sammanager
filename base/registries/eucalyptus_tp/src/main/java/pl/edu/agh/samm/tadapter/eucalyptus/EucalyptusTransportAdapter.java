@@ -70,6 +70,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 
 	private static final String ACTION_START_MVCBASIC_VM = "http://www.icsr.agh.edu.pl/samm_1.owl#StartMVCBasicVMAction";
 	private static final String ACTION_START_VM = "http://www.icsr.agh.edu.pl/samm_1.owl#StartVMAction";
+	private static final String ACTION_STOP_VM = "http://www.icsr.agh.edu.pl/samm_1.owl#StopVMAction";
 
 	private static Set<String> supportedActions;
 
@@ -77,6 +78,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		supportedActions = new HashSet<String>();
 		supportedActions.add(ACTION_START_MVCBASIC_VM);
 		supportedActions.add(ACTION_START_VM);
+		supportedActions.add(ACTION_STOP_VM);
 	}
 
 	private ICoreManagement coreManagement;
@@ -177,8 +179,10 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			}
 		} else if (ACTION_START_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
-			logger.info("Executing: " + ACTION_START_VM + " image id: "
-					+ startVMActionImageId);
+			logger.info("Executing: " + ACTION_START_VM);
+		} else if (ACTION_STOP_VM.equalsIgnoreCase(actionToExecute
+				.getActionURI())) {
+			logger.info("Executing: " + ACTION_STOP_VM);
 		}
 
 	}

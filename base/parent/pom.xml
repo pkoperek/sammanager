@@ -25,7 +25,7 @@
 			<modules>
 				<module>../commons</module>
 				<module>../core</module>
-				<module>../propconfig</module>
+				<module>../fileconfig</module>
 				<module>../registries/parent</module>
 				<module>../knowledge</module>
 				<module>../estimator</module>
