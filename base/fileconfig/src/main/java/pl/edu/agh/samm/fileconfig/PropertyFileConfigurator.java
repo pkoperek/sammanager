@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
  */
-package pl.edu.agh.samm.propconfig;
+package pl.edu.agh.samm.fileconfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class PropertyFileConfigurator {
 
 	public void init() {
 		logger.info("Starting Property File Configurator!");
-		
+
 		logger.info("Starting Property File Configurator finished!");
 	}
 
