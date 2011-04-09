@@ -25,6 +25,7 @@
 			<modules>
 				<module>../commons</module>
 				<module>../core</module>
+				<module>../propconfig</module>
 				<module>../registries/parent</module>
 				<module>../knowledge</module>
 				<module>../estimator</module>
@@ -237,6 +238,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency> 
+			<groupId>net.sourceforge.cglib</groupId> 
+			<artifactId>com.springsource.net.sf.cglib</artifactId> 
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
