@@ -20,7 +20,10 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>com.springsource.slf4j.api</artifactId>
 		</dependency>
-
+		<dependency> 
+			<groupId>com.thoughtworks.xstream</groupId> 
+			<artifactId>com.springsource.com.thoughtworks.xstream</artifactId> 
+		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>

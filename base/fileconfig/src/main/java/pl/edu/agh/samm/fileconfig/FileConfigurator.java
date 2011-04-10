@@ -16,10 +16,19 @@
  */
 package pl.edu.agh.samm.fileconfig;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
+import pl.edu.agh.samm.common.core.Rule;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * @author koperek
@@ -31,10 +40,15 @@ public class FileConfigurator {
 
 	private ICoreManagement coreManagement = null;
 
+	private XStream xstream = null;;
+
 	public static final String PROPERTIES_FILENAME_KEY = "configFile";
 
 	public void init() {
 		logger.info("Starting Property File Configurator!");
+
+		xstream = new XStream(new DomDriver());
+		configureXStream(xstream);
 
 		String configFilePath = System.getProperty(PROPERTIES_FILENAME_KEY);
 
@@ -42,10 +56,33 @@ public class FileConfigurator {
 			logger.warn("No config file specified! Please use the -D"
 					+ PROPERTIES_FILENAME_KEY + " VM option!");
 		} else {
-			
+			File configFile = new File(configFilePath);
+			try {
+				RuleSet ruleSet = (RuleSet) xstream.fromXML(new FileReader(
+						configFile));
+
+				for (Rule rule : ruleSet.getRules()) {
+					logger.info("Adding rule: " + rule);
+					coreManagement.addRule(rule);
+				}
+			} catch (FileNotFoundException e) {
+				logger.error("File (" + configFilePath + ") doesn't exist! ", e);
+			}
 		}
 
 		logger.info("Starting Property File Configurator finished!");
+	}
+
+	public static void configureXStream(XStream xstream) {
+		xstream.alias("ruleset", RuleSet.class);
+		xstream.addImplicitCollection(RuleSet.class, "rules");
+		xstream.alias("rule", Rule.class);
+		xstream.useAttributeFor(Rule.class, "name");
+		xstream.alias("action", Action.class);
+	}
+
+	XStream getXstream() {
+		return xstream;
 	}
 
 	public void setCoreManagement(ICoreManagement coreManagement) {
