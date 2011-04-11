@@ -46,9 +46,10 @@ public class EC2Util {
 
 	private static final String INSTANCE_STATE_RUNNING = "running";
 	private static final String INSTANCE_STATE_PENDING = "pending";
+	private static final Object INSTANCE_STATE_STOPPED = "not running";
 
-	public static void waitForURL(String hostname, int port, String path) throws MalformedURLException,
-			InterruptedException {
+	public static void waitForURL(String hostname, int port, String path)
+			throws MalformedURLException, InterruptedException {
 		boolean tomcatStarted = false;
 		URL url = new URL("http", hostname, port, path);
 
@@ -67,10 +68,12 @@ public class EC2Util {
 
 	}
 
-	public static Instance waitForPublicDNS(AmazonEC2Client ec2Client, Instance instance) throws Exception {
+	public static Instance waitForPublicDNS(AmazonEC2Client ec2Client,
+			Instance instance) throws Exception {
 		instance = getEc2Instance(ec2Client, instance.getInstanceId());
 		while (null == instance.getPublicDnsName()
-				|| INSTANCE_DEFAULT_PUBLIC_DNS.equalsIgnoreCase(instance.getPublicDnsName())) {
+				|| INSTANCE_DEFAULT_PUBLIC_DNS.equalsIgnoreCase(instance
+						.getPublicDnsName())) {
 			logger.debug("Waiting for VM to get public IP address");
 			Thread.sleep(SLEEP_CHECK_TIME);
 			instance = getEc2Instance(ec2Client, instance.getInstanceId());
@@ -78,29 +81,49 @@ public class EC2Util {
 		return getEc2Instance(ec2Client, instance.getInstanceId());
 	}
 
-	public static Instance waitForRunningState(AmazonEC2Client ec2Client, Instance instance)
-			throws InterruptedException, Exception {
-		while (INSTANCE_STATE_PENDING.equals(getEc2Instance(ec2Client, instance.getInstanceId()).getState()
-				.getName())) {
-			logger.debug("Waiting on VM to start");
+	public static Instance waitForStoppedState(AmazonEC2Client ec2Client,
+			Instance instance) throws Exception {
+		while (INSTANCE_STATE_PENDING.equals(getEc2Instance(ec2Client,
+				instance.getInstanceId()).getState().getName())) {
+			logger.debug("Waiting on VM to stop");
 			Thread.sleep(SLEEP_CHECK_TIME);
 		}
-		if (!INSTANCE_STATE_RUNNING.equals(getEc2Instance(ec2Client, instance.getInstanceId()).getState()
-				.getName())) {
-			logger.error("VM failed to run: "
-					+ getEc2Instance(ec2Client, instance.getInstanceId()).getStateReason().getMessage());
-			throw new Exception(getEc2Instance(ec2Client, instance.getInstanceId()).getStateReason()
-					.getMessage());
+		if (!INSTANCE_STATE_STOPPED.equals(getEc2Instance(ec2Client,
+				instance.getInstanceId()).getState().getName())) {
+			logger.error("VM failed to stop: "
+					+ getEc2Instance(ec2Client, instance.getInstanceId())
+							.getStateReason().getMessage());
+			throw new RuntimeException(getEc2Instance(ec2Client,
+					instance.getInstanceId()).getStateReason().getMessage());
 		}
 		return getEc2Instance(ec2Client, instance.getInstanceId());
 	}
 
-	public static Instance getEc2Instance(AmazonEC2Client client, String instanceId) throws Exception {
+	public static Instance waitForRunningState(AmazonEC2Client ec2Client,
+			Instance instance) throws Exception {
+		while (INSTANCE_STATE_PENDING.equals(getEc2Instance(ec2Client,
+				instance.getInstanceId()).getState().getName())) {
+			logger.debug("Waiting on VM to start");
+			Thread.sleep(SLEEP_CHECK_TIME);
+		}
+		if (!INSTANCE_STATE_RUNNING.equals(getEc2Instance(ec2Client,
+				instance.getInstanceId()).getState().getName())) {
+			logger.error("VM failed to run: "
+					+ getEc2Instance(ec2Client, instance.getInstanceId())
+							.getStateReason().getMessage());
+			throw new RuntimeException(getEc2Instance(ec2Client,
+					instance.getInstanceId()).getStateReason().getMessage());
+		}
+		return getEc2Instance(ec2Client, instance.getInstanceId());
+	}
+
+	public static Instance getEc2Instance(AmazonEC2Client client,
+			String instanceId) throws Exception {
 		DescribeInstancesRequest describeInstancesRequest = new DescribeInstancesRequest();
 		Collection<String> instanceIds = new HashSet<String>();
 		instanceIds.add(instanceId);
 		describeInstancesRequest.setInstanceIds(instanceIds);
-		return client.describeInstances(describeInstancesRequest).getReservations().get(0).getInstances()
-				.get(0);
+		return client.describeInstances(describeInstancesRequest)
+				.getReservations().get(0).getInstances().get(0);
 	}
 }

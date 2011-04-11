@@ -29,6 +29,7 @@ import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.IResourceEvent;
 import pl.edu.agh.samm.common.core.IResourceListener;
+import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.knowledge.IKnowledge;
@@ -80,11 +81,11 @@ public class TestBean implements IResourceListener, IMetricsManagerListener,
 		Action action = new Action();
 		action.setActionURI("http://www.icsr.agh.edu.pl/samm_1.owl#StartVMAction");
 		r.setActionToExecute(action);
-		
+
 		coreManagement.addRule(r);
-		
-		coreManagement.registerResource("jmx://cluster01/node01",
-				"http://www.icsr.agh.edu.pl/samm_1.owl#Node", params);
+
+		coreManagement.registerResource(new Resource("jmx://cluster01/node01",
+				"http://www.icsr.agh.edu.pl/samm_1.owl#Node", params));
 
 		logger.info("END OF TEST INITIALIZATION");
 	}

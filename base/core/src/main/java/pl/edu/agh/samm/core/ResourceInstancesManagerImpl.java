@@ -47,7 +47,8 @@ import pl.edu.agh.samm.common.metrics.ResourceEventType;
  */
 public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourceInstancesManagerImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ResourceInstancesManagerImpl.class);
 	private Map<String, List<String>> resourcesTree = new HashMap<String, List<String>>();
 	private Map<String, Resource> resources = new HashMap<String, Resource>();
 	private List<IResourceListener> resourceListeners = new LinkedList<IResourceListener>();
@@ -59,36 +60,14 @@ public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 		return resourceDiscoveryAgent;
 	}
 
-	public void setResourceDiscoveryAgent(IResourceDiscoveryAgent resourceDiscoveryAgent) {
+	public void setResourceDiscoveryAgent(
+			IResourceDiscoveryAgent resourceDiscoveryAgent) {
 		this.resourceDiscoveryAgent = resourceDiscoveryAgent;
 	}
 
-	@Override
-	public void addChildResource(String parentUri, String uri, String type, Map<String, Object> parameters)
-			throws ResourceNotRegisteredException {
-		if (resourcesTree.containsKey(parentUri)) {
-			try {
-				addResource(uri, type, parameters);
-			} catch (ResourceAlreadyRegisteredException e) {
-				// nothing bad happened - we were just adding a child which was
-				// added before
-			}
-
-			List<String> children = resourcesTree.get(parentUri);
-			if (children == null) {
-				children = new ArrayList<String>();
-			}
-
-			children.add(uri);
-			resourcesTree.put(parentUri, children);
-		} else {
-			throw new ResourceNotRegisteredException(parentUri);
-		}
-	}
-
 	protected void fireNewResourceEvent(Resource resource) {
-		IResourceEvent resourceEvent = new DefaultResourceEventImpl(ResourceEventType.RESOURCES_ADDED,
-				resource);
+		IResourceEvent resourceEvent = new DefaultResourceEventImpl(
+				ResourceEventType.RESOURCES_ADDED, resource);
 		fireResourceEvent(resourceEvent);
 	}
 
@@ -96,30 +75,6 @@ public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 		IResourceEvent resourceEvent = new DefaultResourceEventImpl(
 				ResourceEventType.RESOURCES_PROPERTIES_CHANGED, resource);
 		fireResourceEvent(resourceEvent);
-	}
-
-	@Override
-	public void addResource(String uri, String type, Map<String, Object> properties)
-			throws ResourceAlreadyRegisteredException {
-		if (!resourcesTree.containsKey(uri)) {
-			this.resourcesTree.put(uri, null);
-			Resource resource = new Resource(uri, type, properties);
-			resources.put(uri, resource);
-
-			List<String> resourcesOfTypeList = null;
-			if (resourcesOfType.containsKey(type)) {
-				resourcesOfTypeList = resourcesOfType.get(type);
-			} else {
-				resourcesOfTypeList = new LinkedList<String>();
-				resourcesOfType.put(type, resourcesOfTypeList);
-			}
-
-			resourcesOfTypeList.add(uri);
-
-			fireNewResourceEvent(resource);
-		} else {
-			throw new ResourceAlreadyRegisteredException(uri);
-		}
 	}
 
 	@Override
@@ -140,8 +95,8 @@ public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 	}
 
 	private void fireRemovedResourceEvent(Resource resource) {
-		IResourceEvent resourceEvent = new DefaultResourceEventImpl(ResourceEventType.RESOURCES_REMOVED,
-				resource);
+		IResourceEvent resourceEvent = new DefaultResourceEventImpl(
+				ResourceEventType.RESOURCES_REMOVED, resource);
 		fireResourceEvent(resourceEvent);
 	}
 
@@ -179,10 +134,12 @@ public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 	}
 
 	@Override
-	public List<String> getResourceCapabilities(String uri) throws ResourceNotRegisteredException {
+	public List<String> getResourceCapabilities(String uri)
+			throws ResourceNotRegisteredException {
 		if (!resourceCapabilities.containsKey(uri)) {
 			Resource resource = resources.get(uri);
-			List<String> capabilities = resourceDiscoveryAgent.getResourceCapabilities(resource);
+			List<String> capabilities = resourceDiscoveryAgent
+					.getResourceCapabilities(resource);
 			resourceCapabilities.put(uri, capabilities);
 		}
 
@@ -206,6 +163,56 @@ public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 			resource.setProperty(entry.getKey(), entry.getValue());
 		}
 		fireResourcesPropertiesChangedEvent(resource);
+	}
+
+	@Override
+	public void addResource(Resource resource)
+			throws ResourceAlreadyRegisteredException {
+		String uri = resource.getUri();
+		String type = resource.getType();
+		if (!resourcesTree.containsKey(uri)) {
+			this.resourcesTree.put(uri, null);
+			resources.put(uri, resource);
+
+			List<String> resourcesOfTypeList = null;
+			if (resourcesOfType.containsKey(type)) {
+				resourcesOfTypeList = resourcesOfType.get(type);
+			} else {
+				resourcesOfTypeList = new LinkedList<String>();
+				resourcesOfType.put(type, resourcesOfTypeList);
+			}
+
+			resourcesOfTypeList.add(uri);
+
+			fireNewResourceEvent(resource);
+		} else {
+			throw new ResourceAlreadyRegisteredException(uri);
+		}
+
+	}
+
+	@Override
+	public void addChildResource(String parentUri, Resource childResource)
+			throws ResourceNotRegisteredException {
+		if (resourcesTree.containsKey(parentUri)) {
+			try {
+				addResource(childResource);
+			} catch (ResourceAlreadyRegisteredException e) {
+				// nothing bad happened - we were just adding a child which was
+				// added before
+			}
+
+			List<String> children = resourcesTree.get(parentUri);
+			if (children == null) {
+				children = new ArrayList<String>();
+			}
+
+			children.add(childResource.getUri());
+			resourcesTree.put(parentUri, children);
+		} else {
+			throw new ResourceNotRegisteredException(parentUri);
+		}
+
 	}
 
 }

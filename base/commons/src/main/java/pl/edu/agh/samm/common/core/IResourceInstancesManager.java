@@ -42,12 +42,13 @@ public interface IResourceInstancesManager {
 
 	void removeResourceListener(IResourceListener resourceListener);
 
-	List<String> getResourceCapabilities(String uri) throws ResourceNotRegisteredException;
+	List<String> getResourceCapabilities(String uri)
+			throws ResourceNotRegisteredException;
 
-	void addResource(String uri, String type, Map<String, Object> parameters)
+	void addResource(Resource resource)
 			throws ResourceAlreadyRegisteredException;
 
-	void addChildResource(String parentUri, String uri, String type, Map<String, Object> parameters)
+	void addChildResource(String parentUri, Resource childResource)
 			throws ResourceNotRegisteredException;
 
 	Resource getResourceForURI(String uri);

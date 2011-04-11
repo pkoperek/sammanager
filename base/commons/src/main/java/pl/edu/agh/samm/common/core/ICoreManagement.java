@@ -143,8 +143,7 @@ public interface ICoreManagement {
 	 *            Collection of listener which will be notified when new metric
 	 *            value is computed
 	 */
-	void startMetricAndAddRunningMetricListener(
-			IMetric runningMetric,
+	void startMetricAndAddRunningMetricListener(IMetric runningMetric,
 			Collection<IMetricListener> listeners);
 
 	/**
@@ -157,8 +156,8 @@ public interface ICoreManagement {
 	 *            listener which will be notified when new metric value is
 	 *            computed
 	 */
-	void startMetricAndAddRunningMetricListener(
-			IMetric runningMetric, IMetricListener listener);
+	void startMetricAndAddRunningMetricListener(IMetric runningMetric,
+			IMetricListener listener);
 
 	/**
 	 * Check's if given metric is started
@@ -199,8 +198,8 @@ public interface ICoreManagement {
 	 * @throws MetricNotRunningException
 	 *             thrown when given metric is not running
 	 */
-	void addRunningMetricListener(IMetric metric,
-			IMetricListener listener) throws MetricNotRunningException;
+	void addRunningMetricListener(IMetric metric, IMetricListener listener)
+			throws MetricNotRunningException;
 
 	/**
 	 * Removes listener from metric
@@ -210,8 +209,7 @@ public interface ICoreManagement {
 	 * @param listener
 	 *            listener to remove
 	 */
-	void removeRunningMetricListener(IMetric metric,
-			IMetricListener listener);
+	void removeRunningMetricListener(IMetric metric, IMetricListener listener);
 
 	/**
 	 * Adds a listener which will be notified when new metric is started or
@@ -252,8 +250,7 @@ public interface ICoreManagement {
 	 * @throws ResourceAlreadyRegisteredException
 	 *             thrown when resource with given URI already exists
 	 */
-	void registerResource(String uri, String type,
-			Map<String, Object> parameters)
+	void registerResource(Resource resource)
 			throws ResourceAlreadyRegisteredException;
 
 	/**

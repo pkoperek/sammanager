@@ -32,9 +32,11 @@ import pl.edu.agh.samm.common.core.Resource;
  */
 public interface ITransportAdapter {
 
-	Object getCapabilityValue(Resource resource, String capabilityType) throws Exception;
+	Object getCapabilityValue(Resource resource, String capabilityType)
+			throws Exception;
 
-	boolean hasCapability(Resource resource, String capabilityType) throws Exception;
+	boolean hasCapability(Resource resource, String capabilityType)
+			throws Exception;
 
 	void addMeasurementListener(IMeasurementListener capabilityListener);
 
@@ -50,18 +52,13 @@ public interface ITransportAdapter {
 
 	boolean isURISupported(Resource resource);
 
-	void discoverChildren(Resource resource, List<String> types) throws Exception;
+	void discoverChildren(Resource resource, List<String> types)
+			throws Exception;
 
 	boolean isActionSupported(String actionUri);
 
 	boolean isResourceRegistered(Resource resource);
 
-	/**
-	 * Executes action. The execution is invoked in a separate thread!
-	 * 
-	 * @param actionToExecute
-	 * @throws ActionNotSupportedException
-	 */
-	void executeAction(Action actionToExecute) throws ActionNotSupportedException;
+	void executeAction(Action actionToExecute) throws Exception;
 
 }

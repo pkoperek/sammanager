@@ -32,6 +32,7 @@ import pl.edu.agh.samm.common.core.IActionExecutionListener;
 import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.IResourceListener;
+import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
@@ -50,6 +51,7 @@ import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
  * 
  */
 public class SAMMCoreManagement implements SAMMCoreManagementMBean {
+
 	private ICoreManagement coreManagement;
 
 	public static final String OBJECT_NAME = "pl.edu.agh.samm:type=CoreManagement";
@@ -84,6 +86,11 @@ public class SAMMCoreManagement implements SAMMCoreManagementMBean {
 	@Override
 	public void test(String arg) {
 		logger.info("Testing SAMMCoreManagement: " + arg);
+	}
+
+	public void registerResource(Resource resource)
+			throws ResourceAlreadyRegisteredException {
+		coreManagement.registerResource(resource);
 	}
 
 	public void updateSLA(IServiceLevelAgreement serviceLevelAgreement) {
@@ -183,12 +190,6 @@ public class SAMMCoreManagement implements SAMMCoreManagementMBean {
 
 	public IMetric createMetricInstance(String metricURI, String resourceURI) {
 		return coreManagement.createMetricInstance(metricURI, resourceURI);
-	}
-
-	public void registerResource(String uri, String type,
-			Map<String, Object> parameters)
-			throws ResourceAlreadyRegisteredException {
-		coreManagement.registerResource(uri, type, parameters);
 	}
 
 	public void unregisterResource(String uri) {

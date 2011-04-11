@@ -108,6 +108,8 @@ public class ActionExecutorImpl implements IActionExecutor {
 			logger.error("Error running action", e);
 		} catch (ActionNotSupportedException e) {
 			logger.error("Bad TransportAdapter action implementation", e);
+		} catch (Exception e) {
+			logger.error(e.toString(), e);
 		}
 
 		if (executed) {

@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
+import pl.edu.agh.samm.common.core.Resource;
+import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
 
 import com.thoughtworks.xstream.XStream;
@@ -40,7 +42,7 @@ public class FileConfigurator {
 
 	private ICoreManagement coreManagement = null;
 
-	private XStream xstream = null;;
+	private XStream xstream = null;
 
 	public static final String PROPERTIES_FILENAME_KEY = "configFile";
 
@@ -58,12 +60,35 @@ public class FileConfigurator {
 		} else {
 			File configFile = new File(configFilePath);
 			try {
-				RuleSet ruleSet = (RuleSet) xstream.fromXML(new FileReader(
-						configFile));
+				Configuration configuration = (Configuration) xstream
+						.fromXML(new FileReader(configFile));
 
-				for (Rule rule : ruleSet.getRules()) {
-					logger.info("Adding rule: " + rule);
-					coreManagement.addRule(rule);
+				RuleSet ruleSet = configuration.getRuleSet();
+
+				if (ruleSet != null && ruleSet.getRules() != null) {
+					for (Rule rule : ruleSet.getRules()) {
+						logger.info("Adding rule: " + rule);
+						coreManagement.addRule(rule);
+					}
+				} else {
+					logger.warn("No rules specified!");
+				}
+
+				ConfigurationResourceSet resourceSet = configuration
+						.getResourceSet();
+
+				if (resourceSet != null && resourceSet.getResources() != null) {
+					for (ConfigurationResource configurationResource : resourceSet
+							.getResources()) {
+						try {
+							coreManagement
+									.registerResource(configurationResource
+											.getResource());
+						} catch (ResourceAlreadyRegisteredException e) {
+							logger.error("Cannot add resource: "
+									+ configurationResource, e);
+						}
+					}
 				}
 			} catch (FileNotFoundException e) {
 				logger.error("File (" + configFilePath + ") doesn't exist! ", e);
@@ -74,11 +99,19 @@ public class FileConfigurator {
 	}
 
 	public static void configureXStream(XStream xstream) {
+		xstream.alias("resourceset", ConfigurationResourceSet.class);
+		xstream.addImplicitCollection(ConfigurationResourceSet.class,
+				"resources");
 		xstream.alias("ruleset", RuleSet.class);
 		xstream.addImplicitCollection(RuleSet.class, "rules");
 		xstream.alias("rule", Rule.class);
 		xstream.useAttributeFor(Rule.class, "name");
 		xstream.alias("action", Action.class);
+		xstream.alias("resource", ConfigurationResource.class);
+		xstream.alias("property", ConfigurationResourceProperty.class);
+		xstream.useAttributeFor(ConfigurationResource.class, "uri");
+		xstream.addImplicitCollection(ConfigurationResource.class, "properties");
+		xstream.alias("configuration", Configuration.class);
 	}
 
 	XStream getXstream() {

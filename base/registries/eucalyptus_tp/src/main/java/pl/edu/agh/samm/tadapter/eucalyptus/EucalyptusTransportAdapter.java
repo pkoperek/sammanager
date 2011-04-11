@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.Resource;
+import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
 import pl.edu.agh.samm.common.tadapter.AbstractTransportAdapter;
 import pl.edu.agh.samm.common.tadapter.ActionNotSupportedException;
@@ -45,6 +46,8 @@ import com.amazonaws.services.ec2.model.InstanceStateName;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
+import com.amazonaws.services.ec2.model.StopInstancesRequest;
+import com.amazonaws.services.ec2.model.StopInstancesResult;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -60,6 +63,9 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	public static final String EUCALYPTUS_ACCESS_KEY = "EUCALYPTUSACCESSKEY";
 	public static final String EUCALYPTUS_SECRET_KEY = "EUCALYPTUSSECRETKEY";
 	public static final String EUCALYPTUS_KEY_NAME = "EUCALYPTUSKEYNAME";
+	public static final String INSTANCE_TYPE = "EUCALYPTUS_INSTANCE_TYPE";
+	public static final String IMAGE_ID = "EUCALYPTUS_IMAGE_ID";
+	public static final String INSTANCE_ID = "EUCALYPTUS_INSTANCE_ID";
 
 	private static final String VIRTUAL_NODE_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#VirtualNode";
 	private static final String CLUSTER_PARAMETER_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#ClusterParameter";
@@ -84,15 +90,6 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	private ICoreManagement coreManagement;
 
 	private String mvcBasicImageId;
-	private String startVMActionImageId;
-
-	public String getStartVMActionImageId() {
-		return startVMActionImageId;
-	}
-
-	public void setStartVMActionImageId(String startVMActionImageId) {
-		this.startVMActionImageId = startVMActionImageId;
-	}
 
 	private Map<Resource, AmazonEC2Client> ec2Clients = new HashMap<Resource, AmazonEC2Client>();
 
@@ -145,31 +142,15 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	}
 
 	@Override
-	public void executeAction(Action actionToExecute)
-			throws ActionNotSupportedException {
+	public void executeAction(Action actionToExecute) throws Exception {
 		if (!supportedActions.contains(actionToExecute.getActionURI())) {
 			throw new ActionNotSupportedException();
 		}
 
+		logger.info("Executing: " + ACTION_START_VM);
 		if (ACTION_START_MVCBASIC_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
-			String clusterInstanceUri = actionToExecute.getParameterValues()
-					.get(CLUSTER_PARAMETER_TYPE);
-			Resource resource = null;
-			for (Map.Entry<Resource, AmazonEC2Client> entry : ec2Clients
-					.entrySet()) {
-				if (entry.getKey().getUri()
-						.equalsIgnoreCase(clusterInstanceUri)) {
-					resource = entry.getKey();
-					break;
-				}
-			}
-			if (resource == null) {
-				logger.info("Tried to execute " + ACTION_START_MVCBASIC_VM
-						+ " action but node " + clusterInstanceUri
-						+ " is not Eucalyptus-enabled");
-				throw new ActionNotSupportedException();
-			}
+			Resource resource = getClusterResource(actionToExecute);
 			try {
 				startMVCBasicTomcatInstanceAction(resource, mvcBasicImageId,
 						"c1.medium");
@@ -179,12 +160,70 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			}
 		} else if (ACTION_START_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
-			logger.info("Executing: " + ACTION_START_VM);
+			Resource clusterResource = getClusterResource(actionToExecute);
+			String imageId = getImageId(actionToExecute);
+			String instanceType = getInstanceType(actionToExecute);
+			startOneInstanceAction(clusterResource, imageId, instanceType);
 		} else if (ACTION_STOP_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
-			logger.info("Executing: " + ACTION_STOP_VM);
+			Resource clusterResource = getClusterResource(actionToExecute);
+			String instanceId = getInstanceId(actionToExecute);
+			stopOneInstanceAction(clusterResource, instanceId);
+		}
+		logger.info("Executed: " + ACTION_START_VM);
+	}
+
+	private String getInstanceId(Action actionToExecute) {
+		String instanceId = actionToExecute.getParameterValues().get(
+				INSTANCE_ID);
+		return instanceId;
+	}
+
+	private void stopOneInstanceAction(Resource clusterResource,
+			String instanceId) {
+		AmazonEC2Client client = ec2Clients.get(clusterResource);
+
+		logger.info("Stopping instance: ");
+		StopInstancesRequest stopInstancesRequest = new StopInstancesRequest();
+		List<String> instancesToStop = new LinkedList<String>();
+		instancesToStop.add(instanceId);
+		stopInstancesRequest.setInstanceIds(instancesToStop);
+
+		StopInstancesResult result = client.stopInstances(stopInstancesRequest);
+		logger.info("Instances stopped: " + instancesToStop);
+	}
+
+	private String getInstanceType(Action actionToExecute) {
+		String instanceType = actionToExecute.getParameterValues().get(
+				INSTANCE_TYPE);
+		return instanceType;
+	}
+
+	private String getImageId(Action actionToExecute) {
+		String imageId = actionToExecute.getParameterValues().get(IMAGE_ID);
+		return imageId;
+	}
+
+	private Resource getClusterResource(Action actionToExecute) {
+		String clusterInstanceUri = actionToExecute.getParameterValues().get(
+				CLUSTER_PARAMETER_TYPE);
+		Resource resource = null;
+		for (Map.Entry<Resource, AmazonEC2Client> entry : ec2Clients.entrySet()) {
+			if (entry.getKey().getUri().equalsIgnoreCase(clusterInstanceUri)) {
+				resource = entry.getKey();
+				break;
+			}
 		}
 
+		if (resource == null) {
+			String msg = "Tried to execute " + actionToExecute.getActionURI()
+					+ " action but node " + clusterInstanceUri
+					+ " is not Eucalyptus-enabled!";
+			logger.info(msg);
+			throw new IllegalArgumentException(msg);
+		}
+
+		return resource;
 	}
 
 	@Override
@@ -244,40 +283,44 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				instanceType);
 		EC2Util.waitForURL(instance.getPublicDnsName(), 8080, "/mvc-basic");
 		logger.info("Tomcat started on instance " + instance.getInstanceId());
+		reggisterNewInstance(resource, instance);
+	}
+
+	private void reggisterNewInstance(Resource clusterResource,
+			Instance instance) throws ResourceAlreadyRegisteredException {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("JMXURL",
 				"service:jmx:rmi://" + instance.getPublicDnsName()
 						+ ":9999/jndi/rmi://" + instance.getPublicDnsName()
 						+ ":9999/jmxrmi");
 
-		coreManagement.registerResource(resource.getUri() + "/"
-				+ VIRTUAL_NODE_NAME_PREFIX + instance.getInstanceId(),
-				VIRTUAL_NODE_TYPE, parameters);
+		coreManagement.registerResource(new Resource(clusterResource.getUri()
+				+ "/" + VIRTUAL_NODE_NAME_PREFIX + instance.getInstanceId(),
+				VIRTUAL_NODE_TYPE, parameters));
 	}
 
 	/**
 	 * starts new VM instance, <b>does not add new resource to core</b>
 	 * 
 	 * @param resource
-	 * @param machineInstanceId
+	 * @param imageId
 	 * @param instanceType
 	 * @return
 	 * @throws Exception
 	 */
 	private Instance startOneInstanceAction(Resource resource,
-			final String machineInstanceId, String instanceType)
-			throws Exception {
+			final String imageId, String instanceType) throws Exception {
 		AmazonEC2Client client = ec2Clients.get(resource);
 
 		DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest();
 		List<String> imageIds = new LinkedList<String>();
-		imageIds.add(machineInstanceId);
+		imageIds.add(imageId);
 		describeImagesRequest.setImageIds(imageIds);
 		List<Image> images = client.describeImages(describeImagesRequest)
 				.getImages();
 		if (images.size() != 1) {
 			throw new Exception("Found " + images.size() + " images of id: "
-					+ machineInstanceId);
+					+ imageId);
 		}
 		Image image = images.get(0);
 		if (!IMAGE_TYPE_MACHINE.equals(image.getImageType())) {
@@ -304,7 +347,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		Instance instance = instances.get(0);
 		instance = EC2Util.waitForRunningState(client, instance);
 
-		logger.info("Started new instance of image " + machineInstanceId
+		logger.info("Started new instance of image " + imageId
 				+ "! InstanceId = " + instance.getInstanceId());
 		instance = EC2Util.waitForPublicDNS(client, instance);
 		logger.info("Instance IP address is: " + instance.getPublicDnsName());

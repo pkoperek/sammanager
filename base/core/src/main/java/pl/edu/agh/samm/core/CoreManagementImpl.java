@@ -32,6 +32,7 @@ import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.IResourceInstancesManager;
 import pl.edu.agh.samm.common.core.IResourceListener;
+import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
@@ -316,29 +317,6 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	}
 
 	@Override
-	public void registerResource(String uri, String type,
-			Map<String, Object> parameters)
-			throws ResourceAlreadyRegisteredException {
-		logger.info("Registering uri: " + uri);
-
-		String parentURI = StringHelper.getParentURI(uri);
-		boolean resourceRegistered = this.resourceInstancesManager
-				.isResourceRegistered(parentURI);
-		if (resourceRegistered) {
-			try {
-				this.resourceInstancesManager.addChildResource(parentURI, uri,
-						type, parameters);
-			} catch (ResourceNotRegisteredException e) {
-				logger.error("Resource " + parentURI
-						+ " was claimed to be registered, not found during "
-						+ uri + " registration.", e);
-			}
-		} else {
-			this.resourceInstancesManager.addResource(uri, type, parameters);
-		}
-	}
-
-	@Override
 	public void addResourceParameters(String uri, Map<String, Object> parameters)
 			throws ResourceNotRegisteredException {
 		if (!this.resourceInstancesManager.isResourceRegistered(uri)) {
@@ -354,11 +332,13 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 			String parentUri = event.getParentResourceURI();
 			List<String> resources = event.getResources();
 			try {
-				for (String resource : resources) {
+				for (String resourceURI : resources) {
+					Resource resource = new Resource(resourceURI, event
+							.getResourcesTypes().get(resourceURI), event
+							.getResourcesProperties().get(resourceURI));
 					this.resourceInstancesManager.addChildResource(parentUri,
-							resource, event.getResourcesTypes().get(resource),
-							event.getResourcesProperties().get(resource));
-					startMetricsForNewResource(resource);
+							resource);
+					startMetricsForNewResource(resourceURI);
 				}
 			} catch (ResourceNotRegisteredException e) {
 				logger.error(
@@ -463,8 +443,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 							.getParameters(pattern);
 
 					try {
-						this.registerResource(resourceURI, resourceType,
-								parameters);
+						this.registerResource(new Resource(resourceURI,
+								resourceType, parameters));
 					} catch (ResourceAlreadyRegisteredException e) {
 						// if we already monitor this resource - nothing
 						// happens...
@@ -583,6 +563,29 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	@Override
 	public void removeRule(String ruleName) {
 		ruleProcessor.removeRule(ruleName);
+	}
+
+	@Override
+	public void registerResource(Resource resource)
+			throws ResourceAlreadyRegisteredException {
+		String uri = resource.getUri();
+		logger.info("Registering uri: " + uri);
+
+		String parentURI = StringHelper.getParentURI(uri);
+		boolean resourceRegistered = this.resourceInstancesManager
+				.isResourceRegistered(parentURI);
+		if (resourceRegistered) {
+			try {
+				this.resourceInstancesManager.addChildResource(parentURI,
+						resource);
+			} catch (ResourceNotRegisteredException e) {
+				logger.error("Resource " + parentURI
+						+ " was claimed to be registered, not found during "
+						+ uri + " registration.", e);
+			}
+		} else {
+			this.resourceInstancesManager.addResource(resource);
+		}
 	}
 
 }

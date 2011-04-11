@@ -17,6 +17,8 @@ import org.junit.Test;
 
 import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
+import pl.edu.agh.samm.common.core.Resource;
+import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
 
 import com.thoughtworks.xstream.XStream;
@@ -24,59 +26,38 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class FileConfiguratorTest {
 
-	private static final String SAMPLE_XML_FILE_CONTENT = "<ruleset>"
-			+ "  <rule name=\"testRule_1\">"
-			+ "    <resourceTypeUri>resourceTypeURI1</resourceTypeUri>"
-			+ "    <resourceUri>resourceURI1</resourceUri>"
-			+ "    <metricUri>metricURI1</metricUri>"
-			+ "    <condition>condition1</condition>" + "    <actionToExecute>"
-			+ "      <actionURI>actionURI1</actionURI>"
-			+ "      <parameterValues>" + "        <entry>"
-			+ "          <string>sampleParam31</string>"
-			+ "          <string>sampleValue31</string>" + "        </entry>"
-			+ "        <entry>" + "          <string>sampleParam21</string>"
-			+ "          <string>sampleValue21</string>" + "        </entry>"
-			+ "        <entry>" + "          <string>sampleParam11</string>"
-			+ "          <string>sampleValue11</string>" + "        </entry>"
-			+ "      </parameterValues>" + "    </actionToExecute>"
-			+ "  </rule>" + "  <rule name=\"testRule_2\">"
-			+ "    <resourceTypeUri>resourceTypeURI2</resourceTypeUri>"
-			+ "    <resourceUri>resourceURI2</resourceUri>"
-			+ "    <metricUri>metricURI2</metricUri>"
-			+ "    <condition>condition2</condition>" + "    <actionToExecute>"
-			+ "      <actionURI>actionURI2</actionURI>"
-			+ "      <parameterValues>" + "        <entry>"
-			+ "          <string>sampleParam22</string>"
-			+ "          <string>sampleValue22</string>" + "        </entry>"
-			+ "        <entry>" + "          <string>sampleParam32</string>"
-			+ "          <string>sampleValue32</string>" + "        </entry>"
-			+ "        <entry>" + "          <string>sampleParam12</string>"
-			+ "          <string>sampleValue12</string>" + "        </entry>"
-			+ "      </parameterValues>" + "    </actionToExecute>"
-			+ "  </rule>" + "  <rule name=\"testRule_3\">"
-			+ "    <resourceTypeUri>resourceTypeURI3</resourceTypeUri>"
-			+ "    <resourceUri>resourceURI3</resourceUri>"
-			+ "    <metricUri>metricURI3</metricUri>"
-			+ "    <condition>condition3</condition>" + "    <actionToExecute>"
-			+ "      <actionURI>actionURI3</actionURI>"
-			+ "      <parameterValues>" + "        <entry>"
-			+ "          <string>sampleParam33</string>"
-			+ "          <string>sampleValue33</string>" + "        </entry>"
-			+ "        <entry>" + "          <string>sampleParam23</string>"
-			+ "          <string>sampleValue23</string>" + "        </entry>"
-			+ "        <entry>" + "          <string>sampleParam13</string>"
-			+ "          <string>sampleValue13</string>" + "        </entry>"
-			+ "      </parameterValues>" + "    </actionToExecute>"
-			+ "  </rule>" + "</ruleset>";
+	@Test
+	public void testEmptyConfiguration() throws Exception {
+		String content = generateEmptyConfigurationXML();
+		File tempFile = File.createTempFile("111", "222");
+
+		Writer writer = new FileWriter(tempFile);
+		writer.append(content);
+		writer.close();
+
+		System.setProperty(FileConfigurator.PROPERTIES_FILENAME_KEY,
+				tempFile.getAbsolutePath());
+		ICoreManagement mockCoreManagement = EasyMock
+				.createMock(ICoreManagement.class);
+
+		EasyMock.replay(mockCoreManagement);
+		FileConfigurator fileConfigurator = new FileConfigurator();
+		fileConfigurator.setCoreManagement(mockCoreManagement);
+		fileConfigurator.init();
+		EasyMock.verify(mockCoreManagement);
+	}
 
 	@Test
-	public void testInit() throws IOException {
+	public void testSampleDataSetInit() throws IOException,
+			ResourceAlreadyRegisteredException {
 		// create temp file
 		File tempFile = File.createTempFile("111", "222");
 
+		String sampleContent = generateSampleContent();
+
 		// append content
 		Writer writer = new FileWriter(tempFile);
-		writer.append(SAMPLE_XML_FILE_CONTENT);
+		writer.append(sampleContent);
 		writer.close();
 
 		// set property
@@ -85,53 +66,125 @@ public class FileConfiguratorTest {
 		ICoreManagement mockCoreManagement = EasyMock
 				.createMock(ICoreManagement.class);
 
+		// captures...
 		Capture<Rule> rule1c = new Capture<Rule>();
 		Capture<Rule> rule2c = new Capture<Rule>();
 		Capture<Rule> rule3c = new Capture<Rule>();
+
+		Capture<Resource> res1c = new Capture<Resource>();
+		Capture<Resource> res2c = new Capture<Resource>();
+		Capture<Resource> res3c = new Capture<Resource>();
+
+		mockCoreManagement.registerResource(EasyMock.capture(res1c));
+		mockCoreManagement.registerResource(EasyMock.capture(res2c));
+		mockCoreManagement.registerResource(EasyMock.capture(res3c));
+
 		mockCoreManagement.addRule(EasyMock.capture(rule1c));
 		mockCoreManagement.addRule(EasyMock.capture(rule2c));
 		mockCoreManagement.addRule(EasyMock.capture(rule3c));
 
+		// start the test
 		EasyMock.replay(mockCoreManagement);
+
+		// initialization && invocation of init() method
 		FileConfigurator fileConfigurator = new FileConfigurator();
 		fileConfigurator.setCoreManagement(mockCoreManagement);
 		fileConfigurator.init();
-		
+
 		assertTrue(rule1c.hasCaptured());
 		assertTrue(rule2c.hasCaptured());
 		assertTrue(rule3c.hasCaptured());
-		
+
+		assertTrue(res1c.hasCaptured());
+		assertTrue(res2c.hasCaptured());
+		assertTrue(res3c.hasCaptured());
+
+		// get captured objects
 		Rule rule1 = rule1c.getValue();
 		Rule rule2 = rule2c.getValue();
 		Rule rule3 = rule3c.getValue();
-		
-		assertEquals("testRule_1",rule1.getName());
-		assertEquals("testRule_2",rule2.getName());
-		assertEquals("testRule_3",rule3.getName());
+
+		Resource res1 = res1c.getValue();
+		Resource res2 = res2c.getValue();
+		Resource res3 = res3c.getValue();
+
+		// assertopms
+		assertEquals("testRule_1", rule1.getName());
+		assertEquals("testRule_2", rule2.getName());
+		assertEquals("testRule_3", rule3.getName());
+
+		assertEquals("sampleUri1", res1.getUri());
+		assertEquals("sampleUri2", res2.getUri());
+		assertEquals("sampleUri3", res3.getUri());
 		
 		assertNotNull(rule1.getActionToExecute());
 		assertNotNull(rule2.getActionToExecute());
 		assertNotNull(rule3.getActionToExecute());
+
+		assertNotNull(res1.getProperties());
+		assertEquals(1,res1.getProperties().size());
+		assertNotNull(res2.getProperties());
+		assertEquals(1,res2.getProperties().size());
+		assertNotNull(res3.getProperties());
+		assertEquals(1,res3.getProperties().size());
 		
 		assertNotNull(rule1.getActionToExecute().getParameterValues());
 		assertNotNull(rule2.getActionToExecute().getParameterValues());
 		assertNotNull(rule3.getActionToExecute().getParameterValues());
-		
+
 		EasyMock.verify(mockCoreManagement);
 	}
 
 	@Test
 	public void testConfigureXStream() {
+		System.out.println(generateSampleContent());
+	}
+
+	private String generateEmptyConfigurationXML() {
 		XStream xstream = new XStream(new DomDriver());
 		FileConfigurator.configureXStream(xstream);
 
-		// sample rule 1
+		Configuration configuration = new Configuration();
+		return xstream.toXML(configuration);
+	}
+
+	private String generateSampleContent() {
+		XStream xstream = new XStream(new DomDriver());
+		FileConfigurator.configureXStream(xstream);
+
+		Configuration configuration = new Configuration();
+
+		// sampel res set
+		ConfigurationResourceSet resSet = new ConfigurationResourceSet();
+		resSet.addResource(generateSampleResource(1));
+		resSet.addResource(generateSampleResource(2));
+		resSet.addResource(generateSampleResource(3));
+
+		// sample rule set
 		RuleSet rs = new RuleSet();
 		rs.addRule(generateSampleRule(1));
 		rs.addRule(generateSampleRule(2));
 		rs.addRule(generateSampleRule(3));
 
-		System.out.println(xstream.toXML(rs));
+		configuration.setRuleSet(rs);
+		configuration.setResourceSet(resSet);
+
+		return xstream.toXML(configuration);
+	}
+
+	private ConfigurationResource generateSampleResource(final int i) {
+		ConfigurationResource r = new ConfigurationResource();
+		r.setType("sampleType" + i);
+		r.setUri("sampleUri" + i);
+		r.addProperty(generateSampleProperty(i));
+		return r;
+	}
+
+	private ConfigurationResourceProperty generateSampleProperty(int i) {
+		ConfigurationResourceProperty p = new ConfigurationResourceProperty();
+		p.setKey("sampleKey" + i);
+		p.setValue("sampleValue" + i);
+		return p;
 	}
 
 	private Rule generateSampleRule(int i) {
