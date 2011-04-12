@@ -54,6 +54,7 @@
 						<Require-Bundle></Require-Bundle>
 						<Export-Package>!pl.*</Export-Package>
 						<Import-Package>
+							com.thoughtworks.*,
 							pl.edu.agh.samm.*,
 							org.slf4j</Import-Package>
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
