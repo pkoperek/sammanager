@@ -68,6 +68,8 @@ public class JMXAdapterConfigurator {
 				"pl.edu.agh.samm.test:type=Slave|AvgProcessTime");
 
 		// general
+		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put("jvm.instance.prefix",
+		"JVM_");
 		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put("jvm.instance.name",
 				"java.lang:type=Runtime|Name");
 		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put(
