@@ -151,9 +151,10 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		if (ACTION_START_MVCBASIC_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
 			Resource resource = getClusterResource(actionToExecute);
+			String instanceType = getInstanceType(actionToExecute);
 			try {
 				startMVCBasicTomcatInstanceAction(resource, mvcBasicImageId,
-						"c1.medium");
+						instanceType);
 			} catch (Exception e) {
 				logger.error(e.toString(), e);
 				throw new RuntimeException(e);
@@ -167,10 +168,48 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		} else if (ACTION_STOP_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
 			Resource clusterResource = getClusterResource(actionToExecute);
-			String instanceId = getInstanceId(actionToExecute);
-			stopOneInstanceAction(clusterResource, instanceId);
+			// String instanceId = getInstanceId(actionToExecute);
+			String imageId = (String) clusterResource.getProperty(IMAGE_ID);
+			String instanceId = getRandomInstance(clusterResource, imageId);
+			if (instanceId == null) {
+				logger.warn("Can't stop any instance! There are no instances running with imageId = '"
+						+ imageId + "'");
+			} else {
+				stopOneInstanceAction(clusterResource, instanceId);
+			}
 		}
 		logger.info("Executed: " + ACTION_START_VM);
+	}
+
+	private String getRandomInstance(Resource clusterResource, String imageId) {
+		AmazonEC2Client client = this.ec2Clients.get(clusterResource);
+
+		DescribeInstancesResult result = client.describeInstances();
+		List<Instance> instances = getInstancesByImageId(result, imageId);
+
+		String instanceId = null;
+
+		if (instances.size() > 0) {
+			int idx = (int) Math
+					.round((Math.random() * (instances.size() - 1)));
+			Instance instance = instances.get(idx);
+			instanceId = instance.getInstanceId();
+		}
+
+		return instanceId;
+	}
+
+	private List<Instance> getInstancesByImageId(
+			DescribeInstancesResult result, String imageId) {
+		List<Instance> instances = new LinkedList<Instance>();
+		for (Reservation reservation : result.getReservations()) {
+			for (Instance instance : reservation.getInstances()) {
+				if (imageId.equals(instance.getImageId())) {
+					instances.add(instance);
+				}
+			}
+		}
+		return instances;
 	}
 
 	private String getInstanceId(Action actionToExecute) {
@@ -283,16 +322,18 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				instanceType);
 		EC2Util.waitForURL(instance.getPublicDnsName(), 8080, "/mvc-basic");
 		logger.info("Tomcat started on instance " + instance.getInstanceId());
-		reggisterNewInstance(resource, instance);
+		registerNewInstance(resource, instance);
 	}
 
-	private void reggisterNewInstance(Resource clusterResource,
-			Instance instance) throws ResourceAlreadyRegisteredException {
+	private void registerNewInstance(Resource clusterResource, Instance instance)
+			throws ResourceAlreadyRegisteredException {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("JMXURL",
 				"service:jmx:rmi://" + instance.getPublicDnsName()
 						+ ":9999/jndi/rmi://" + instance.getPublicDnsName()
 						+ ":9999/jmxrmi");
+
+		parameters.put(INSTANCE_ID, instance.getInstanceId());
 
 		coreManagement.registerResource(new Resource(clusterResource.getUri()
 				+ "/" + VIRTUAL_NODE_NAME_PREFIX + instance.getInstanceId(),
@@ -312,22 +353,12 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			final String imageId, String instanceType) throws Exception {
 		AmazonEC2Client client = ec2Clients.get(resource);
 
-		DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest();
-		List<String> imageIds = new LinkedList<String>();
-		imageIds.add(imageId);
-		describeImagesRequest.setImageIds(imageIds);
-		List<Image> images = client.describeImages(describeImagesRequest)
-				.getImages();
-		if (images.size() != 1) {
-			throw new Exception("Found " + images.size() + " images of id: "
-					+ imageId);
-		}
-		Image image = images.get(0);
+		Image image = getImageByImageID(client, imageId);
 		if (!IMAGE_TYPE_MACHINE.equals(image.getImageType())) {
-			throw new Exception("Provided image type is not machine!");
+			throw new RuntimeException("Provided image type is not machine!");
 		}
 		if (!IMAGE_STATE_AVAILABLE.equals(image.getState())) {
-			throw new Exception("Provided image state is not "
+			throw new RuntimeException("Provided image state is not "
 					+ IMAGE_STATE_AVAILABLE);
 		}
 
@@ -352,6 +383,21 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		instance = EC2Util.waitForPublicDNS(client, instance);
 		logger.info("Instance IP address is: " + instance.getPublicDnsName());
 		return instance;
+	}
+
+	private Image getImageByImageID(AmazonEC2Client client, String imageId) {
+		DescribeImagesRequest describeImagesRequest = new DescribeImagesRequest();
+		List<String> imageIds = new LinkedList<String>();
+		imageIds.add(imageId);
+		describeImagesRequest.setImageIds(imageIds);
+		List<Image> images = client.describeImages(describeImagesRequest)
+				.getImages();
+		if (images.size() != 1) {
+			throw new RuntimeException("Found " + images.size()
+					+ " images of id: " + imageId);
+		}
+		Image image = images.get(0);
+		return image;
 	}
 
 	/**

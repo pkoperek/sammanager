@@ -615,6 +615,18 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CPUUsageMetric -->
+
+    <CJVMMetric rdf:about="#CPUUsageMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasCustomClass
+            >pl.edu.agh.samm.metrics.custom.CPUUsageMetric</hasCustomClass>
+        <usesTypeCapability rdf:resource="#JVMTotalCPUTimeTypeCapability"/>
+        <usesTypeCapability rdf:resource="#UptimeTypeCapability"/>
+    </CJVMMetric>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ClassLoader -->
 
     <owl:Thing rdf:about="#ClassLoader">
