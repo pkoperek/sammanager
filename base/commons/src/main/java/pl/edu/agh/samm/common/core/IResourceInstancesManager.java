@@ -59,8 +59,8 @@ public interface IResourceInstancesManager {
 	 * @return
 	 */
 	List<Resource> getResourcesForRegex(String regex);
-	
-	//Resource getResourceForURI(String uri);
+
+	Resource getResourceForURI(String uri);
 
 	List<String> getResourcesOfType(String type);
 

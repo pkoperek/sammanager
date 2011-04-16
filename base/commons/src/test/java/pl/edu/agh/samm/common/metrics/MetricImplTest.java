@@ -109,5 +109,7 @@ public class MetricImplTest {
 		assertTrue(metric.isPatternMetric());
 		metric = new Metric("sampleMUri", "/sampleUri?");
 		assertTrue(metric.isPatternMetric());
+		metric = new Metric("sampleMUri", "/sampleUri.+");
+		assertTrue(metric.isPatternMetric());
 	}
 }

@@ -102,6 +102,6 @@ public class Metric implements IMetric {
 
 	@Override
 	public boolean isPatternMetric() {
-		return resourceURI.contains("*") || resourceURI.contains("?");
+		return resourceURI.contains("*") || resourceURI.contains("?") || resourceURI.contains("+");
 	}
 }
