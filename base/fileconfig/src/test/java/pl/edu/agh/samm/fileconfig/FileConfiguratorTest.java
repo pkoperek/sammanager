@@ -30,6 +30,33 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 public class FileConfiguratorTest {
 
 	@Test
+	public void testMetricDeserializationDefaultPollTimeVal() throws Exception {
+		String content = "<configuration>  <metricSet>    <metric resourceURI=\"sampleResourceUri1\" metricURI=\"sampleMetricUri1\"/>  </metricSet></configuration>";
+		File tempFile = File.createTempFile("111", "222");
+
+		Writer writer = new FileWriter(tempFile);
+		writer.append(content);
+		writer.close();
+
+		System.setProperty(FileConfigurator.PROPERTIES_FILENAME_KEY,
+				tempFile.getAbsolutePath());
+		ICoreManagement mockCoreManagement = EasyMock
+				.createMock(ICoreManagement.class);
+
+		Capture<IMetric> captureMetric = new Capture<IMetric>();
+		mockCoreManagement.startMetric(EasyMock.capture(captureMetric));
+
+		EasyMock.replay(mockCoreManagement);
+		FileConfigurator fileConfigurator = new FileConfigurator();
+		fileConfigurator.setCoreManagement(mockCoreManagement);
+		fileConfigurator.init();
+		IMetric metric = captureMetric.getValue();
+		assertNotNull(metric);
+		assertEquals(20000, metric.getMetricPollTimeInterval());
+		EasyMock.verify(mockCoreManagement);
+	}
+
+	@Test
 	public void testEmptyConfiguration() throws Exception {
 		String content = generateEmptyConfigurationXML();
 		File tempFile = File.createTempFile("111", "222");
@@ -156,6 +183,20 @@ public class FileConfiguratorTest {
 		return xstream.toXML(configuration);
 	}
 
+	private String generateMetricConfigurationXML() {
+		XStream xstream = new XStream(new DomDriver());
+		FileConfigurator.configureXStream(xstream);
+		Configuration configuration = new Configuration();
+
+		// sample metric set
+		ConfigurationMetricSet metricSet = new ConfigurationMetricSet();
+		metricSet.addMetric(generateSampleMetricNoPollTime(1));
+
+		configuration.setMetricSet(metricSet);
+
+		return xstream.toXML(configuration);
+	}
+
 	private String generateSampleContent() {
 		XStream xstream = new XStream(new DomDriver());
 		FileConfigurator.configureXStream(xstream);
@@ -195,9 +236,15 @@ public class FileConfiguratorTest {
 		return r;
 	}
 
-	private IMetric generateSampleMetric(int i) {
+	private IMetric generateSampleMetricNoPollTime(int i) {
 		IMetric metric = new Metric("sampleMetricUri" + i, "sampleResourceUri"
 				+ i);
+		return metric;
+	}
+
+	private IMetric generateSampleMetric(int i) {
+		IMetric metric = new Metric("sampleMetricUri" + i, "sampleResourceUri"
+				+ i, i);
 		return metric;
 	}
 

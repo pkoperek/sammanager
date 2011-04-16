@@ -97,6 +97,12 @@ public class FileConfigurator {
 				ConfigurationMetricSet metricSet = configuration.getMetricSet();
 				if (metricSet != null && metricSet.getMetrics() != null) {
 					for (IMetric metric : metricSet.getMetrics()) {
+						// means that user didn't set it - set the default value
+						// then
+						if (metric.getMetricPollTimeInterval() == 0) {
+							metric.setMetricPollTimeInterval(Metric.DEFAULT_METRIC_POLL_TIME_INTERVAL);
+						}
+
 						logger.info("Adding metric: " + metric.getMetricURI()
 								+ " for " + metric.getResourceURI());
 
@@ -138,6 +144,7 @@ public class FileConfigurator {
 		xstream.alias("metric", Metric.class);
 		xstream.useAttributeFor(Metric.class, "metricURI");
 		xstream.useAttributeFor(Metric.class, "resourceURI");
+		xstream.useAttributeFor(Metric.class, "metricPollTimeInterval");
 		xstream.alias("metricSet", ConfigurationMetricSet.class);
 		xstream.addImplicitCollection(ConfigurationMetricSet.class, "metrics");
 	}
