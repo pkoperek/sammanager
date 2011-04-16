@@ -16,37 +16,21 @@
  */
 package pl.edu.agh.samm.fileconfig;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author koperek
  * 
  */
-public class Configuration {
-	private ConfigurationResourceSet resourceSet = null;
-	private RuleSet ruleSet = null;
-	private ConfigurationMetricSet metricSet = null;
+public class ConfigurationMetricSet {
+	private List<ConfigurationMetric> metrics = new LinkedList<ConfigurationMetric>();
 
-	public ConfigurationMetricSet getMetricSet() {
-		return metricSet;
+	public void addMetric(ConfigurationMetric metric) {
+		metrics.add(metric);
 	}
 
-	public ConfigurationResourceSet getResourceSet() {
-		return resourceSet;
+	public List<ConfigurationMetric> getMetrics() {
+		return metrics;
 	}
-
-	public void setResourceSet(ConfigurationResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
-
-	public RuleSet getRuleSet() {
-		return ruleSet;
-	}
-
-	public void setRuleSet(RuleSet ruleSet) {
-		this.ruleSet = ruleSet;
-	}
-
-	public void setMetricSet(ConfigurationMetricSet metricSet) {
-		this.metricSet = metricSet;
-	}
-
 }

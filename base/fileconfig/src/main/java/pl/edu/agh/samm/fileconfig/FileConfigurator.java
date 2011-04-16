@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.action.Action;
 import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
+import pl.edu.agh.samm.common.metrics.IMetric;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -74,6 +74,7 @@ public class FileConfigurator {
 					logger.warn("No rules specified!");
 				}
 
+				// configure resources
 				ConfigurationResourceSet resourceSet = configuration
 						.getResourceSet();
 
@@ -90,6 +91,23 @@ public class FileConfigurator {
 						}
 					}
 				}
+
+				// configure metrics
+				ConfigurationMetricSet metricSet = configuration.getMetricSet();
+				if (metricSet != null && metricSet.getMetrics() != null) {
+					for (ConfigurationMetric metric : metricSet.getMetrics()) {
+						logger.info("Adding metric: " + metric.getMetricUri()
+								+ " for " + metric.getResourceUri());
+
+						// create metric instance
+						IMetric metricInstance = coreManagement
+								.createMetricInstance(metric.getMetricUri(),
+										metric.getResourceUri());
+
+						logger.info("Starting metric: " + metricInstance);
+						coreManagement.startMetric(metricInstance);
+					}
+				}
 			} catch (FileNotFoundException e) {
 				logger.error("File (" + configFilePath + ") doesn't exist! ", e);
 			}
@@ -99,19 +117,33 @@ public class FileConfigurator {
 	}
 
 	public static void configureXStream(XStream xstream) {
-		xstream.alias("resourceset", ConfigurationResourceSet.class);
+		// resources
+		xstream.alias("resourceSet", ConfigurationResourceSet.class);
 		xstream.addImplicitCollection(ConfigurationResourceSet.class,
 				"resources");
-		xstream.alias("ruleset", RuleSet.class);
-		xstream.addImplicitCollection(RuleSet.class, "rules");
-		xstream.alias("rule", Rule.class);
-		xstream.useAttributeFor(Rule.class, "name");
-		xstream.alias("action", Action.class);
 		xstream.alias("resource", ConfigurationResource.class);
 		xstream.alias("property", ConfigurationResourceProperty.class);
 		xstream.useAttributeFor(ConfigurationResource.class, "uri");
 		xstream.addImplicitCollection(ConfigurationResource.class, "properties");
+		
+		// rules
+		xstream.alias("ruleSet", RuleSet.class);
+		xstream.addImplicitCollection(RuleSet.class, "rules");
+		xstream.alias("rule", Rule.class);
+		xstream.useAttributeFor(Rule.class, "name");
+		
+		// action
+		xstream.alias("action", Action.class);
+		
+		// configuration
 		xstream.alias("configuration", Configuration.class);
+		
+		// metrics
+		xstream.alias("metric", ConfigurationMetric.class);
+		xstream.useAttributeFor(ConfigurationMetric.class, "metricUri");
+		xstream.useAttributeFor(ConfigurationMetric.class, "resourceUri");
+		xstream.alias("metricSet", ConfigurationMetricSet.class);
+		xstream.addImplicitCollection(ConfigurationMetricSet.class, "metrics");
 	}
 
 	XStream getXstream() {
