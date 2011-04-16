@@ -25,8 +25,6 @@ import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
-import pl.edu.agh.samm.common.sla.ServiceLevelAgreement;
 
 /**
  * Interface for managing the Core component
@@ -37,47 +35,47 @@ import pl.edu.agh.samm.common.sla.ServiceLevelAgreement;
  */
 public interface ICoreManagement {
 
-	// SLA
-	/**
-	 * Updates {@link ServiceLevelAgreement}
-	 */
-	void updateSLA(IServiceLevelAgreement serviceLevelAgreement);
-
-	/**
-	 * Start Service Level Agreement validation with given
-	 * {@link ServiceLevelAgreement}
-	 * 
-	 * @param serviceLevelAgreement
-	 *            defined Service Level Agreement
-	 * @throws SLAException
-	 *             thrown when SLA validation is already running
-	 */
-	void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement)
-			throws SLAException;
-
-	/**
-	 * Stops Service Level Agreement validation
-	 * 
-	 * @throws SLAException
-	 *             thrown if SLA validation isn't running
-	 */
-	void stopSLAValidation() throws SLAException;
-
-	/**
-	 * Retrieves current Service Level Agreement
-	 * 
-	 * @return Service Level Agreement
-	 * @throws SLAException
-	 *             thrown when no SLA is defined
-	 */
-	IServiceLevelAgreement retrieveCurrentSLA() throws SLAException;
-
-	/**
-	 * Check is SLA validation is active
-	 * 
-	 * @return true when SLA validation is running, false otherwise
-	 */
-	boolean isSLAValidationRunning();
+//	// SLA
+//	/**
+//	 * Updates {@link ServiceLevelAgreement}
+//	 */
+//	void updateSLA(IServiceLevelAgreement serviceLevelAgreement);
+//
+//	/**
+//	 * Start Service Level Agreement validation with given
+//	 * {@link ServiceLevelAgreement}
+//	 * 
+//	 * @param serviceLevelAgreement
+//	 *            defined Service Level Agreement
+//	 * @throws SLAException
+//	 *             thrown when SLA validation is already running
+//	 */
+//	void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement)
+//			throws SLAException;
+//
+//	/**
+//	 * Stops Service Level Agreement validation
+//	 * 
+//	 * @throws SLAException
+//	 *             thrown if SLA validation isn't running
+//	 */
+//	void stopSLAValidation() throws SLAException;
+//
+//	/**
+//	 * Retrieves current Service Level Agreement
+//	 * 
+//	 * @return Service Level Agreement
+//	 * @throws SLAException
+//	 *             thrown when no SLA is defined
+//	 */
+//	IServiceLevelAgreement retrieveCurrentSLA() throws SLAException;
+//
+//	/**
+//	 * Check is SLA validation is active
+//	 * 
+//	 * @return true when SLA validation is running, false otherwise
+//	 */
+//	boolean isSLAValidationRunning();
 
 	/**
 	 * Checks if resource with given URI is known to Core
@@ -225,17 +223,6 @@ public interface ICoreManagement {
 	 * @param listener
 	 */
 	void removeRunningMetricsManagerListener(IMetricsManagerListener listener);
-
-	/**
-	 * Create's metric with given URI for resource with given URI
-	 * 
-	 * @param metricURI
-	 *            URI of metric
-	 * @param resourceURI
-	 *            resource instance URI
-	 * @return metric
-	 */
-	IMetric createMetricInstance(String metricURI, String resourceURI);
 
 	/**
 	 * Registers new resource with given URI with given type and passes

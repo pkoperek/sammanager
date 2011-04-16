@@ -25,7 +25,7 @@ import pl.edu.agh.samm.common.impl.StringHelper;
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
-public class MetricImpl implements IMetric {
+public class Metric implements IMetric {
 	private static final long serialVersionUID = -5768117605198157976L;
 
 	/**
@@ -38,11 +38,11 @@ public class MetricImpl implements IMetric {
 	private final String metricURI;
 	private long metricPollTimeInterval;
 
-	public MetricImpl(String metricURI, String resourceURI) {
+	public Metric(String metricURI, String resourceURI) {
 		this(metricURI, resourceURI, DEFAULT_METRIC_POLL_TIME_INTERVAL);
 	}
 
-	public MetricImpl(String metricURI, String resourceURI,
+	public Metric(String metricURI, String resourceURI,
 			long metricPollTimeInterval) {
 
 		if (metricPollTimeInterval <= 0) {
@@ -98,5 +98,10 @@ public class MetricImpl implements IMetric {
 	@Override
 	public long getMetricPollTimeInterval() {
 		return metricPollTimeInterval;
+	}
+
+	@Override
+	public boolean isPatternMetric() {
+		return resourceURI.contains("*") || resourceURI.contains("?");
 	}
 }

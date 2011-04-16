@@ -51,7 +51,16 @@ public interface IResourceInstancesManager {
 	void addChildResource(String parentUri, Resource childResource)
 			throws ResourceNotRegisteredException;
 
-	Resource getResourceForURI(String uri);
+	/**
+	 * If regex is an URI the method should return the same value as
+	 * getResourceForURI
+	 * 
+	 * @param regex
+	 * @return
+	 */
+	List<Resource> getResourcesForRegex(String regex);
+	
+	//Resource getResourceForURI(String uri);
 
 	List<String> getResourcesOfType(String type);
 

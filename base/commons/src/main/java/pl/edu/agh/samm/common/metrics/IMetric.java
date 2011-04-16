@@ -45,4 +45,12 @@ public interface IMetric extends Serializable {
 	long setMetricPollTimeInterval(long pollTimeInterval);
 
 	long getMetricPollTimeInterval();
+
+	/**
+	 * Returns true if resource URI is a regular expression - the metric is a
+	 * pattern for single resource metrics
+	 * 
+	 * @return True if resourceURI contains * or ?
+	 */
+	boolean isPatternMetric();
 }
