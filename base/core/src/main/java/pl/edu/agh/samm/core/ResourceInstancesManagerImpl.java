@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -213,6 +214,17 @@ public class ResourceInstancesManagerImpl implements IResourceInstancesManager {
 			throw new ResourceNotRegisteredException(parentUri);
 		}
 
+	}
+
+	@Override
+	public List<Resource> getResourcesForRegex(String regex) {
+		List<Resource> retVal = new ArrayList<Resource>();
+		for (Resource resource : resources.values()) {
+			if (Pattern.matches(regex, resource.getUri())) {
+				retVal.add(resource);
+			}
+		}
+		return retVal;
 	}
 
 }

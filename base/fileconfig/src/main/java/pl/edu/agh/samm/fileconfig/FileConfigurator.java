@@ -28,6 +28,7 @@ import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.common.metrics.Metric;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -95,17 +96,12 @@ public class FileConfigurator {
 				// configure metrics
 				ConfigurationMetricSet metricSet = configuration.getMetricSet();
 				if (metricSet != null && metricSet.getMetrics() != null) {
-					for (ConfigurationMetric metric : metricSet.getMetrics()) {
-						logger.info("Adding metric: " + metric.getMetricUri()
-								+ " for " + metric.getResourceUri());
+					for (IMetric metric : metricSet.getMetrics()) {
+						logger.info("Adding metric: " + metric.getMetricURI()
+								+ " for " + metric.getResourceURI());
 
-						// create metric instance
-						IMetric metricInstance = coreManagement
-								.createMetricInstance(metric.getMetricUri(),
-										metric.getResourceUri());
-
-						logger.info("Starting metric: " + metricInstance);
-						coreManagement.startMetric(metricInstance);
+						logger.info("Starting metric: " + metric);
+						coreManagement.startMetric(metric);
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -125,23 +121,23 @@ public class FileConfigurator {
 		xstream.alias("property", ConfigurationResourceProperty.class);
 		xstream.useAttributeFor(ConfigurationResource.class, "uri");
 		xstream.addImplicitCollection(ConfigurationResource.class, "properties");
-		
+
 		// rules
 		xstream.alias("ruleSet", RuleSet.class);
 		xstream.addImplicitCollection(RuleSet.class, "rules");
 		xstream.alias("rule", Rule.class);
 		xstream.useAttributeFor(Rule.class, "name");
-		
+
 		// action
 		xstream.alias("action", Action.class);
-		
+
 		// configuration
 		xstream.alias("configuration", Configuration.class);
-		
+
 		// metrics
-		xstream.alias("metric", ConfigurationMetric.class);
-		xstream.useAttributeFor(ConfigurationMetric.class, "metricUri");
-		xstream.useAttributeFor(ConfigurationMetric.class, "resourceUri");
+		xstream.alias("metric", Metric.class);
+		xstream.useAttributeFor(Metric.class, "metricURI");
+		xstream.useAttributeFor(Metric.class, "resourceURI");
 		xstream.alias("metricSet", ConfigurationMetricSet.class);
 		xstream.addImplicitCollection(ConfigurationMetricSet.class, "metrics");
 	}

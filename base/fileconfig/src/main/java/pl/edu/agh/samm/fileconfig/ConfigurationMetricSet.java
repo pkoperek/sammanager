@@ -19,18 +19,20 @@ package pl.edu.agh.samm.fileconfig;
 import java.util.LinkedList;
 import java.util.List;
 
+import pl.edu.agh.samm.common.metrics.IMetric;
+
 /**
  * @author koperek
  * 
  */
 public class ConfigurationMetricSet {
-	private List<ConfigurationMetric> metrics = new LinkedList<ConfigurationMetric>();
+	private List<IMetric> metrics = new LinkedList<IMetric>();
 
-	public void addMetric(ConfigurationMetric metric) {
+	public void addMetric(IMetric metric) {
 		metrics.add(metric);
 	}
 
-	public List<ConfigurationMetric> getMetrics() {
+	public List<IMetric> getMetrics() {
 		return metrics;
 	}
 }

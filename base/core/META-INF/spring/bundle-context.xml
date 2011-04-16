@@ -28,7 +28,6 @@
 		<property name="resourceDiscoveryAgent">
 			<ref bean="resourceDiscoveryAgent" />
 		</property>
-		<property name="metricFactory" ref="metricFactory" />
 		<property name="actionExecutor" ref="actionExecutor" />
 		<property name="ruleProcessor" ref="esperRuleEngine" />
 	</bean>
@@ -85,9 +84,6 @@
 			<ref bean="knowledgeService" />
 		</property>
 	</bean>
-
-	<!-- Metric factory -->
-	<bean id="metricFactory" class="pl.edu.agh.samm.core.MetricFactoryImpl" />
 
 	<!-- DB Listeners -->
 	<bean id="mmDBListener" class="pl.edu.agh.samm.core.MeasurementMetricDBListener"

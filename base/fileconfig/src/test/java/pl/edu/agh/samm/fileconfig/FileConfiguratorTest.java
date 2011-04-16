@@ -1,5 +1,6 @@
 package pl.edu.agh.samm.fileconfig;
 
+import static org.easymock.EasyMock.anyObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 import org.easymock.Capture;
 import org.easymock.EasyMock;
-import static org.easymock.EasyMock.expect;
 import org.junit.Test;
 
 import pl.edu.agh.samm.common.action.Action;
@@ -22,6 +22,7 @@ import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.common.metrics.Metric;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -86,28 +87,12 @@ public class FileConfiguratorTest {
 		mockCoreManagement.addRule(EasyMock.capture(rule3c));
 
 		// metrics stuff
-		IMetric mockMetric1 = EasyMock.createMock(IMetric.class);
-		IMetric mockMetric2 = EasyMock.createMock(IMetric.class);
-		IMetric mockMetric3 = EasyMock.createMock(IMetric.class);
-		expect(
-				mockCoreManagement.createMetricInstance("sampleMetricUri1",
-						"sampleResourceUri1")).andReturn(mockMetric1);
-		expect(
-				mockCoreManagement.createMetricInstance("sampleMetricUri2",
-						"sampleResourceUri2")).andReturn(mockMetric2);
-		expect(
-				mockCoreManagement.createMetricInstance("sampleMetricUri3",
-						"sampleResourceUri3")).andReturn(mockMetric3);
-
-		mockCoreManagement.startMetric(mockMetric1);
-		mockCoreManagement.startMetric(mockMetric2);
-		mockCoreManagement.startMetric(mockMetric3);
+		mockCoreManagement.startMetric(anyObject(IMetric.class));
+		mockCoreManagement.startMetric(anyObject(IMetric.class));
+		mockCoreManagement.startMetric(anyObject(IMetric.class));
 
 		// start the test
 		EasyMock.replay(mockCoreManagement);
-		EasyMock.replay(mockMetric1);
-		EasyMock.replay(mockMetric2);
-		EasyMock.replay(mockMetric3);
 
 		// initialization && invocation of init() method
 		FileConfigurator fileConfigurator = new FileConfigurator();
@@ -156,9 +141,6 @@ public class FileConfiguratorTest {
 		assertNotNull(rule3.getActionToExecute().getParameterValues());
 
 		EasyMock.verify(mockCoreManagement);
-		EasyMock.verify(mockMetric1);
-		EasyMock.verify(mockMetric2);
-		EasyMock.verify(mockMetric3);
 	}
 
 	@Test
@@ -213,10 +195,9 @@ public class FileConfiguratorTest {
 		return r;
 	}
 
-	private ConfigurationMetric generateSampleMetric(int i) {
-		ConfigurationMetric metric = new ConfigurationMetric();
-		metric.setMetricUri("sampleMetricUri" + i);
-		metric.setResourceUri("sampleResourceUri" + i);
+	private IMetric generateSampleMetric(int i) {
+		IMetric metric = new Metric("sampleMetricUri" + i, "sampleResourceUri"
+				+ i);
 		return metric;
 	}
 

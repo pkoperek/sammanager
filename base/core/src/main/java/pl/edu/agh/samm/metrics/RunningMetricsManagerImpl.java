@@ -38,6 +38,7 @@ import pl.edu.agh.samm.common.knowledge.IKnowledge;
 import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.common.metrics.Metric;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
 
 /**
@@ -54,6 +55,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	private final Logger logger = LoggerFactory
 			.getLogger(RunningMetricsManagerImpl.class);
 
+	private List<IMetric> patternMetrics = new CopyOnWriteArrayList<IMetric>();
 	private IKnowledge knowledgeService = null;
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private List<IMetricsManagerListener> metricManagerListeners = new CopyOnWriteArrayList<IMetricsManagerListener>();
@@ -207,7 +209,28 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	@Override
 	public void startMetricAndAddRunningMetricListener(IMetric metric,
 			Collection<IMetricListener> listeners) {
-		logger.info("Starting metric: " + metric);
+		if (metric.isPatternMetric()) {
+			logger.info("Got a pattern metric! " + metric);
+			patternMetrics.add(metric);
+			String regex = metric.getResourceURI();
+			List<Resource> resources = resourceInstancesManager
+					.getResourcesForRegex(regex);
+
+			for (Resource resource : resources) {
+				IMetric singleResourceMetric = new Metric(
+						metric.getMetricURI(), resource.getUri(),
+						metric.getMetricPollTimeInterval());
+				startSingleMetricAndAddRunningMetricListener(
+						singleResourceMetric, listeners);
+			}
+		} else {
+			startSingleMetricAndAddRunningMetricListener(metric, listeners);
+		}
+	}
+
+	private void startSingleMetricAndAddRunningMetricListener(IMetric metric,
+			Collection<IMetricListener> listeners) {
+		logger.info("Starting single metric: " + metric);
 		MetricTask task = null;
 		if (!scheduledTasks.containsKey(metric)) {
 			List<String> usedCapabilities = knowledgeService
@@ -251,8 +274,15 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	@Override
 	public void updateMetricPollTime(IMetric metric)
 			throws MetricNotRunningException {
-		stopMetric(metric);
-		startMetric(metric);
+		if (patternMetrics.contains(metric)) {
+			// removes old object instance
+			patternMetrics.remove(metric);
+			// adds instance with new pooling time
+			patternMetrics.add(metric);
+		} else {
+			stopMetric(metric);
+			startMetric(metric);
+		}
 	}
 
 	@Override
@@ -260,6 +290,11 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 		// we don't care what kind of exception was thrown right now - just kill
 		// the metric
 		stopMetric(metric);
+	}
+
+	@Override
+	public List<IMetric> getPatternMetrics() {
+		return patternMetrics;
 	}
 
 }

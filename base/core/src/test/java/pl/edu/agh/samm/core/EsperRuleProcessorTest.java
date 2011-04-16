@@ -18,7 +18,7 @@ import pl.edu.agh.samm.common.core.Rule;
 import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.metrics.MetricEvent;
-import pl.edu.agh.samm.common.metrics.MetricImpl;
+import pl.edu.agh.samm.common.metrics.Metric;
 import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
 
 import com.espertech.esper.client.Configuration;
@@ -281,7 +281,7 @@ public class EsperRuleProcessorTest {
 		rule.setCondition("metric.metricPollTimeInterval > 10");
 		rule.setResourceTypeUri("resourceTypeURI");
 
-		MetricImpl mi = new MetricImpl("metricURI", "resourceURI");
+		Metric mi = new Metric("metricURI", "resourceURI");
 		mi.setMetricPollTimeInterval(1000);
 		MetricEvent e = new MetricEvent(mi, 1.0, "resourceTypeURI");
 

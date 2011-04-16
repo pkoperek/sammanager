@@ -37,6 +37,7 @@ import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricEvent;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.common.metrics.Metric;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
 import pl.edu.agh.samm.common.metrics.ResourceEventType;
 
@@ -101,8 +102,8 @@ public class TestBean implements IResourceListener, IMetricsManagerListener,
 			if (strings[1].contains("Thread")) {
 				Set<String> metrics = knowledge
 						.getMetricsForResourceType(strings[1]);
-				IMetric metric = coreManagement.createMetricInstance(
-						metrics.toArray(new String[0])[0], strings[0]);
+				IMetric metric = new Metric(metrics.toArray(new String[0])[0],
+						strings[0]);
 				coreManagement.startMetric(metric);
 				registered = true;
 			}

@@ -41,6 +41,7 @@ import pl.edu.agh.samm.common.impl.StringHelper;
 import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.common.metrics.Metric;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
 import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryEvent;
@@ -65,8 +66,7 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	private IResourceInstancesManager resourceInstancesManager = null;
 	private IMetricsManager runningMetricsManager = null;
 	private IResourceDiscoveryAgent resourceDiscoveryAgent = null;
-	private IMetricFactory metricFactory = null;
-	private IServiceLevelAgreement serviceLevelAgreement = null;
+	// private IServiceLevelAgreement serviceLevelAgreement = null;
 	private ICurrentCostEvaluator currentCostEvaluator = null;
 	private boolean slaValidationRunning = false;
 	private IRuleProcessor ruleProcessor = null;
@@ -105,14 +105,6 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 
 	public IResourceDiscoveryAgent getResourceDiscoveryAgent() {
 		return resourceDiscoveryAgent;
-	}
-
-	public IMetricFactory getMetricFactory() {
-		return metricFactory;
-	}
-
-	public void setMetricFactory(IMetricFactory metricFactory) {
-		this.metricFactory = metricFactory;
 	}
 
 	public void setResourceDiscoveryAgent(
@@ -348,29 +340,20 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	}
 
 	private void startMetricsForNewResource(String resourceURI) {
-		if (isSLAValidationRunning()) {
-			for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
-				if (Pattern.matches(pattern, resourceURI)) {
-					List<String> metrics = serviceLevelAgreement
-							.getMetricsForResource(pattern);
 
-					for (String metricURI : metrics) {
-						IMetric configuredMetric = this.createMetricInstance(
-								metricURI, resourceURI);
-						List<IMetricListener> listeners = new LinkedList<IMetricListener>();
-						listeners.add(currentCostEvaluator);
-						this.startMetricAndAddRunningMetricListener(
-								configuredMetric, listeners);
-					}
-				}
+		for (IMetric patternMetric : runningMetricsManager.getPatternMetrics()) {
+			String pattern = patternMetric.getResourceURI();
+			if (Pattern.matches(pattern, resourceURI)) {
+				IMetric configuredMetric = new Metric(
+						patternMetric.getMetricURI(), resourceURI);
+				List<IMetricListener> listeners = new LinkedList<IMetricListener>();
+				listeners.add(currentCostEvaluator);
+				this.startMetricAndAddRunningMetricListener(configuredMetric,
+						listeners);
 			}
+
 		}
 
-	}
-
-	@Override
-	public IMetric createMetricInstance(String metricURI, String resourceURI) {
-		return metricFactory.createMetric(metricURI, resourceURI);
 	}
 
 	@Override
@@ -395,121 +378,122 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 		this.ruleProcessor.removeAlarmListener(listener);
 	}
 
-	@Override
-	public void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement)
-			throws SLAException {
-		if (slaValidationRunning) {
-			throw new SLAException(
-					"SLA Validation already running! Please update instead of starting!");
-		}
+	// @Override
+	// public void startSLAValidation(IServiceLevelAgreement
+	// serviceLevelAgreement)
+	// throws SLAException {
+	// if (slaValidationRunning) {
+	// throw new SLAException(
+	// "SLA Validation already running! Please update instead of starting!");
+	// }
+	//
+	// logger.info("Starting SLA Validation: " + serviceLevelAgreement);
+	// this.slaValidationRunning = true;
+	// this.serviceLevelAgreement = serviceLevelAgreement;
+	//
+	// configureMonitoringForSLA(serviceLevelAgreement);
+	// logger.info("SLA Validation started");
+	// }
 
-		logger.info("Starting SLA Validation: " + serviceLevelAgreement);
-		this.slaValidationRunning = true;
-		this.serviceLevelAgreement = serviceLevelAgreement;
-
-		configureMonitoringForSLA(serviceLevelAgreement);
-		logger.info("SLA Validation started");
-	}
-
-	@Override
-	public void updateSLA(IServiceLevelAgreement serviceLevelAgreement) {
-		logger.info("Updating SLA: " + serviceLevelAgreement);
-		if (this.slaValidationRunning) {
-			unconfigureMonitoringForSLA(this.serviceLevelAgreement);
-		} else {
-			logger.info("No configured SLA: configuring received one");
-		}
-		configureMonitoringForSLA(serviceLevelAgreement);
-		logger.info("SLA updated");
-	}
-
-	/**
-	 * Automatic configuration of SLA
-	 * 
-	 * @param serviceLevelAgreement
-	 */
-	private void configureMonitoringForSLA(
-			IServiceLevelAgreement serviceLevelAgreement) {
-		this.currentCostEvaluator.setupSLA(serviceLevelAgreement);
-		this.ruleProcessor.setupSLA(serviceLevelAgreement);
-		for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
-
-			for (String resourceURI : resourceInstancesManager
-					.getAllRegisteredResources()) {
-				if (Pattern.matches(pattern, resourceURI)) {
-					String resourceType = serviceLevelAgreement
-							.getResourceType(pattern);
-					Map<String, Object> parameters = serviceLevelAgreement
-							.getParameters(pattern);
-
-					try {
-						this.registerResource(new Resource(resourceURI,
-								resourceType, parameters));
-					} catch (ResourceAlreadyRegisteredException e) {
-						// if we already monitor this resource - nothing
-						// happens...
-						// try to add metrics for it...
-					}
-
-					List<String> metrics = serviceLevelAgreement
-							.getMetricsForResource(pattern);
-
-					for (String metricURI : metrics) {
-						IMetric configuredMetric = this.createMetricInstance(
-								metricURI, resourceURI);
-						List<IMetricListener> listeners = new LinkedList<IMetricListener>();
-						listeners.add(currentCostEvaluator);
-						this.startMetricAndAddRunningMetricListener(
-								configuredMetric, listeners);
-					}
-				}
-			}
-		}
-	}
-
-	private void unconfigureMonitoringForSLA(
-			IServiceLevelAgreement serviceLevelAgreement) {
-		this.currentCostEvaluator.setupSLA(null);
-		this.ruleProcessor.setupSLA(null);
-		for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
-
-			for (String resourceURI : resourceInstancesManager
-					.getAllRegisteredResources()) {
-				if (Pattern.matches(pattern, resourceURI)) {
-					List<String> metrics = serviceLevelAgreement
-							.getMetricsForResource(pattern);
-					if (metrics == null) {
-						continue;
-					}
-					for (String metricURI : metrics) {
-						IMetric configuredMetric = this.createMetricInstance(
-								metricURI, resourceURI);
-						this.runningMetricsManager.removeMetricListener(
-								configuredMetric, currentCostEvaluator);
-						this.stopMetric(configuredMetric);
-					}
-				}
-			}
-
-		}
-
-	}
-
-	@Override
-	public void stopSLAValidation() throws SLAException {
-		if (slaValidationRunning) {
-			this.unconfigureMonitoringForSLA(serviceLevelAgreement);
-			this.slaValidationRunning = false;
-		} else {
-			throw new SLAException(
-					"SLA Validation not running! Please start SLA validation first!");
-		}
-	}
-
-	@Override
-	public boolean isSLAValidationRunning() {
-		return this.slaValidationRunning;
-	}
+	// @Override
+	// public void updateSLA(IServiceLevelAgreement serviceLevelAgreement) {
+	// logger.info("Updating SLA: " + serviceLevelAgreement);
+	// if (this.slaValidationRunning) {
+	// unconfigureMonitoringForSLA(this.serviceLevelAgreement);
+	// } else {
+	// logger.info("No configured SLA: configuring received one");
+	// }
+	// configureMonitoringForSLA(serviceLevelAgreement);
+	// logger.info("SLA updated");
+	// }
+	//
+	// /**
+	// * Automatic configuration of SLA
+	// *
+	// * @param serviceLevelAgreement
+	// */
+	// private void configureMonitoringForSLA(
+	// IServiceLevelAgreement serviceLevelAgreement) {
+	// this.currentCostEvaluator.setupSLA(serviceLevelAgreement);
+	// this.ruleProcessor.setupSLA(serviceLevelAgreement);
+	// for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
+	//
+	// for (String resourceURI : resourceInstancesManager
+	// .getAllRegisteredResources()) {
+	// if (Pattern.matches(pattern, resourceURI)) {
+	// String resourceType = serviceLevelAgreement
+	// .getResourceType(pattern);
+	// Map<String, Object> parameters = serviceLevelAgreement
+	// .getParameters(pattern);
+	//
+	// try {
+	// this.registerResource(new Resource(resourceURI,
+	// resourceType, parameters));
+	// } catch (ResourceAlreadyRegisteredException e) {
+	// // if we already monitor this resource - nothing
+	// // happens...
+	// // try to add metrics for it...
+	// }
+	//
+	// List<String> metrics = serviceLevelAgreement
+	// .getMetricsForResource(pattern);
+	//
+	// for (String metricURI : metrics) {
+	// IMetric configuredMetric = new Metric(metricURI,
+	// resourceURI);
+	// List<IMetricListener> listeners = new LinkedList<IMetricListener>();
+	// listeners.add(currentCostEvaluator);
+	// this.startMetricAndAddRunningMetricListener(
+	// configuredMetric, listeners);
+	// }
+	// }
+	// }
+	// }
+	// }
+	//
+	// private void unconfigureMonitoringForSLA(
+	// IServiceLevelAgreement serviceLevelAgreement) {
+	// this.currentCostEvaluator.setupSLA(null);
+	// this.ruleProcessor.setupSLA(null);
+	// for (String pattern : serviceLevelAgreement.getInvolvedPatterns()) {
+	//
+	// for (String resourceURI : resourceInstancesManager
+	// .getAllRegisteredResources()) {
+	// if (Pattern.matches(pattern, resourceURI)) {
+	// List<String> metrics = serviceLevelAgreement
+	// .getMetricsForResource(pattern);
+	// if (metrics == null) {
+	// continue;
+	// }
+	// for (String metricURI : metrics) {
+	// IMetric configuredMetric = new Metric(metricURI,
+	// resourceURI);
+	// this.runningMetricsManager.removeMetricListener(
+	// configuredMetric, currentCostEvaluator);
+	// this.stopMetric(configuredMetric);
+	// }
+	// }
+	// }
+	//
+	// }
+	//
+	// }
+	//
+	// @Override
+	// public void stopSLAValidation() throws SLAException {
+	// if (slaValidationRunning) {
+	// this.unconfigureMonitoringForSLA(serviceLevelAgreement);
+	// this.slaValidationRunning = false;
+	// } else {
+	// throw new SLAException(
+	// "SLA Validation not running! Please start SLA validation first!");
+	// }
+	// }
+	//
+	// @Override
+	// public boolean isSLAValidationRunning() {
+	// return this.slaValidationRunning;
+	// }
 
 	@Override
 	public void unregisterResource(String uri) {
@@ -532,13 +516,13 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 		this.currentCostEvaluator = currentCostEvaluator;
 	}
 
-	@Override
-	public IServiceLevelAgreement retrieveCurrentSLA() throws SLAException {
-		if (!slaValidationRunning) {
-			throw new SLAException("No SLA set!");
-		}
-		return this.serviceLevelAgreement;
-	}
+	// @Override
+	// public IServiceLevelAgreement retrieveCurrentSLA() throws SLAException {
+	// if (!slaValidationRunning) {
+	// throw new SLAException("No SLA set!");
+	// }
+	// return this.serviceLevelAgreement;
+	// }
 
 	@Override
 	public void addActionExecutorListener(IActionExecutionListener listener) {

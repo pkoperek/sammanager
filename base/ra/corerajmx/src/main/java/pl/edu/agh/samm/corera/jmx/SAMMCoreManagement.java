@@ -93,26 +93,27 @@ public class SAMMCoreManagement implements SAMMCoreManagementMBean {
 		coreManagement.registerResource(resource);
 	}
 
-	public void updateSLA(IServiceLevelAgreement serviceLevelAgreement) {
-		coreManagement.updateSLA(serviceLevelAgreement);
-	}
-
-	public void startSLAValidation(IServiceLevelAgreement serviceLevelAgreement)
-			throws SLAException {
-		coreManagement.startSLAValidation(serviceLevelAgreement);
-	}
-
-	public void stopSLAValidation() throws SLAException {
-		coreManagement.stopSLAValidation();
-	}
-
-	public IServiceLevelAgreement retrieveCurrentSLA() throws SLAException {
-		return coreManagement.retrieveCurrentSLA();
-	}
-
-	public boolean isSLAValidationRunning() {
-		return coreManagement.isSLAValidationRunning();
-	}
+	// public void updateSLA(IServiceLevelAgreement serviceLevelAgreement) {
+	// coreManagement.updateSLA(serviceLevelAgreement);
+	// }
+	//
+	// public void startSLAValidation(IServiceLevelAgreement
+	// serviceLevelAgreement)
+	// throws SLAException {
+	// coreManagement.startSLAValidation(serviceLevelAgreement);
+	// }
+	//
+	// public void stopSLAValidation() throws SLAException {
+	// coreManagement.stopSLAValidation();
+	// }
+	//
+	// public IServiceLevelAgreement retrieveCurrentSLA() throws SLAException {
+	// return coreManagement.retrieveCurrentSLA();
+	// }
+	//
+	// public boolean isSLAValidationRunning() {
+	// return coreManagement.isSLAValidationRunning();
+	// }
 
 	public boolean isResourceRegistered(String uri) {
 		return coreManagement.isResourceRegistered(uri);
@@ -186,10 +187,6 @@ public class SAMMCoreManagement implements SAMMCoreManagementMBean {
 	public void removeRunningMetricsManagerListener(
 			IMetricsManagerListener listener) {
 		coreManagement.removeRunningMetricsManagerListener(listener);
-	}
-
-	public IMetric createMetricInstance(String metricURI, String resourceURI) {
-		return coreManagement.createMetricInstance(metricURI, resourceURI);
 	}
 
 	public void unregisterResource(String uri) {

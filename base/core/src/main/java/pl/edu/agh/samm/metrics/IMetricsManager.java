@@ -19,6 +19,7 @@ package pl.edu.agh.samm.metrics;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
+import java.util.List;
 
 import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
@@ -32,7 +33,7 @@ import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
 public interface IMetricsManager {
-	
+
 	/**
 	 * Returns a collection of currently running metrics on the Core system.
 	 * 
@@ -133,5 +134,7 @@ public interface IMetricsManager {
 	 * @return True is metric is observed, false otherwise
 	 */
 	boolean isMetricRunning(IMetric metric);
+
+	List<IMetric> getPatternMetrics();
 
 }
