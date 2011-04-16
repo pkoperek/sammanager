@@ -99,9 +99,8 @@ public abstract class MetricTask implements Runnable {
 				listener.processMetricEvent(new MetricEvent(metric, value,
 						resource.getType()));
 			} catch (Throwable e) {
-				logger.warn(
-						"Error while notifying listener. Removing from listeners list!",
-						e);
+				logger.warn("Error while notifying listener. Removing from listeners list!");
+				logger.debug("Error while notifying listener. Removing from listeners list!");
 				metricListeners.remove(listener);
 			}
 			i++;

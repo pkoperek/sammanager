@@ -242,6 +242,30 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CCustomApplication -->
+
+    <owl:Class rdf:about="#CCustomApplication">
+        <rdfs:subClassOf rdf:resource="#CSoftwareType"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CCustomApplicationCapability -->
+
+    <owl:Class rdf:about="#CCustomApplicationCapability">
+        <rdfs:subClassOf rdf:resource="#CSoftwareTypeCapability"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CCustomApplicationMetric -->
+
+    <owl:Class rdf:about="#CCustomApplicationMetric">
+        <rdfs:subClassOf rdf:resource="#CSoftwareMetric"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CGarbageCollector -->
 
     <owl:Class rdf:about="#CGarbageCollector">
@@ -625,6 +649,16 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#EucalyptusCluster -->
+
+    <owl:Thing rdf:about="#EucalyptusCluster">
+        <rdf:type rdf:resource="#CClusterType"/>
+        <hasChildNodeOfType rdf:resource="#MasterNode"/>
+        <hasChildNodeOfType rdf:resource="#SlaveNode"/>
+    </owl:Thing>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#GarbageCollector -->
 
     <CGarbageCollector rdf:about="#GarbageCollector">
@@ -905,6 +939,48 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterApplication -->
+
+    <CCustomApplication rdf:about="#MasterApplication">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasResourceTypeCapability rdf:resource="#MasterQueueLengthCapability"/>
+    </CCustomApplication>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterApplicationQueueLengthMetric -->
+
+    <owl:Thing rdf:about="#MasterApplicationQueueLengthMetric">
+        <rdf:type rdf:resource="#CCustomApplicationMetric"/>
+        <usesTypeCapability rdf:resource="#MasterQueueLengthCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterNode -->
+
+    <owl:Thing rdf:about="#MasterNode">
+        <rdf:type rdf:resource="#CNodeType"/>
+        <hasChildHardwareOfType rdf:resource="#CPU"/>
+        <hasChildHardwareOfType rdf:resource="#HardDrive"/>
+        <hasChildSoftwareOfType rdf:resource="#JVM"/>
+        <hasChildSoftwareOfType rdf:resource="#MasterApplication"/>
+        <hasChildHardwareOfType rdf:resource="#NetworkInterface"/>
+        <hasChildSoftwareOfType rdf:resource="#OperatingSystem"/>
+        <hasChildHardwareOfType rdf:resource="#PhysicalMemory"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterQueueLengthCapability -->
+
+    <CCustomApplicationCapability rdf:about="#MasterQueueLengthCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasResourceTypeCapability rdf:resource="#MasterQueueLengthCapability"/>
+    </CCustomApplicationCapability>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MinorGCPercentageTimeMetric -->
 
     <owl:Thing rdf:about="#MinorGCPercentageTimeMetric">
@@ -1027,10 +1103,122 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveApplication -->
+
+    <CCustomApplication rdf:about="#SlaveApplication">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasResourceTypeCapability rdf:resource="#SlaveAvgProcessingTimeCapability"/>
+        <hasResourceTypeCapability rdf:resource="#SlaveProcessedCountCapability"/>
+        <hasResourceTypeCapability rdf:resource="#SlaveQueueLengthCapability"/>
+        <hasResourceTypeCapability rdf:resource="#SlaveSumProcessingTimeCapability"/>
+    </CCustomApplication>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveAvgProcessingTimeCapability -->
+
+    <owl:Thing rdf:about="#SlaveAvgProcessingTimeCapability">
+        <rdf:type rdf:resource="#CCustomApplicationCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveAvgProcessingTimeMetric -->
+
+    <CCustomApplicationMetric rdf:about="#SlaveAvgProcessingTimeMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#SlaveAvgProcessingTimeCapability"/>
+    </CCustomApplicationMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveNode -->
+
+    <CNodeType rdf:about="#SlaveNode">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <hasChildHardwareOfType rdf:resource="#CPU"/>
+        <hasChildHardwareOfType rdf:resource="#HardDrive"/>
+        <hasChildSoftwareOfType rdf:resource="#JVM"/>
+        <hasChildHardwareOfType rdf:resource="#NetworkInterface"/>
+        <hasChildSoftwareOfType rdf:resource="#OperatingSystem"/>
+        <hasChildHardwareOfType rdf:resource="#PhysicalMemory"/>
+        <hasChildSoftwareOfType rdf:resource="#SlaveApplication"/>
+    </CNodeType>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveProcessedCountCapability -->
+
+    <owl:Thing rdf:about="#SlaveProcessedCountCapability">
+        <rdf:type rdf:resource="#CCustomApplicationCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveProcessedCountMetric -->
+
+    <CCustomApplicationMetric rdf:about="#SlaveProcessedCountMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#SlaveProcessedCountCapability"/>
+    </CCustomApplicationMetric>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveQueueLengthCapability -->
+
+    <CCustomApplicationCapability rdf:about="#SlaveQueueLengthCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CCustomApplicationCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveQueueLengthMetric -->
+
+    <owl:Thing rdf:about="#SlaveQueueLengthMetric">
+        <rdf:type rdf:resource="#CCustomApplicationMetric"/>
+        <usesTypeCapability rdf:resource="#SlaveQueueLengthCapability"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveSumProcessingTimeCapability -->
+
+    <CCustomApplicationCapability rdf:about="#SlaveSumProcessingTimeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CCustomApplicationCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlaveSumProcessingTimeMetric -->
+
+    <owl:Thing rdf:about="#SlaveSumProcessingTimeMetric">
+        <rdf:type rdf:resource="#CCustomApplicationMetric"/>
+        <usesTypeCapability rdf:resource="#SlaveSumProcessingTimeCapability"/>
+    </owl:Thing>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#StartMVCBasicVMAction -->
 
     <owl:Thing rdf:about="#StartMVCBasicVMAction">
         <rdf:type rdf:resource="#CAction"/>
+        <hasActionParameter rdf:resource="#ClusterParameter"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#StartVMAction -->
+
+    <owl:Thing rdf:about="#StartVMAction">
+        <rdf:type rdf:resource="#CAction"/>
+        <hasActionParameter rdf:resource="#ClusterParameter"/>
+    </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#StopVMAction -->
+
+    <owl:Thing rdf:about="#StopVMAction">
         <hasActionParameter rdf:resource="#ClusterParameter"/>
     </owl:Thing>
     

@@ -17,9 +17,9 @@
 
 package pl.edu.agh.samm.common.tadapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractTransportAdapter implements ITransportAdapter {
 
-	protected List<IResourceDiscoveryListener> registryListeners = new ArrayList<IResourceDiscoveryListener>();
-	protected List<IMeasurementListener> capabilityListeners = new ArrayList<IMeasurementListener>();
+	protected List<IResourceDiscoveryListener> registryListeners = new CopyOnWriteArrayList<IResourceDiscoveryListener>();
+	protected List<IMeasurementListener> capabilityListeners = new CopyOnWriteArrayList<IMeasurementListener>();
 	private static final Logger logger = LoggerFactory
 			.getLogger(AbstractTransportAdapter.class);
 
@@ -76,10 +76,11 @@ public abstract class AbstractTransportAdapter implements ITransportAdapter {
 		for (IMeasurementListener listener : capabilityListeners) {
 			try {
 				listener.processMeasurementEvent(event);
-			} catch (Throwable t) {
-				logger.error(
+			} catch (Throwable e) {
+				logger.error("Listener thrown an exception during MeasurementEvent processing! Removing from listeners list!");
+				logger.debug(
 						"Listener thrown an exception during MeasurementEvent processing! Removing from listeners list!",
-						t);
+						e);
 				capabilityListeners.remove(listener);
 			}
 		}

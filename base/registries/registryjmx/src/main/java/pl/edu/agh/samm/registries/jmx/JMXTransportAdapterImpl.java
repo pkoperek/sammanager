@@ -65,7 +65,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 
 	public static final String JMX_TRANSPORT_PROPERTY_KEY = "JMXURL";
 
-	private static final Logger logger = LoggerFactory.getLogger(JMXTransportAdapterImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(JMXTransportAdapterImpl.class);
 
 	private Map<String, MBeanServerConnection> connections = new HashMap<String, MBeanServerConnection>();
 	private ExecutorService executorService;
@@ -76,7 +77,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 		return jmxAdapterConfigurator;
 	}
 
-	public void setJmxAdapterConfigurator(JMXAdapterConfigurator jmxAdapterConfigurator) {
+	public void setJmxAdapterConfigurator(
+			JMXAdapterConfigurator jmxAdapterConfigurator) {
 		this.jmxAdapterConfigurator = jmxAdapterConfigurator;
 	}
 
@@ -92,13 +94,13 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 		return jmxAdapterConfigurator.getProperty(propertyKey);
 	}
 
-	private Object getAttribute(MBeanServerConnection beanServerConnection, String query, String uri)
-			throws Exception {
+	private Object getAttribute(MBeanServerConnection beanServerConnection,
+			String query, String uri) throws Exception {
 		return getAttribute(beanServerConnection, query, uri, null);
 	}
 
-	private Object getAttribute(MBeanServerConnection beanServerConnection, String query, String uri,
-			String prefixToRemove) throws Exception {
+	private Object getAttribute(MBeanServerConnection beanServerConnection,
+			String query, String uri, String prefixToRemove) throws Exception {
 
 		Object attributeValue = null;
 
@@ -111,7 +113,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 			int rparenIdx = queryElements[1].indexOf(')', lparenIdx);
 
 			if (lparenIdx < rparenIdx && rparenIdx < queryElements[1].length()) {
-				String argumentsPart = queryElements[1].substring(lparenIdx + 1, rparenIdx);
+				String argumentsPart = queryElements[1].substring(
+						lparenIdx + 1, rparenIdx);
 				String formalPart = queryElements[1].substring(rparenIdx + 2); // skip
 				// rparen
 				// and
@@ -148,16 +151,18 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 				String[] signature = formalPart.split(",");
 
 				if (logger.isDebugEnabled()) {
-					logger.info("About to invoke: " + operationName + " " + arguments + " "
-							+ Arrays.toString(signature) + " for instance: " + uri);
+					logger.info("About to invoke: " + operationName + " "
+							+ arguments + " " + Arrays.toString(signature)
+							+ " for instance: " + uri);
 				}
-				attributeValue = beanServerConnection.invoke(name, operationName, arguments.toArray(),
-						signature);
+				attributeValue = beanServerConnection.invoke(name,
+						operationName, arguments.toArray(), signature);
 			}
 
 		} else {
 			// name == queryElements[0]
-			attributeValue = beanServerConnection.getAttribute(name, queryElements[1]);
+			attributeValue = beanServerConnection.getAttribute(name,
+					queryElements[1]);
 		}
 
 		attributeValue = getScalarValue(attributeValue, query, 2);
@@ -177,7 +182,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	 * @param queryLevel
 	 * @return
 	 */
-	private Object getScalarValue(Object attributeValue, String query, int queryLevel) {
+	private Object getScalarValue(Object attributeValue, String query,
+			int queryLevel) {
 		final String[] queryElements = query.split("\\|");
 		Object retVal = attributeValue;
 
@@ -199,7 +205,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 				try {
 					index = Integer.parseInt(queryElement);
 				} catch (NumberFormatException e) {
-					logger.error("Invalid value of array index: " + queryElement + " in query: " + query);
+					logger.error("Invalid value of array index: "
+							+ queryElement + " in query: " + query);
 				}
 				if (index != -1) {
 					try {
@@ -227,28 +234,34 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	 * @throws Exception
 	 */
 	@Override
-	public Object getCapabilityValue(Resource resource, String capabilityType) throws Exception {
+	public Object getCapabilityValue(Resource resource, String capabilityType)
+			throws Exception {
 
 		String capabilityName = StringHelper.getNameFromURI(capabilityType);
 
-		logger.info("Get capability value of instance: " + resource.getUri() + " type: " + resource.getType()
-				+ " name: " + capabilityName);
+		logger.info("Get capability value of instance: " + resource.getUri()
+				+ " type: " + resource.getType() + " name: " + capabilityName);
 
-		String lcType = StringHelper.getNameFromURI(resource.getType()).toLowerCase();
-		String query = getProperty(lcType + CAPABILITY_KEY_PART + capabilityName);
+		String lcType = StringHelper.getNameFromURI(resource.getType())
+				.toLowerCase();
+		String query = getProperty(lcType + CAPABILITY_KEY_PART
+				+ capabilityName);
 
 		if (query == null) {
-			throw new RuntimeException("No query defined for: " + lcType + " " + capabilityName);
+			throw new RuntimeException("No query defined for: " + lcType + " "
+					+ capabilityName);
 		}
 
 		String prefixToRemove = getProperty(lcType + INSTANCE_NAME_PREFIX);
 
 		MBeanServerConnection connection = getConnectionForResource(resource);
-		Object retVal = getAttribute(connection, query, resource.getUri(), prefixToRemove);
+		Object retVal = getAttribute(connection, query, resource.getUri(),
+				prefixToRemove);
 
 		logger.info("Returning value: " + retVal);
 
-		fireNewCapabilityValueEvent(capabilityType, resource.getUri(), resource.getType(), retVal);
+		fireNewCapabilityValueEvent(capabilityType, resource.getUri(),
+				resource.getType(), retVal);
 
 		return retVal;
 	}
@@ -259,7 +272,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	}
 
 	@Override
-	public boolean hasCapability(Resource resource, String capabilityType) throws Exception {
+	public boolean hasCapability(Resource resource, String capabilityType)
+			throws Exception {
 		Object retVal = getCapabilityValue(resource, capabilityType);
 		return retVal != null;
 	}
@@ -287,8 +301,10 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 			connections.put(transportUri.toString(), mbsc);
 
 			try {
-				mbsc.createMBean("org.crossgrid.wp3.monitoring.jims.mbeans.Linux.SystemInformation",
-						new ObjectName("linuxMonitoringExtension:type=SystemInformation"));
+				mbsc.createMBean(
+						"org.crossgrid.wp3.monitoring.jims.mbeans.Linux.SystemInformation",
+						new ObjectName(
+								"linuxMonitoringExtension:type=SystemInformation"));
 			} catch (InstanceAlreadyExistsException e) {
 				// fall-through - if this mbean already exists, everything is ok
 			} catch (ReflectionException e) {
@@ -305,7 +321,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	private MBeanServerConnection getConnectionForResource(Resource resource)
 			throws ResourceNotRegisteredException {
 		Object transportUri = resource.getProperty(JMX_TRANSPORT_PROPERTY_KEY);
-		MBeanServerConnection mBeanServerConnection = connections.get(transportUri);
+		MBeanServerConnection mBeanServerConnection = connections
+				.get(transportUri);
 
 		if (mBeanServerConnection == null) {
 			throw new ResourceNotRegisteredException(resource.getUri());
@@ -315,7 +332,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	}
 
 	@Override
-	public void discoverChildren(Resource resource, List<String> types) throws Exception {
+	public void discoverChildren(Resource resource, List<String> types)
+			throws Exception {
 		logger.info("Discover children of: " + resource);
 
 		MBeanServerConnection mBeanServerConnection = getConnectionForResource(resource);
@@ -324,17 +342,20 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 		Map<String, Map<String, Object>> childrenProperties = new HashMap<String, Map<String, Object>>();
 
 		for (String type : types) {
-			List<String> childrenOfType = discoverChildrenOfType(mBeanServerConnection, resource.getUri(),
+			List<String> childrenOfType = discoverChildrenOfType(
+					mBeanServerConnection, resource.getUri(),
 					type.toLowerCase());
 			for (String child : childrenOfType) {
 				child = resource.getUri() + "/" + child;
 				childrenTypes.put(child, type);
-				Map<String, Object> newProperties = new HashMap<String, Object>(resource.getProperties());
+				Map<String, Object> newProperties = new HashMap<String, Object>(
+						resource.getProperties());
 				childrenProperties.put(child, newProperties);
 			}
 		}
 
-		fireNewResourcesEvent(resource.getUri(), childrenTypes, childrenProperties);
+		fireNewResourcesEvent(resource.getUri(), childrenTypes,
+				childrenProperties);
 	}
 
 	// @Override
@@ -348,8 +369,9 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	// return null;
 	// }
 
-	private List<String> discoverChildrenOfType(MBeanServerConnection mBeanServerConnection, String uri,
-			String type) throws Exception {
+	private List<String> discoverChildrenOfType(
+			MBeanServerConnection mBeanServerConnection, String uri, String type)
+			throws Exception {
 
 		logger.info("Discovering for type: " + type);
 
@@ -366,21 +388,17 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 		}
 
 		// prefix of instance name
-		String instanceNamePrefix = getProperty(nameOfType + INSTANCE_NAME_PREFIX);
+		String instanceNamePrefix = getProperty(nameOfType
+				+ INSTANCE_NAME_PREFIX);
 
-		instanceNamePrefix = (instanceNamePrefix == null) ? "" : instanceNamePrefix;
+		instanceNamePrefix = (instanceNamePrefix == null) ? ""
+				: instanceNamePrefix;
 		Object instanceNameObject = null;
 		try {
 			instanceNameObject = getAttribute(mBeanServerConnection, query, uri);
-		} catch (Exception e) {
-			logger.warn("Exception thrown when discovering: " + type
-					+ ". No instances of this type will be found.");
-			logger.debug("Exception thrown when discovering: " + type
-					+ ". No instances of this type will be found.", e);
-		}
 
-		// if returned value is an array ...
-		if (instanceNameObject != null) {
+			// if returned value is an array ...
+			// if (instanceNameObject != null) {
 			if (instanceNameObject.getClass().isArray()) {
 				int size = Array.getLength(instanceNameObject);
 				for (int i = 0; i < size; i++) {
@@ -389,15 +407,23 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 				}
 			} else {
 				// ... otherwise ...
-				instances.add(instanceNamePrefix + instanceNameObject.toString());
+				instances.add(instanceNamePrefix
+						+ instanceNameObject.toString());
 			}
+			// }
+		} catch (Exception e) {
+			logger.warn("Exception thrown when discovering: " + type
+					+ ". No instances of this type will be found.");
+			logger.debug("Exception thrown when discovering: " + type
+					+ ". No instances of this type will be found.", e);
 		}
 
 		return instances;
 	}
 
 	@Override
-	public void executeAction(Action actionToExecute) throws ActionNotSupportedException {
+	public void executeAction(Action actionToExecute)
+			throws ActionNotSupportedException {
 		throw new ActionNotSupportedException();
 	}
 
@@ -408,7 +434,8 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 
 	@Override
 	public boolean isResourceRegistered(Resource resource) {
-		return connections.containsKey(resource.getProperty(JMX_TRANSPORT_PROPERTY_KEY));
+		return connections.containsKey(resource
+				.getProperty(JMX_TRANSPORT_PROPERTY_KEY));
 	}
 
 }
