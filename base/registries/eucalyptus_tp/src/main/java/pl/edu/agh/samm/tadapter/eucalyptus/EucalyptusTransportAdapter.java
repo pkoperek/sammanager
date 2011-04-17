@@ -59,18 +59,22 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(EucalyptusTransportAdapter.class);
 
+	// transport adapter resource parameters
+	public static final String EUCALYPTUS_KEY_NAME = "EUCALYPTUSKEYNAME";
 	public static final String EUCALYPTUS_TRANSPORT_PROPERTY_KEY = "EUCALYPTUSENDPOINT";
 	public static final String EUCALYPTUS_ACCESS_KEY = "EUCALYPTUSACCESSKEY";
 	public static final String EUCALYPTUS_SECRET_KEY = "EUCALYPTUSSECRETKEY";
-	public static final String EUCALYPTUS_KEY_NAME = "EUCALYPTUSKEYNAME";
-	public static final String INSTANCE_TYPE = "EUCALYPTUS_INSTANCE_TYPE";
-	public static final String IMAGE_ID = "EUCALYPTUS_IMAGE_ID";
-	public static final String INSTANCE_ID = "EUCALYPTUS_INSTANCE_ID";
-
+	
+	// action parameters 
+	public static final String EUCALYPTUS_CLUSTER_PARAMETER = "EUCALYPTUS_CLUSTER_RESOURCE";
+	public static final String EUCALYPTUS_IMAGE_ID = "EUCALYPTUS_IMAGE_ID";
+	public static final String EUCALYPTUS_INSTANCE_TYPE = "EUCALYPTUS_INSTANCE_TYPE";
+	
+	public static final String EUCALYPTUS_INSTANCE_ID = "EUCALYPTUS_INSTANCE_ID";
+	
+	// other contants
 	private static final String VIRTUAL_NODE_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#VirtualNode";
-	private static final String CLUSTER_PARAMETER_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#ClusterParameter";
 	private static final String VIRTUAL_NODE_NAME_PREFIX = "Instance_";
-
 	private static final String IMAGE_TYPE_MACHINE = "machine";
 	private static final String IMAGE_STATE_AVAILABLE = "available";
 
@@ -169,7 +173,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				.getActionURI())) {
 			Resource clusterResource = getClusterResource(actionToExecute);
 			// String instanceId = getInstanceId(actionToExecute);
-			String imageId = (String) clusterResource.getProperty(IMAGE_ID);
+			String imageId = (String) clusterResource.getProperty(EUCALYPTUS_IMAGE_ID);
 			String instanceId = getRandomInstance(clusterResource, imageId);
 			if (instanceId == null) {
 				logger.warn("Can't stop any instance! There are no instances running with imageId = '"
@@ -214,7 +218,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 
 	private String getInstanceId(Action actionToExecute) {
 		String instanceId = actionToExecute.getParameterValues().get(
-				INSTANCE_ID);
+				EUCALYPTUS_INSTANCE_ID);
 		return instanceId;
 	}
 
@@ -234,18 +238,18 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 
 	private String getInstanceType(Action actionToExecute) {
 		String instanceType = actionToExecute.getParameterValues().get(
-				INSTANCE_TYPE);
+				EUCALYPTUS_INSTANCE_TYPE);
 		return instanceType;
 	}
 
 	private String getImageId(Action actionToExecute) {
-		String imageId = actionToExecute.getParameterValues().get(IMAGE_ID);
+		String imageId = actionToExecute.getParameterValues().get(EUCALYPTUS_IMAGE_ID);
 		return imageId;
 	}
 
 	private Resource getClusterResource(Action actionToExecute) {
 		String clusterInstanceUri = actionToExecute.getParameterValues().get(
-				CLUSTER_PARAMETER_TYPE);
+				EUCALYPTUS_CLUSTER_PARAMETER);
 		Resource resource = null;
 		for (Map.Entry<Resource, AmazonEC2Client> entry : ec2Clients.entrySet()) {
 			if (entry.getKey().getUri().equalsIgnoreCase(clusterInstanceUri)) {
@@ -333,7 +337,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 						+ ":9999/jndi/rmi://" + instance.getPublicDnsName()
 						+ ":9999/jmxrmi");
 
-		parameters.put(INSTANCE_ID, instance.getInstanceId());
+		parameters.put(EUCALYPTUS_INSTANCE_ID, instance.getInstanceId());
 
 		coreManagement.registerResource(new Resource(clusterResource.getUri()
 				+ "/" + VIRTUAL_NODE_NAME_PREFIX + instance.getInstanceId(),
