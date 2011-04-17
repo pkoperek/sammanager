@@ -77,7 +77,7 @@ public class EsperRuleProcessorTest {
 		expect(
 				mockEpAdmin
 						.createEPL(
-								"select metric, value from IMetricEvent(metric.resourceURI = 'testURI' and metric.metricURI = 'metrictestURI' and resourceType = 'resourceTypeURI') where value > 10.0",
+								"select metric, value from IMetricEvent(metric.resourceURI like 'testURI' and metric.metricURI like 'metrictestURI' and resourceType like 'resourceTypeURI') where value > 10.0",
 								RULE_NAME)).andReturn(mockStatement);
 
 		// catch the update listener
@@ -262,6 +262,38 @@ public class EsperRuleProcessorTest {
 		mocksControl.verify();
 	}
 
+	@Test
+	public void testProcessingRegexTest() throws Exception {
+		IAlarmListener mockAlarmListener = mocksControl
+				.createMock(IAlarmListener.class);
+		mockAlarmListener.handleAlarm(anyObject(IAlarm.class));
+
+		Configuration config = new Configuration();
+		config.addEventType(IMeasurementEvent.class);
+		config.addEventType(IMetricEvent.class);
+
+		EPServiceProvider service = EPServiceProviderManager
+				.getDefaultProvider(config);
+
+		Rule rule = new Rule("testRuleName");
+		rule.setResourceUri("%");
+		rule.setMetricUri("%");
+		rule.setCondition("metric.metricPollTimeInterval > 10");
+		rule.setResourceTypeUri("%");
+
+		Metric mi = new Metric("metricURI", "resourceURI");
+		mi.setMetricPollTimeInterval(1000);
+		MetricEvent e = new MetricEvent(mi, 1.0, "resourceTypeURI");
+
+		// scenario
+		mocksControl.replay();
+		impl.setEpService(service);
+		impl.addRule(rule);
+		impl.addAlarmListener(mockAlarmListener);
+		impl.processMetricEvent(e);
+		mocksControl.verify();
+	}
+	
 	@Test
 	public void testProcessing() throws Exception {
 		IAlarmListener mockAlarmListener = mocksControl

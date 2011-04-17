@@ -85,21 +85,21 @@ public class EsperRuleProcessor implements IRuleProcessor {
 		String filter = "";
 
 		if (resourceURI != null) {
-			filter += "metric.resourceURI = '" + resourceURI + "'";
+			filter += "metric.resourceURI like '" + resourceURI + "'";
 		}
 
 		if (metricURI != null) {
 			if (!filter.equals("")) {
 				filter += " and ";
 			}
-			filter += "metric.metricURI = '" + metricURI + "'";
+			filter += "metric.metricURI like '" + metricURI + "'";
 		}
 
 		if (resourceTypeURI != null) {
 			if (!filter.equals("")) {
 				filter += " and ";
 			}
-			filter += "resourceType = '" + resourceTypeURI + "'";
+			filter += "resourceType like '" + resourceTypeURI + "'";
 		}
 
 		if (!filter.equals("")) {
