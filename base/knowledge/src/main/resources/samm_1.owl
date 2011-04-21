@@ -665,6 +665,7 @@
 
     <owl:Thing rdf:about="#EucalyptusCluster">
         <rdf:type rdf:resource="#CClusterType"/>
+        <hasResourceTypeCapability rdf:resource="#ImageInstancesCapability"/>
         <hasChildNodeOfType rdf:resource="#MasterNode"/>
         <hasChildNodeOfType rdf:resource="#SlaveNode"/>
     </owl:Thing>
@@ -692,6 +693,23 @@
     <owl:Thing rdf:about="#HeapUsageTypeCapability">
         <rdf:type rdf:resource="#CJVMTypeCapability"/>
     </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ImageInstancesCapability -->
+
+    <CSoftwareTypeCapability rdf:about="#ImageInstancesCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CSoftwareTypeCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ImageInstancesMetric -->
+
+    <CSoftwareMetric rdf:about="#ImageInstancesMetric">
+        <rdf:type rdf:resource="&owl;Thing"/>
+        <usesTypeCapability rdf:resource="#ImageInstancesCapability"/>
+    </CSoftwareMetric>
     
 
 
