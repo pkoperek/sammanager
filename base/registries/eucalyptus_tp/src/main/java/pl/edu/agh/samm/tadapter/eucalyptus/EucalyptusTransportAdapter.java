@@ -64,14 +64,17 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	public static final String EUCALYPTUS_TRANSPORT_PROPERTY_KEY = "EUCALYPTUSENDPOINT";
 	public static final String EUCALYPTUS_ACCESS_KEY = "EUCALYPTUSACCESSKEY";
 	public static final String EUCALYPTUS_SECRET_KEY = "EUCALYPTUSSECRETKEY";
-	
-	// action parameters 
+	public static final String EUCALYPTUS_IMAGE_TO_OBSERVE_ID = "EUCALYPTUS_IMAGE_TO_OBSERVE_ID";
+
+	// start action parameters
 	public static final String EUCALYPTUS_CLUSTER_PARAMETER = "EUCALYPTUS_CLUSTER_RESOURCE";
 	public static final String EUCALYPTUS_IMAGE_ID = "EUCALYPTUS_IMAGE_ID";
 	public static final String EUCALYPTUS_INSTANCE_TYPE = "EUCALYPTUS_INSTANCE_TYPE";
-	
+	public static final String EUCALYPTUS_STARTVM_USERDATA = "EUCALYPTUS_STARTVM_USERDATA";
+
+	// stop action parameters
 	public static final String EUCALYPTUS_INSTANCE_ID = "EUCALYPTUS_INSTANCE_ID";
-	
+
 	// other contants
 	private static final String VIRTUAL_NODE_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#VirtualNode";
 	private static final String VIRTUAL_NODE_NAME_PREFIX = "Instance_";
@@ -81,6 +84,10 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	private static final String ACTION_START_MVCBASIC_VM = "http://www.icsr.agh.edu.pl/samm_1.owl#StartMVCBasicVMAction";
 	private static final String ACTION_START_VM = "http://www.icsr.agh.edu.pl/samm_1.owl#StartVMAction";
 	private static final String ACTION_STOP_VM = "http://www.icsr.agh.edu.pl/samm_1.owl#StopVMAction";
+
+	private static final String IMAGE_INSTANCES_CAPABILITY = "http://www.icsr.agh.edu.pl/samm_1.owl#ImageInstancesCapability";
+
+	private static final String EUCALYPTUS_CLUSTER_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#EucalyptusCluster";
 
 	private static Set<String> supportedActions;
 
@@ -168,12 +175,15 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			Resource clusterResource = getClusterResource(actionToExecute);
 			String imageId = getImageId(actionToExecute);
 			String instanceType = getInstanceType(actionToExecute);
-			startOneInstanceAction(clusterResource, imageId, instanceType);
+			String userData = getUserData(actionToExecute);
+			startOneInstanceAction(clusterResource, imageId, instanceType,
+					userData);
 		} else if (ACTION_STOP_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
 			Resource clusterResource = getClusterResource(actionToExecute);
 			// String instanceId = getInstanceId(actionToExecute);
-			String imageId = (String) clusterResource.getProperty(EUCALYPTUS_IMAGE_ID);
+			String imageId = (String) clusterResource
+					.getProperty(EUCALYPTUS_IMAGE_ID);
 			String instanceId = getRandomInstance(clusterResource, imageId);
 			if (instanceId == null) {
 				logger.warn("Can't stop any instance! There are no instances running with imageId = '"
@@ -183,6 +193,12 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			}
 		}
 		logger.info("Executed: " + ACTION_START_VM);
+	}
+
+	private String getUserData(Action actionToExecute) {
+		String userData = actionToExecute.getParameterValues().get(
+				EUCALYPTUS_STARTVM_USERDATA);
+		return userData;
 	}
 
 	private String getRandomInstance(Resource clusterResource, String imageId) {
@@ -243,7 +259,8 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	}
 
 	private String getImageId(Action actionToExecute) {
-		String imageId = actionToExecute.getParameterValues().get(EUCALYPTUS_IMAGE_ID);
+		String imageId = actionToExecute.getParameterValues().get(
+				EUCALYPTUS_IMAGE_ID);
 		return imageId;
 	}
 
@@ -272,14 +289,49 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	@Override
 	public Object getCapabilityValue(Resource resource, String capabilityType)
 			throws Exception {
-		// not monitoring eucalyptus
-		return null;
+		Object retVal = null;
+		if (capabilityType.equals(IMAGE_INSTANCES_CAPABILITY)) {
+			if (resource.getType().equals(EUCALYPTUS_CLUSTER_TYPE)) {
+				AmazonEC2Client ec2Client = ec2Clients.get(resource);
+				String imageId = (String) resource
+						.getProperty(EUCALYPTUS_IMAGE_TO_OBSERVE_ID);
+				if (imageId == null) {
+					throw new IllegalArgumentException(
+							"Provided resource doesn't have a defined image ID to observe!");
+				}
+				retVal = new Integer(getImageInstancesCapability(ec2Client,
+						imageId));
+			}
+		}
+		return retVal;
+	}
+
+	private int getImageInstancesCapability(AmazonEC2Client ec2Client,
+			String imageId) {
+		int imageCount = 0;
+
+		DescribeInstancesResult result = ec2Client.describeInstances();
+		for (Reservation reservation : result.getReservations()) {
+			for (Instance instance : reservation.getInstances()) {
+				if (instance.getImageId().equals(imageId)) {
+					imageCount++;
+				}
+			}
+		}
+
+		return imageCount;
 	}
 
 	@Override
 	public boolean hasCapability(Resource resource, String capabilityType)
 			throws Exception {
-		// not monitoring eucalyptus
+
+		if (resource.getType().equals(EUCALYPTUS_CLUSTER_TYPE)) {
+			if (capabilityType.equals(IMAGE_INSTANCES_CAPABILITY)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
@@ -323,7 +375,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	private void startMVCBasicTomcatInstanceAction(Resource resource,
 			String machineInstanceId, String instanceType) throws Exception {
 		Instance instance = startOneInstanceAction(resource, machineInstanceId,
-				instanceType);
+				instanceType, null);
 		EC2Util.waitForURL(instance.getPublicDnsName(), 8080, "/mvc-basic");
 		logger.info("Tomcat started on instance " + instance.getInstanceId());
 		registerNewInstance(resource, instance);
@@ -354,7 +406,8 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	 * @throws Exception
 	 */
 	private Instance startOneInstanceAction(Resource resource,
-			final String imageId, String instanceType) throws Exception {
+			final String imageId, String instanceType, String userData)
+			throws Exception {
 		AmazonEC2Client client = ec2Clients.get(resource);
 
 		Image image = getImageByImageID(client, imageId);
@@ -367,6 +420,11 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		}
 
 		RunInstancesRequest command = new RunInstancesRequest();
+
+		if (userData != null) {
+			command.setUserData(userData);
+		}
+
 		command.setImageId(image.getImageId());
 		command.setInstanceType(instanceType);
 		command.setKernelId(image.getKernelId());
