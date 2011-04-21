@@ -1,0 +1,80 @@
+<configuration>
+	<resourceSet>
+		<resource uri="/india_clust">
+			<type>http://www.icsr.agh.edu.pl/samm_1.owl#EucalyptusCluster</type>
+			<property>
+				<key>EUCALYPTUS_IMAGE_TO_OBSERVE_ID</key>
+				<value>pk-userkey</value>
+			</property>
+			<property>
+				<key>EUCALYPTUSKEYNAME</key>
+				<value>pk-userkey</value>
+			</property>
+			<property>
+				<key>EUCALYPTUSENDPOINT</key>
+				<value>http://149.165.146.135:8773/services/Eucalyptus</value>
+			</property>
+			<property>
+				<key>EUCALYPTUSACCESSKEY</key>
+				<value>fvoBixuzotvnkShgvI5i6dxAdtM2UThwfaue8w</value>
+			</property>
+			<property>
+				<key>EUCALYPTUSSECRETKEY</key>
+				<value>bYrfZsFvmDL7OQr7oJZpFBmGFFEagVz68A</value>
+			</property>
+		</resource>
+		<resource uri="/MasterNode">
+			<type>http://www.icsr.agh.edu.pl/samm_1.owl#MasterNode</type>
+			<property>
+				<key>JMXURL</key>
+				<value>service:jmx:rmi:///jndi/rmi://localhost:9999/jmxrmi</value>
+			</property>
+		</resource>
+		<resource uri="/SlaveNode1">
+			<type>http://www.icsr.agh.edu.pl/samm_1.owl#SlaveNode</type>
+			<property>
+				<key>JMXURL</key>
+				<value>service:jmx:rmi:///jndi/rmi://localhost:9998/jmxrmi</value>
+			</property>
+		</resource>
+	</resourceSet>
+	<ruleSet>
+		<rule name="ruleForStartingVM">
+			<!-- <resourceTypeUri>http://www.icsr.agh.edu.pl/samm_1.owl#JVM</resourceTypeUri> -->
+			<resourceUri>%SlaveNode%</resourceUri>
+			<condition>cast(value,double) > 0</condition>
+			<metricUri>http://www.icsr.agh.edu.pl/samm_1.owl#CPUUsageMetric</metricUri>
+			<actionToExecute>
+				<actionURI>http://www.icsr.agh.edu.pl/samm_1.owl#StartVMAction</actionURI>
+				<parameterValues>
+					<entry>
+						<string>EUCALYPTUS_CLUSTER_RESOURCE</string>
+						<string>/india_clust</string>
+					</entry>
+					<entry>
+						<string>EUCALYPTUS_IMAGE_ID</string>
+						<string>/india_clust</string>
+					</entry>
+					<entry>
+						<string>EUCALYPTUS_INSTANCE_TYPE</string>
+						<string>c1.medium</string>
+					</entry>
+				</parameterValues>
+			</actionToExecute>
+		</rule>
+	</ruleSet>
+	<metricSet>
+		<!-- <metric resourceURI=".*MasterNodeApp.*"
+			metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#MasterApplicationQueueLengthMetric"
+			metricPollTimeInterval="20000" />
+		<metric resourceURI=".*SlaveNodeApp_.*"
+			metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#SlaveQueueLengthMetric"
+			metricPollTimeInterval="20000" />
+		<metric resourceURI=".*JVM_\w+@\w+"
+			metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#CPUUsageMetric"
+			metricPollTimeInterval="20000" />-->
+		<metric resourceURI="/india_clust"
+			metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#ImageInstancesMetric" />
+	</metricSet>
+</configuration>
+
