@@ -225,21 +225,6 @@
 			<artifactId>com.springsource.org.hsqldb</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-<!--		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>org.eclipse.update.configurator</artifactId>
-			<scope>runtime</scope>
-		</dependency>-->
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>org.eclipse.equinox.launcher</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse</groupId>
-			<artifactId>org.eclipse.equinox.common</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
@@ -260,5 +245,10 @@
 			<artifactId>com.springsource.org.xmlpull</artifactId> 
 			<scope>runtime</scope>
 		</dependency>
+                <dependency>
+                        <groupId>org.apache.felix</groupId>
+                        <artifactId>org.apache.felix.fileinstall</artifactId>
+			<scope>runtime</scope>
+                </dependency>
 	</dependencies>
 </project>
