@@ -477,20 +477,10 @@
 				<artifactId>com.springsource.org.hsqldb</artifactId>
 				<version>1.8.0.10</version>
 			</dependency>
-			<!--<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>org.eclipse.update.configurator</artifactId>
-				<version>3.2.1.v20092006</version>
-			</dependency>-->
 			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>org.eclipse.equinox.launcher</artifactId>
-				<version>1.0.1.R33x_v20080118</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse</groupId>
-				<artifactId>org.eclipse.equinox.common</artifactId>
-				<version>3.5.1.R35x_v20090807-1100</version>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.fileinstall</artifactId>
+				<version>3.1.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
