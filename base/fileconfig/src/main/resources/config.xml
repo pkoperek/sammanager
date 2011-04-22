@@ -12,15 +12,15 @@
 			</property>
 			<property>
 				<key>EUCALYPTUSENDPOINT</key>
-				<value>http://149.165.146.135:8773/services/Eucalyptus</value>
+				<value></value>
 			</property>
 			<property>
 				<key>EUCALYPTUSACCESSKEY</key>
-				<value>fvoBixuzotvnkShgvI5i6dxAdtM2UThwfaue8w</value>
+				<value></value>
 			</property>
 			<property>
 				<key>EUCALYPTUSSECRETKEY</key>
-				<value>bYrfZsFvmDL7OQr7oJZpFBmGFFEagVz68A</value>
+				<value></value>
 			</property>
 		</resource>
 		<resource uri="/MasterNode">
