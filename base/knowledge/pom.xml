@@ -62,7 +62,7 @@
 							com.hp.hpl.jena.util.iterator,
 							org.mindswap.pellet.jena
 							</Import-Package>
-						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
+						<Include-Resource>META-INF/spring=META-INF/spring,src/main/resources/samm_1.owl</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
