@@ -40,7 +40,8 @@ import pl.edu.agh.samm.db.impl.mapper.MeasurementValueRowMapper;
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  * 
  */
-public class MeasurementValueDAO extends AbstractDao implements IMeasurementValueDAO {
+public class MeasurementValueDAO extends AbstractDao implements
+		IMeasurementValueDAO {
 
 	private static final String SQL_INSERT = "INSERT INTO measurement_value(capability_uri,instance_uri,timestamp,value) values (:capabilityUri,:instanceUri,:timestamp,:value)";
 
@@ -62,25 +63,21 @@ public class MeasurementValueDAO extends AbstractDao implements IMeasurementValu
 
 	@Override
 	public void store(MeasurementValue information) {
-		try {
-			SqlParameterSource sps = new BeanPropertySqlParameterSource(information);
-			getSimpleJdbcTemplate().update(SQL_INSERT, sps);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		SqlParameterSource sps = new BeanPropertySqlParameterSource(information);
+		getSimpleJdbcTemplate().update(SQL_INSERT, sps);
 	}
 
 	@Override
-	public Map<String, Number> getAverageMeasurementValue(String resource, Date beforeActionStartTime,
-			Date actionStartTime) {
+	public Map<String, Number> getAverageMeasurementValue(String resource,
+			Date beforeActionStartTime, Date actionStartTime) {
 		final Map<String, Number> ret = new HashMap<String, Number>();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("instance", resource);
 		params.put("start", beforeActionStartTime);
 		params.put("end", actionStartTime);
 		SqlParameterSource sps = new MapSqlParameterSource(params);
-		getSimpleJdbcTemplate().getNamedParameterJdbcOperations().query(SQL_QUERY_AVERAGE_BY_CAPABILITY, sps,
-				new RowCallbackHandler() {
+		getSimpleJdbcTemplate().getNamedParameterJdbcOperations().query(
+				SQL_QUERY_AVERAGE_BY_CAPABILITY, sps, new RowCallbackHandler() {
 
 					@Override
 					public void processRow(ResultSet arg0) throws SQLException {
@@ -92,7 +89,8 @@ public class MeasurementValueDAO extends AbstractDao implements IMeasurementValu
 	}
 
 	@Override
-	public List<MeasurementValue> getMeasurementValues(String instanceUri, Date startTime, Date endTime) {
+	public List<MeasurementValue> getMeasurementValues(String instanceUri,
+			Date startTime, Date endTime) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("instanceUri", instanceUri);
 
@@ -104,19 +102,23 @@ public class MeasurementValueDAO extends AbstractDao implements IMeasurementValu
 		}
 
 		SqlParameterSource sps = new MapSqlParameterSource(params);
-		return getSimpleJdbcTemplate().query(query, new MeasurementValueRowMapper(), sps);
+		return getSimpleJdbcTemplate().query(query,
+				new MeasurementValueRowMapper(), sps);
 	}
 
 	@Override
-	public Set<String> getResourcesUris(Date preActionStartTime, Date actionStartTime) {
+	public Set<String> getResourcesUris(Date preActionStartTime,
+			Date actionStartTime) {
 		Map<String, Object> sps = new HashMap<String, Object>();
 		sps.put("start", preActionStartTime);
 		sps.put("end", actionStartTime);
-		return new HashSet<String>(getSimpleJdbcTemplate().query(SQL_QUERY_RESOURCE_URI_BETWEEN_DATE,
+		return new HashSet<String>(getSimpleJdbcTemplate().query(
+				SQL_QUERY_RESOURCE_URI_BETWEEN_DATE,
 				new ParameterizedRowMapper<String>() {
 
 					@Override
-					public String mapRow(ResultSet arg0, int arg1) throws SQLException {
+					public String mapRow(ResultSet arg0, int arg1)
+							throws SQLException {
 						return arg0.getString(1);
 					}
 				}, sps));
@@ -125,11 +127,12 @@ public class MeasurementValueDAO extends AbstractDao implements IMeasurementValu
 
 	@Override
 	public Set<String> getResourcesUris() {
-		return new HashSet<String>(getSimpleJdbcTemplate().query(SQL_QUERY_RESOURCE_URI,
-				new ParameterizedRowMapper<String>() {
+		return new HashSet<String>(getSimpleJdbcTemplate().query(
+				SQL_QUERY_RESOURCE_URI, new ParameterizedRowMapper<String>() {
 
 					@Override
-					public String mapRow(ResultSet arg0, int arg1) throws SQLException {
+					public String mapRow(ResultSet arg0, int arg1)
+							throws SQLException {
 						return arg0.getString(1);
 					}
 				}));
@@ -139,36 +142,42 @@ public class MeasurementValueDAO extends AbstractDao implements IMeasurementValu
 	public Set<String> getResourceCapabilities(String resourceURI) {
 		Map<String, Object> sps = new HashMap<String, Object>();
 		sps.put("instance", resourceURI);
-		return new HashSet<String>(getSimpleJdbcTemplate().query(SQL_QUERY_RESOURCE_CAPABILITIES,
+		return new HashSet<String>(getSimpleJdbcTemplate().query(
+				SQL_QUERY_RESOURCE_CAPABILITIES,
 				new ParameterizedRowMapper<String>() {
 					@Override
-					public String mapRow(ResultSet arg0, int arg1) throws SQLException {
+					public String mapRow(ResultSet arg0, int arg1)
+							throws SQLException {
 						return arg0.getString(1);
 					}
 				}, sps));
 	}
 
 	@Override
-	public List<MeasurementValue> getHistoricalMeasurementValues(String resourceURI, String capabilityURI) {
+	public List<MeasurementValue> getHistoricalMeasurementValues(
+			String resourceURI, String capabilityURI) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("instanceUri", resourceURI);
 		params.put("capabilityUri", capabilityURI);
 
 		SqlParameterSource sps = new MapSqlParameterSource(params);
-		return getSimpleJdbcTemplate().query(SQL_QUERY_MEASUREMENT_BY_CAPABILITY,
+		return getSimpleJdbcTemplate().query(
+				SQL_QUERY_MEASUREMENT_BY_CAPABILITY,
 				new MeasurementValueRowMapper(), sps);
 	}
 
 	@Override
-	public List<MeasurementValue> getHistoricalMeasurementValues(String resourceURI, String capabilityURI,
-			Date startTime, Date endTime) {
+	public List<MeasurementValue> getHistoricalMeasurementValues(
+			String resourceURI, String capabilityURI, Date startTime,
+			Date endTime) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("instanceUri", resourceURI);
 		params.put("capabilityUri", capabilityURI);
 		params.put("start", startTime);
 		params.put("end", endTime);
 		SqlParameterSource sps = new MapSqlParameterSource(params);
-		return getSimpleJdbcTemplate().query(SQL_QUERY_MEASUREMENT_BY_CAPABILITY_BETWEEN_DATE,
+		return getSimpleJdbcTemplate().query(
+				SQL_QUERY_MEASUREMENT_BY_CAPABILITY_BETWEEN_DATE,
 				new MeasurementValueRowMapper(), sps);
 	}
 

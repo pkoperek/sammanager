@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedSingleColumnRowMapper;
 
 import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.MetricImpl;
+import pl.edu.agh.samm.common.metrics.Metric;
 import pl.edu.agh.samm.common.metrics.MetricValue;
 
 /**
@@ -80,7 +80,7 @@ public class MetricValueDAO extends AbstractDao implements IMetricValueDAO {
 					public IMetric mapRow(ResultSet rs, int arg1) throws SQLException {
 						final String metricUri = rs.getString("metric_uri");
 						final String resourceUri = rs.getString("resource_uri");
-						return new MetricImpl(metricUri, resourceUri);
+						return new Metric(metricUri, resourceUri);
 					};
 				}, Collections.emptyMap());
 	}
