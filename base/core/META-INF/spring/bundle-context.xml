@@ -28,7 +28,7 @@
 		<property name="resourceDiscoveryAgent">
 			<ref bean="resourceDiscoveryAgent" />
 		</property>
-		<property name="actionExecutor" ref="actionExecutor" />
+		<property name="actionExecutor" ref="ignoringActionExecutor" />
 		<property name="ruleProcessor" ref="esperRuleEngine" />
 	</bean>
 
@@ -48,7 +48,7 @@
 	</bean>
 
 	<bean id="esperRuleEngine" class="pl.edu.agh.samm.core.EsperRuleProcessor">
-		<property name="actionExecutor" ref="actionExecutor" />
+		<property name="actionExecutor" ref="ignoringActionExecutor" />
 		<property name="epService" ref="defaultEpService" />
 	</bean>
 
@@ -94,13 +94,16 @@
 
 	<bean id="actionExecutionDBListener" class="pl.edu.agh.samm.core.ActionExecutionDBListener"
 		init-method="init">
-		<property name="actionExecutor" ref="actionExecutor" />
+		<property name="actionExecutor" ref="ignoringActionExecutor" />
 		<property name="storageService" ref="storageService" />
 	</bean>
 
-	<!-- ActionExecutor -->
-	<bean id="actionExecutor" class="pl.edu.agh.samm.core.ParallelActionExecutorImpl">
+	<!-- ActionExecutors -->
+	<bean id="parallelActionExecutor" class="pl.edu.agh.samm.core.ParallelActionExecutorImpl">
 		<property name="transportAdapters" ref="transportAdaptersSet" />
 	</bean>
 
+	<bean id="ignoringActionExecutor" class="pl.edu.agh.samm.core.IgnoringActionExecutorImpl">
+		<property name="transportAdapters" ref="transportAdaptersSet" />
+	</bean>
 </beans>
