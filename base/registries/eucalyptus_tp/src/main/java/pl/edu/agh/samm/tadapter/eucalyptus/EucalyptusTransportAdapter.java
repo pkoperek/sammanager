@@ -48,6 +48,8 @@ import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesResult;
+import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
+import com.amazonaws.services.ec2.model.TerminateInstancesResult;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -97,6 +99,13 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		supportedActions.add(ACTION_START_VM);
 		supportedActions.add(ACTION_STOP_VM);
 	}
+
+	// private ClassLoader taClassloader = null;
+	//
+	// {
+	// // after creation instance - store the classloader
+	// taClassloader = Thread.currentThread().getContextClassLoader();
+	// }
 
 	private ICoreManagement coreManagement;
 
@@ -182,8 +191,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				.getActionURI())) {
 			Resource clusterResource = getClusterResource(actionToExecute);
 			// String instanceId = getInstanceId(actionToExecute);
-			String imageId = (String) clusterResource
-					.getProperty(EUCALYPTUS_IMAGE_ID);
+			String imageId = (String) getImageId(actionToExecute);
 			String instanceId = getRandomInstance(clusterResource, imageId);
 			if (instanceId == null) {
 				logger.warn("Can't stop any instance! There are no instances running with imageId = '"
@@ -242,14 +250,15 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			String instanceId) {
 		AmazonEC2Client client = ec2Clients.get(clusterResource);
 
-		logger.info("Stopping instance: ");
-		StopInstancesRequest stopInstancesRequest = new StopInstancesRequest();
+		logger.info("Terminating instance: ");
+		TerminateInstancesRequest stopInstancesRequest = new TerminateInstancesRequest();
 		List<String> instancesToStop = new LinkedList<String>();
 		instancesToStop.add(instanceId);
 		stopInstancesRequest.setInstanceIds(instancesToStop);
 
-		StopInstancesResult result = client.stopInstances(stopInstancesRequest);
-		logger.info("Instances stopped: " + instancesToStop);
+		TerminateInstancesResult result = client
+				.terminateInstances(stopInstancesRequest);
+		logger.info("Instances terminated: " + instancesToStop);
 	}
 
 	private String getInstanceType(Action actionToExecute) {
@@ -356,7 +365,8 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		AWSCredentials ec2Credentials = new BasicAWSCredentials(
 				accessKey.toString(), secretKey.toString());
 
-		AmazonEC2Client ec2Client = new AmazonEC2Client(ec2Credentials);
+		AmazonEC2Client ec2Client = new AddressTypeAddingAmazonEC2Client(
+				ec2Credentials);
 		ec2Client.setEndpoint(endpointURL.toString());
 
 		ec2Clients.put(resource, ec2Client);
@@ -432,6 +442,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		command.setMinCount(1);
 		command.setRamdiskId(image.getRamdiskId());
 		command.setKeyName(resource.getProperty(EUCALYPTUS_KEY_NAME).toString());
+
 		RunInstancesResult result = client.runInstances(command);
 		List<Instance> instances = result.getReservation().getInstances();
 		if (instances.size() < 1) {

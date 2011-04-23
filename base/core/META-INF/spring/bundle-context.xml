@@ -99,7 +99,7 @@
 	</bean>
 
 	<!-- ActionExecutor -->
-	<bean id="actionExecutor" class="pl.edu.agh.samm.core.ActionExecutorImpl">
+	<bean id="actionExecutor" class="pl.edu.agh.samm.core.ParallelActionExecutorImpl">
 		<property name="transportAdapters" ref="transportAdaptersSet" />
 	</bean>
 

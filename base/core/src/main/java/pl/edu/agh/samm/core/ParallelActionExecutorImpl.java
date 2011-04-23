@@ -40,10 +40,10 @@ import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
  * @author Pawel Koperek <pkoperek@gmail.com>
  * @author Mateusz Kupisz <mkupisz@gmail.com>
  */
-public class ActionExecutorImpl implements IActionExecutor {
+public class ParallelActionExecutorImpl implements IActionExecutor {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(ActionExecutorImpl.class);
+			.getLogger(ParallelActionExecutorImpl.class);
 
 	private ExecutorService executor = Executors.newCachedThreadPool();
 	private List<IActionExecutionListener> listeners = new CopyOnWriteArrayList<IActionExecutionListener>();
