@@ -978,6 +978,18 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterApplicationAvgWaitTimeMetric -->
+
+    <owl:Thing rdf:about="#MasterApplicationAvgWaitTimeMetric">
+        <rdf:type rdf:resource="#CCustomApplicationMetric"/>
+        <hasCustomClass
+            >pl.edu.agh.samm.metrics.custom.AvgWaitTimeMetric</hasCustomClass>
+        <usesTypeCapability rdf:resource="#MasterServedCountCapability"/>
+        <usesTypeCapability rdf:resource="#MasterSumWaitTimeCapability"/>
+    </owl:Thing>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterApplicationQueueLengthMetric -->
 
     <owl:Thing rdf:about="#MasterApplicationQueueLengthMetric">
@@ -1006,7 +1018,22 @@
 
     <CCustomApplicationCapability rdf:about="#MasterQueueLengthCapability">
         <rdf:type rdf:resource="&owl;Thing"/>
-        <hasResourceTypeCapability rdf:resource="#MasterQueueLengthCapability"/>
+    </CCustomApplicationCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterServedCountCapability -->
+
+    <CCustomApplicationCapability rdf:about="#MasterServedCountCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
+    </CCustomApplicationCapability>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MasterSumWaitTimeCapability -->
+
+    <CCustomApplicationCapability rdf:about="#MasterSumWaitTimeCapability">
+        <rdf:type rdf:resource="&owl;Thing"/>
     </CCustomApplicationCapability>
     
 

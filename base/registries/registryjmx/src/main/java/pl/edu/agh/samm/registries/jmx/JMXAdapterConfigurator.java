@@ -46,9 +46,14 @@ public class JMXAdapterConfigurator {
 		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put(
 				"masterapplication.capability.MasterQueueLengthCapability",
 				"pl.edu.agh.samm.test:type=ExpressionGenerator|QueueLength");
+		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put(
+				"masterapplication.capability.MasterServedCountCapability",
+				"pl.edu.agh.samm.test:type=ExpressionGenerator|ServedCount");
+		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put(
+				"masterapplication.capability.MasterSumWaitTimeCapability",
+				"pl.edu.agh.samm.test:type=ExpressionGenerator|SumWaitTime");		
 
 		// slave application
-
 		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put(
 				"slaveapplication.instance.prefix", "SlaveNodeApp_");
 		JMXAdapterConfigurator.DEFAULT_PROPERTIES.put(

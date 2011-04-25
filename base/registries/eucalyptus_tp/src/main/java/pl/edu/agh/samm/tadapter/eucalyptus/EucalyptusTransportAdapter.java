@@ -46,8 +46,6 @@ import com.amazonaws.services.ec2.model.InstanceStateName;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
-import com.amazonaws.services.ec2.model.StopInstancesRequest;
-import com.amazonaws.services.ec2.model.StopInstancesResult;
 import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 import com.amazonaws.services.ec2.model.TerminateInstancesResult;
 
@@ -73,9 +71,11 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	public static final String EUCALYPTUS_IMAGE_ID = "EUCALYPTUS_IMAGE_ID";
 	public static final String EUCALYPTUS_INSTANCE_TYPE = "EUCALYPTUS_INSTANCE_TYPE";
 	public static final String EUCALYPTUS_STARTVM_USERDATA = "EUCALYPTUS_STARTVM_USERDATA";
+	public static final String EUCALYPTUS_MAX_VMS = "EUCALYPTUS_MAX_VMS";
 
 	// stop action parameters
 	public static final String EUCALYPTUS_INSTANCE_ID = "EUCALYPTUS_INSTANCE_ID";
+	public static final String EUCALYPTUS_MIN_VMS = "EUCALYPTUS_MIN_VMS";
 
 	// other contants
 	private static final String VIRTUAL_NODE_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#VirtualNode";
@@ -185,8 +185,34 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			String imageId = getImageId(actionToExecute);
 			String instanceType = getInstanceType(actionToExecute);
 			String userData = getUserData(actionToExecute);
-			startOneInstanceAction(clusterResource, imageId, instanceType,
-					userData);
+
+			Integer maxVMs = getMaxVMs(actionToExecute);
+			int instancesNumber = getInstancesNumber(clusterResource, imageId);
+
+			Instance instance = null;
+			if (maxVMs != null) {
+				logger.info("Currently running instances: " + instancesNumber
+						+ " max: " + maxVMs);
+				if (instancesNumber < maxVMs) {
+					logger.info("Starting new instance!");
+					instance = startOneInstanceAction(clusterResource, imageId,
+							instanceType, userData);
+				} else {
+					logger.info("Too much instances running! Can't start a new one!");
+				}
+			} else {
+				logger.info("Maximum number of instances not defined!");
+				instance = startOneInstanceAction(clusterResource, imageId,
+						instanceType, userData);
+			}
+
+			if (instance != null) {
+				logger.info("Registering instance: " + instance);
+				registerNewInstance(clusterResource, instance);
+			} else {
+				logger.info("No instance to register!");
+			}
+
 		} else if (ACTION_STOP_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
 			Resource clusterResource = getClusterResource(actionToExecute);
@@ -197,16 +223,63 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				logger.warn("Can't stop any instance! There are no instances running with imageId = '"
 						+ imageId + "'");
 			} else {
-				stopOneInstanceAction(clusterResource, instanceId);
+
+				Integer minVMs = getMinVMs(actionToExecute);
+				int instancesNumber = getInstancesNumber(clusterResource,
+						imageId);
+
+				if (minVMs != null) {
+					if (instancesNumber > minVMs) {
+						logger.info("Currently running instances: "
+								+ instancesNumber + " min: " + minVMs
+								+ " Stopping!");
+						stopOneInstanceAction(clusterResource, instanceId);
+					} else {
+						logger.info("Can't stop more instances! (currently runnning: "
+								+ instancesNumber + " min: " + minVMs + ")");
+					}
+				} else {
+					logger.info("No minimum number of instances defined! Stopping...");
+					stopOneInstanceAction(clusterResource, instanceId);
+				}
 			}
 		}
 		logger.info("Executed: " + ACTION_START_VM);
+	}
+
+	private Integer getMinVMs(Action actionToExecute) {
+		String minVMs = actionToExecute.getParameterValues().get(
+				EUCALYPTUS_MIN_VMS);
+		Integer retVal = null;
+		if (minVMs != null) {
+			retVal = Integer.valueOf(minVMs);
+		}
+		return retVal;
+	}
+
+	private Integer getMaxVMs(Action actionToExecute) {
+		String maxVMs = actionToExecute.getParameterValues().get(
+				EUCALYPTUS_MAX_VMS);
+		Integer retVal = null;
+		if (maxVMs != null) {
+			retVal = Integer.valueOf(maxVMs);
+		}
+		return retVal;
 	}
 
 	private String getUserData(Action actionToExecute) {
 		String userData = actionToExecute.getParameterValues().get(
 				EUCALYPTUS_STARTVM_USERDATA);
 		return userData;
+	}
+
+	private int getInstancesNumber(Resource clusterResource, String imageId) {
+		AmazonEC2Client client = this.ec2Clients.get(clusterResource);
+
+		DescribeInstancesResult result = client.describeInstances();
+		List<Instance> instances = getInstancesByImageId(result, imageId);
+
+		return instances.size();
 	}
 
 	private String getRandomInstance(Resource clusterResource, String imageId) {
