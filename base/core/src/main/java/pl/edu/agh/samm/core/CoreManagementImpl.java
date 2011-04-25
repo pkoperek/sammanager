@@ -36,14 +36,12 @@ import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
 import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.core.SLAException;
 import pl.edu.agh.samm.common.impl.StringHelper;
 import pl.edu.agh.samm.common.metrics.IMetric;
 import pl.edu.agh.samm.common.metrics.IMetricListener;
 import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.common.metrics.Metric;
 import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryEvent;
 import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryListener;
 import pl.edu.agh.samm.common.tadapter.ResourceDiscoveryEventType;
@@ -169,6 +167,7 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 		this.ruleProcessorInputListener = new RuleProcessorInputListener(
 				ruleProcessor, runningMetricsManager);
 		this.ruleProcessorInputListener.enable();
+		logger.info("Core Bean initialized");
 	}
 
 	/**
