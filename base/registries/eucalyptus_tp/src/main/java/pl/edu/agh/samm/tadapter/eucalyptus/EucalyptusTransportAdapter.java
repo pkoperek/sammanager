@@ -28,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.ICoreManagement;
 import pl.edu.agh.samm.common.core.Resource;
 import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
@@ -78,6 +77,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	public static final String EUCALYPTUS_MIN_VMS = "EUCALYPTUS_MIN_VMS";
 
 	// other contants
+	private static final String SLAVE_NODE_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#SlaveNode";
 	private static final String VIRTUAL_NODE_TYPE = "http://www.icsr.agh.edu.pl/samm_1.owl#VirtualNode";
 	private static final String VIRTUAL_NODE_NAME_PREFIX = "Instance_";
 	private static final String IMAGE_TYPE_MACHINE = "machine";
@@ -99,15 +99,6 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		supportedActions.add(ACTION_START_VM);
 		supportedActions.add(ACTION_STOP_VM);
 	}
-
-	// private ClassLoader taClassloader = null;
-	//
-	// {
-	// // after creation instance - store the classloader
-	// taClassloader = Thread.currentThread().getContextClassLoader();
-	// }
-
-	private ICoreManagement coreManagement;
 
 	private String mvcBasicImageId;
 
@@ -208,7 +199,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 
 			if (instance != null) {
 				logger.info("Registering instance: " + instance);
-				registerNewInstance(clusterResource, instance);
+				registerNewInstance(clusterResource, instance, SLAVE_NODE_TYPE);
 			} else {
 				logger.info("No instance to register!");
 			}
@@ -461,22 +452,26 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				instanceType, null);
 		EC2Util.waitForURL(instance.getPublicDnsName(), 8080, "/mvc-basic");
 		logger.info("Tomcat started on instance " + instance.getInstanceId());
-		registerNewInstance(resource, instance);
+		registerNewInstance(resource, instance, VIRTUAL_NODE_TYPE);
 	}
 
-	private void registerNewInstance(Resource clusterResource, Instance instance)
+	private void registerNewInstance(Resource clusterResource, Instance instance, String type)
 			throws ResourceAlreadyRegisteredException {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("JMXURL",
 				"service:jmx:rmi://" + instance.getPublicDnsName()
-						+ ":9999/jndi/rmi://" + instance.getPublicDnsName()
-						+ ":9999/jmxrmi");
+						+ ":60001/jndi/rmi://" + instance.getPublicDnsName()
+						+ ":60000/jmxrmi");
 
 		parameters.put(EUCALYPTUS_INSTANCE_ID, instance.getInstanceId());
 
-		coreManagement.registerResource(new Resource(clusterResource.getUri()
-				+ "/" + VIRTUAL_NODE_NAME_PREFIX + instance.getInstanceId(),
-				VIRTUAL_NODE_TYPE, parameters));
+		String childName = VIRTUAL_NODE_NAME_PREFIX + instance.getInstanceId();
+		Map<String, String> types = new HashMap<String, String>();
+		types.put(childName, type);
+		Map<String, Map<String, Object>> childrenProperties = new HashMap<String, Map<String, Object>>();
+		childrenProperties.put(childName, parameters);
+		fireNewResourcesEvent(clusterResource.getUri(), types,
+				childrenProperties);
 	}
 
 	/**
@@ -544,14 +539,6 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		}
 		Image image = images.get(0);
 		return image;
-	}
-
-	/**
-	 * @param coreManagement
-	 *            the coreManagement to set
-	 */
-	public void setCoreManagement(ICoreManagement coreManagement) {
-		this.coreManagement = coreManagement;
 	}
 
 	/**

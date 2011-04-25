@@ -18,7 +18,4 @@
 		context-class-loader="service-provider">
 	</osgi:service>
 
-	<osgi:reference id="coreManagement"
-		interface="pl.edu.agh.samm.common.core.ICoreManagement" />
-
 </beans>
