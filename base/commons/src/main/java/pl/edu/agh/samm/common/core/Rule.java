@@ -16,6 +16,7 @@ public class Rule {
 	private String metricUri = null;
 	private String condition = null;
 	private Action actionToExecute = null;
+	private String customStatement = null;
 
 	@Override
 	public int hashCode() {
@@ -32,7 +33,7 @@ public class Rule {
 	}
 
 	public Rule(String name) {
-		if(name == null) {
+		if (name == null) {
 			throw new NullPointerException("Rule name can't be null!");
 		}
 		this.name = name;
@@ -64,6 +65,14 @@ public class Rule {
 
 	public String getCondition() {
 		return condition;
+	}
+
+	public String getCustomStatement() {
+		return customStatement;
+	}
+
+	public void setCustomStatement(String customStatement) {
+		this.customStatement = customStatement;
 	}
 
 	public void setCondition(String condition) {

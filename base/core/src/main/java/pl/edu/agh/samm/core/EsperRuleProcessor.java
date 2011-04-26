@@ -75,40 +75,47 @@ public class EsperRuleProcessor implements IRuleProcessor {
 	public void addRule(final Rule rule) {
 		// get all info from rule
 		final String ruleName = rule.getName();
-		String resourceURI = rule.getResourceUri();
-		String resourceTypeURI = rule.getResourceTypeUri();
-		String metricURI = rule.getMetricUri();
-		String condition = rule.getCondition();
-		String statementString = "select metric, value from IMetricEvent";
 
-		// create the filter
-		String filter = "";
+		String statementString = null;
+		String customStatement = rule.getCustomStatement();
+		if (customStatement != null) {
+			statementString = customStatement;
+		} else {
+			statementString = "select metric, value from IMetricEvent";
+			String resourceURI = rule.getResourceUri();
+			String resourceTypeURI = rule.getResourceTypeUri();
+			String metricURI = rule.getMetricUri();
+			String condition = rule.getCondition();
 
-		if (resourceURI != null) {
-			filter += "metric.resourceURI like '" + resourceURI + "'";
-		}
+			// create the filter
+			String filter = "";
 
-		if (metricURI != null) {
-			if (!filter.equals("")) {
-				filter += " and ";
+			if (resourceURI != null) {
+				filter += "metric.resourceURI like '" + resourceURI + "'";
 			}
-			filter += "metric.metricURI like '" + metricURI + "'";
-		}
 
-		if (resourceTypeURI != null) {
-			if (!filter.equals("")) {
-				filter += " and ";
+			if (metricURI != null) {
+				if (!filter.equals("")) {
+					filter += " and ";
+				}
+				filter += "metric.metricURI like '" + metricURI + "'";
 			}
-			filter += "resourceType like '" + resourceTypeURI + "'";
-		}
 
-		if (!filter.equals("")) {
-			statementString += "(" + filter + ")";
-		}
+			if (resourceTypeURI != null) {
+				if (!filter.equals("")) {
+					filter += " and ";
+				}
+				filter += "resourceType like '" + resourceTypeURI + "'";
+			}
 
-		// where clause
-		if (condition != null) {
-			statementString += " where " + condition;
+			if (!filter.equals("")) {
+				statementString += "(" + filter + ")";
+			}
+
+			// where clause
+			if (condition != null) {
+				statementString += " where " + condition;
+			}
 		}
 
 		logger.debug("Adding rule: " + statementString);

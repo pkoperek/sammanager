@@ -257,6 +257,7 @@ public class FileConfiguratorTest {
 
 	private Rule generateSampleRule(int i) {
 		Rule rule = new Rule("testRule_" + i);
+		rule.setCustomStatement("sampleCustomStatement_" + i);
 		rule.setCondition("condition" + i);
 		rule.setMetricUri("metricURI" + i);
 		rule.setResourceTypeUri("resourceTypeURI" + i);

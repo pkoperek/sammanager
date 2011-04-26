@@ -54,6 +54,43 @@ public class EsperRuleProcessorTest {
 	}
 
 	@Test
+	public void testAddRuleCustomStatement() {
+		EPServiceProvider mockEPservice = mocksControl
+				.createMock(EPServiceProvider.class);
+		EPRuntime mockEpRuntime = mocksControl.createMock(EPRuntime.class);
+		EPAdministrator mockEpAdmin = mocksControl
+				.createMock(EPAdministrator.class);
+		EPStatement mockStatement = mocksControl.createMock(EPStatement.class);
+		Rule rule = mocksControl.createMock(Rule.class);
+
+		// standard piece of code in setEpService
+		expect(mockEPservice.getEPRuntime()).andReturn(mockEpRuntime);
+		expect(mockEPservice.getEPAdministrator()).andReturn(mockEpAdmin);
+
+		// addRule
+		String RULE_NAME = "TestRule1";
+		expect(rule.getName()).andReturn(RULE_NAME);
+		String CUSTOM_STMT = "select metric, value from IMetric where blah";
+		expect(rule.getCustomStatement()).andReturn(CUSTOM_STMT);
+
+		expect(mockEpAdmin.createEPL(CUSTOM_STMT, RULE_NAME)).andReturn(
+				mockStatement);
+
+		// catch the update listener
+		mockStatement.addListener(anyObject(UpdateListener.class));
+
+		// replay
+		mocksControl.replay();
+
+		// scenario
+		impl.setEpService(mockEPservice);
+		impl.addRule(rule);
+
+		// verify
+		mocksControl.verify();
+	}
+
+	@Test
 	public void testAddRuleStatement() {
 		EPServiceProvider mockEPservice = mocksControl
 				.createMock(EPServiceProvider.class);
@@ -70,6 +107,7 @@ public class EsperRuleProcessorTest {
 		// addRule
 		String RULE_NAME = "TestRule1";
 		expect(rule.getName()).andReturn(RULE_NAME);
+		expect(rule.getCustomStatement()).andReturn(null);
 		expect(rule.getResourceTypeUri()).andReturn("resourceTypeURI");
 		expect(rule.getResourceUri()).andReturn("testURI");
 		expect(rule.getMetricUri()).andReturn("metrictestURI");
@@ -111,6 +149,7 @@ public class EsperRuleProcessorTest {
 		// addRule
 		String RULE_NAME = "TestRule1";
 		expect(rule.getName()).andReturn(RULE_NAME);
+		expect(rule.getCustomStatement()).andReturn(null);
 		expect(rule.getResourceTypeUri()).andReturn(null);
 		expect(rule.getResourceUri()).andReturn(null);
 		expect(rule.getMetricUri()).andReturn(null);
@@ -174,6 +213,7 @@ public class EsperRuleProcessorTest {
 		// addRule
 		String RULE_NAME = "TestRule1";
 		expect(rule.getName()).andReturn(RULE_NAME);
+		expect(rule.getCustomStatement()).andReturn(null);
 		expect(rule.getResourceTypeUri()).andReturn(null);
 		expect(rule.getResourceUri()).andReturn(null);
 		expect(rule.getMetricUri()).andReturn(null);
@@ -293,7 +333,7 @@ public class EsperRuleProcessorTest {
 		impl.processMetricEvent(e);
 		mocksControl.verify();
 	}
-	
+
 	@Test
 	public void testProcessing() throws Exception {
 		IAlarmListener mockAlarmListener = mocksControl
