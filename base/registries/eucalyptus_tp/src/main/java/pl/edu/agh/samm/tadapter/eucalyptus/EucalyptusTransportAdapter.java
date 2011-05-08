@@ -158,7 +158,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 			throw new ActionNotSupportedException();
 		}
 
-		logger.info("Executing: " + ACTION_START_VM);
+		logger.info("Executing: " + actionToExecute.getActionURI());
 		if (ACTION_START_MVCBASIC_VM.equalsIgnoreCase(actionToExecute
 				.getActionURI())) {
 			Resource resource = getClusterResource(actionToExecute);
@@ -235,7 +235,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 				}
 			}
 		}
-		logger.info("Executed: " + ACTION_START_VM);
+		logger.info("Executed: " + actionToExecute.getActionURI());
 	}
 
 	private Integer getMinVMs(Action actionToExecute) {
@@ -455,7 +455,8 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		registerNewInstance(resource, instance, VIRTUAL_NODE_TYPE);
 	}
 
-	private void registerNewInstance(Resource clusterResource, Instance instance, String type)
+	private void registerNewInstance(Resource clusterResource,
+			Instance instance, String type)
 			throws ResourceAlreadyRegisteredException {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("JMXURL",
