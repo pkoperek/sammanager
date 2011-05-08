@@ -84,7 +84,6 @@ public abstract class MetricTask implements Runnable {
 		int index = metricListeners.indexOf(metricListener);
 		metricListenersClassLoaders.remove(index);
 		metricListeners.remove(metricListener);
-
 	}
 
 	protected void fireMetricEvent(Number value) {
@@ -100,7 +99,7 @@ public abstract class MetricTask implements Runnable {
 						resource.getType()));
 			} catch (Throwable e) {
 				if (!logger.isDebugEnabled()) {
-					logger.warn("Error while notifying listener (" + listener
+					logger.error("Error while notifying listener (" + listener
 							+ "). Removing from listeners list!");
 				} else {
 					logger.debug("Error while notifying listener (" + listener
@@ -169,9 +168,15 @@ public abstract class MetricTask implements Runnable {
 								usedCapability);
 				values.put(usedCapability, capabilityValue);
 			} catch (Exception e) {
-				logger.error("Couldn't retrieve metric value! Metric: "
-						+ metric + " Resource: " + resource + " Capability: "
-						+ usedCapability, e);
+				if (!logger.isDebugEnabled()) {
+					logger.error("Couldn't retrieve metric value! Metric: "
+							+ metric + " Resource: " + resource
+							+ " Capability: " + usedCapability);
+				} else {
+					logger.debug("Couldn't retrieve metric value! Metric: "
+							+ metric + " Resource: " + resource
+							+ " Capability: " + usedCapability, e);
+				}
 				reportProblem(e);
 			}
 		}
@@ -181,7 +186,11 @@ public abstract class MetricTask implements Runnable {
 				fireMetricEvent(value);
 			}
 		} catch (Exception e) {
-			logger.error("Error while computing metric value: ", e);
+			if (!logger.isDebugEnabled()) {
+				logger.error("Error while computing metric value! " + metric);
+			} else {
+				logger.debug("Error while computing metric value! " + metric, e);
+			}
 		}
 	}
 

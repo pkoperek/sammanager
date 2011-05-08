@@ -81,6 +81,8 @@ public class SingleCapabilityMetricTask extends MetricTask {
 			}
 		} catch (Exception e) {
 			logger.error("Couldn't retrieve metric value! Metric: " + getMetric() + " Resource: " + resource
+					+ " Capability: " + usedCapability);
+			logger.debug("Couldn't retrieve metric value! Metric: " + getMetric() + " Resource: " + resource
 					+ " Capability: " + usedCapability, e);
 			reportProblem(e);
 		}

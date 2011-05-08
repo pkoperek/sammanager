@@ -289,7 +289,7 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	public void problemOcurred(IMetric metric, Exception e) {
 		// we don't care what kind of exception was thrown right now - just kill
 		// the metric
-		stopMetric(metric);
+		//stopMetric(metric);
 	}
 
 	@Override

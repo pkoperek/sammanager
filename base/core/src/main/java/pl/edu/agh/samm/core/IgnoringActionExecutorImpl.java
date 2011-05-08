@@ -165,9 +165,17 @@ public class IgnoringActionExecutorImpl implements IActionExecutor {
 			try {
 				listener.notifyActionExecution(actionExecution);
 			} catch (Exception e) {
-				logger.error(
-						"Listener failed on notification about action execution! ("
-								+ actionExecution.toString() + ")", e);
+				if (!logger.isDebugEnabled()) {
+					logger.error("Listener failed on notification about action execution! ("
+							+ actionExecution.toString()
+							+ "). Removing from listeners list!");
+				} else {
+					logger.debug(
+							"Listener failed on notification about action execution! ("
+									+ actionExecution.toString()
+									+ "). Removing from listeners list!", e);
+				}
+				listeners.remove(listener);
 			}
 		}
 	}
