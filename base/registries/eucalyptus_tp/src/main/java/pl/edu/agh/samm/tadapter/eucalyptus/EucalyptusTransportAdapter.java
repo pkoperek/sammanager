@@ -268,7 +268,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		AmazonEC2Client client = this.ec2Clients.get(clusterResource);
 
 		DescribeInstancesResult result = client.describeInstances();
-		List<Instance> instances = getInstancesByImageId(result, imageId);
+		List<Instance> instances = getRunningInstancesByImageId(result, imageId);
 
 		return instances.size();
 	}
@@ -277,7 +277,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		AmazonEC2Client client = this.ec2Clients.get(clusterResource);
 
 		DescribeInstancesResult result = client.describeInstances();
-		List<Instance> instances = getInstancesByImageId(result, imageId);
+		List<Instance> instances = getRunningInstancesByImageId(result, imageId);
 
 		String instanceId = null;
 
@@ -291,12 +291,13 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		return instanceId;
 	}
 
-	private List<Instance> getInstancesByImageId(
+	private List<Instance> getRunningInstancesByImageId(
 			DescribeInstancesResult result, String imageId) {
 		List<Instance> instances = new LinkedList<Instance>();
 		for (Reservation reservation : result.getReservations()) {
 			for (Instance instance : reservation.getInstances()) {
-				if (imageId.equals(instance.getImageId())) {
+				if (imageId.equals(instance.getImageId())
+						&& EC2Util.isInstanceRunning(instance)) {
 					instances.add(instance);
 				}
 			}

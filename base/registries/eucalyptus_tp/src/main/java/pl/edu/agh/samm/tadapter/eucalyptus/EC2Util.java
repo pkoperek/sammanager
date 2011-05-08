@@ -46,7 +46,8 @@ public class EC2Util {
 
 	private static final String INSTANCE_STATE_RUNNING = "running";
 	private static final String INSTANCE_STATE_PENDING = "pending";
-	private static final Object INSTANCE_STATE_STOPPED = "not running";
+	private static final String INSTANCE_STATE_SHUTTING_DOWN = "shutting-down";
+	private static final Object INSTANCE_STATE_STOPPED = "terminated";
 
 	public static void waitForURL(String hostname, int port, String path)
 			throws MalformedURLException, InterruptedException {
@@ -80,15 +81,19 @@ public class EC2Util {
 		}
 		return getEc2Instance(ec2Client, instance.getInstanceId());
 	}
+	
+	public static boolean isInstanceRunning(Instance instance) {
+		return instance.getState().getName().equals(INSTANCE_STATE_RUNNING);
+	}
 
-	public static Instance waitForStoppedState(AmazonEC2Client ec2Client,
+	public static void waitForStoppedState(AmazonEC2Client ec2Client,
 			Instance instance) throws Exception {
-		while (INSTANCE_STATE_PENDING.equals(getEc2Instance(ec2Client,
+		while (INSTANCE_STATE_SHUTTING_DOWN.equals(getEc2Instance(ec2Client,
 				instance.getInstanceId()).getState().getName())) {
 			logger.debug("Waiting on VM to stop");
 			Thread.sleep(SLEEP_CHECK_TIME);
 		}
-		if (!INSTANCE_STATE_STOPPED.equals(getEc2Instance(ec2Client,
+		if (INSTANCE_STATE_RUNNING.equals(getEc2Instance(ec2Client,
 				instance.getInstanceId()).getState().getName())) {
 			logger.error("VM failed to stop: "
 					+ getEc2Instance(ec2Client, instance.getInstanceId())
@@ -96,7 +101,6 @@ public class EC2Util {
 			throw new RuntimeException(getEc2Instance(ec2Client,
 					instance.getInstanceId()).getStateReason().getMessage());
 		}
-		return getEc2Instance(ec2Client, instance.getInstanceId());
 	}
 
 	public static Instance waitForRunningState(AmazonEC2Client ec2Client,
