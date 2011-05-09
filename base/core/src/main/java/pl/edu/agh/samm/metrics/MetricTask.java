@@ -161,6 +161,7 @@ public abstract class MetricTask implements Runnable {
 	 */
 	@Override
 	public void run() {
+		boolean computeMetricValue = true;
 		for (String usedCapability : usedCapabilities) {
 			try {
 				Number capabilityValue = (Number) adaptersToUseForCapabilities
@@ -178,18 +179,27 @@ public abstract class MetricTask implements Runnable {
 							+ " Capability: " + usedCapability, e);
 				}
 				reportProblem(e);
+				
+				// if a problem gets found - evacuate
+				computeMetricValue = false;
+				break;
 			}
 		}
-		try {
-			Number value = computeMetricValue(values);
-			if (value != null) {
-				fireMetricEvent(value);
-			}
-		} catch (Exception e) {
-			if (!logger.isDebugEnabled()) {
-				logger.error("Error while computing metric value! " + metric);
-			} else {
-				logger.debug("Error while computing metric value! " + metric, e);
+		if (computeMetricValue) {
+			try {
+				Number value = computeMetricValue(values);
+				if (value != null) {
+					fireMetricEvent(value);
+				}
+			} catch (Exception e) {
+				if (!logger.isDebugEnabled()) {
+					logger.error("Error while computing metric value! "
+							+ metric);
+				} else {
+					logger.debug("Error while computing metric value! "
+							+ metric, e);
+				}
+				reportProblem(e);
 			}
 		}
 	}

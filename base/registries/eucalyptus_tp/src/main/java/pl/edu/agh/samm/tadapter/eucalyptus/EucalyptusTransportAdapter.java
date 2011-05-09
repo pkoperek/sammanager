@@ -387,7 +387,8 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 		DescribeInstancesResult result = ec2Client.describeInstances();
 		for (Reservation reservation : result.getReservations()) {
 			for (Instance instance : reservation.getInstances()) {
-				if (instance.getImageId().equals(imageId)) {
+				if (instance.getImageId().equals(imageId)
+						&& EC2Util.isInstanceRunning(instance)) {
 					imageCount++;
 				}
 			}

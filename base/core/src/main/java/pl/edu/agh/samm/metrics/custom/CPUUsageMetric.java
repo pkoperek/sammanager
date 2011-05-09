@@ -31,7 +31,9 @@ public class CPUUsageMetric implements ICustomMetric {
 		if (prevUptime > -1 && prevProcessCpuTime > -1) {
 			double uptimeDiff = (uptime - prevUptime) * 10000;
 			double processCpuTimeDiff = (processCpuTime - prevProcessCpuTime);
-			retVal = processCpuTimeDiff / uptimeDiff;
+			// if we didn't spent any time on computations - there was a 0 usage
+			retVal = (uptimeDiff == 0.0) ? 0.0 : processCpuTimeDiff
+					/ uptimeDiff;
 		}
 
 		prevUptime = uptime;
