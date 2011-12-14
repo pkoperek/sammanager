@@ -171,6 +171,22 @@ public class FileConfiguratorTest {
 	}
 
 	@Test
+	public void testConfigureXStreamGrace() {
+		String contents = generateConfigurationXMLGrace();
+		System.out.println(contents);
+		assertTrue(contents.contains("gracePeriod"));
+	}
+
+	private String generateConfigurationXMLGrace() {
+		XStream xstream = new XStream(new DomDriver());
+		FileConfigurator.configureXStream(xstream);
+
+		Configuration configuration = new Configuration();
+		configuration.setGracePeriod(1);
+		return xstream.toXML(configuration);
+	}
+	
+	@Test
 	public void testConfigureXStream() {
 		System.out.println(generateSampleContent());
 	}

@@ -9,6 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pl.edu.agh.samm.common.action.ActionExecution;
+import pl.edu.agh.samm.common.core.IActionExecutionListener;
 import pl.edu.agh.samm.common.core.IAlarm;
 import pl.edu.agh.samm.common.core.IAlarmListener;
 import pl.edu.agh.samm.common.core.Rule;
@@ -29,7 +31,8 @@ import com.espertech.esper.client.UpdateListener;
  * @author koperek
  * 
  */
-public class EsperRuleProcessor implements IRuleProcessor {
+public class EsperRuleProcessor implements IRuleProcessor,
+		IActionExecutionListener {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(EsperRuleProcessor.class);
@@ -39,6 +42,8 @@ public class EsperRuleProcessor implements IRuleProcessor {
 	private EPRuntime runtime = null;
 	private EPAdministrator administrator = null;
 	private IActionExecutor actionExecutor = null;
+	private int gracePeriod = -1;
+	private long lastActionExecutionEndTime = -1;
 
 	public static Configuration getDefaultConfiguration() {
 		Configuration configuration = new Configuration();
@@ -146,8 +151,25 @@ public class EsperRuleProcessor implements IRuleProcessor {
 						fireAlarm(alarm);
 
 						if (rule.getActionToExecute() != null) {
-							actionExecutor.executeRequest(rule
-									.getActionToExecute());
+							// gracePeriod and lastActionExecutionEndTime are <
+							// 0 by default - currentTimeMillis
+							// - lastActionExecutionEndTime should be always
+							// positive - so event if no values are provided it
+							// should work out of the box
+							long now = System.currentTimeMillis();
+							if (gracePeriod < 0
+									|| lastActionExecutionEndTime < 0
+									|| now - lastActionExecutionEndTime >= gracePeriod * 1000) {
+								actionExecutor.executeRequest(rule
+										.getActionToExecute());
+							} else {
+								logger.info("Omitting action execution: gracePeriod: "
+										+ gracePeriod
+										+ " lastActionExecutionEndTime: "
+										+ lastActionExecutionEndTime
+										+ " now: "
+										+ now);
+							}
 						}
 					}
 				}
@@ -199,6 +221,17 @@ public class EsperRuleProcessor implements IRuleProcessor {
 	@Override
 	public void processMeasurementEvent(IMeasurementEvent event) {
 		processEvent(event);
+	}
+
+	@Override
+	public void setActionGracePeriod(int gracePeriod) {
+		this.gracePeriod = gracePeriod;
+	}
+
+	@Override
+	public void notifyActionExecution(ActionExecution actionExecution)
+			throws Exception {
+		this.lastActionExecutionEndTime = System.currentTimeMillis();
 	}
 
 }

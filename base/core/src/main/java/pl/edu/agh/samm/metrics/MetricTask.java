@@ -52,6 +52,7 @@ public abstract class MetricTask implements Runnable {
 	private Map<String, ITransportAdapter> adaptersToUseForCapabilities = new HashMap<String, ITransportAdapter>();
 	private Map<String, Number> values = new HashMap<String, Number>();
 	private IMetricProblemObserver problemObserver;
+	private int numberOfRetries = 0;
 
 	public MetricTask(IMetric metric, List<String> usedCapabilities,
 			Resource resource) {
@@ -179,7 +180,7 @@ public abstract class MetricTask implements Runnable {
 							+ " Capability: " + usedCapability, e);
 				}
 				reportProblem(e);
-				
+
 				// if a problem gets found - evacuate
 				computeMetricValue = false;
 				break;
@@ -190,6 +191,7 @@ public abstract class MetricTask implements Runnable {
 				Number value = computeMetricValue(values);
 				if (value != null) {
 					fireMetricEvent(value);
+					numberOfRetries = 0;
 				}
 			} catch (Exception e) {
 				if (!logger.isDebugEnabled()) {
@@ -204,8 +206,14 @@ public abstract class MetricTask implements Runnable {
 		}
 	}
 
+	public int getNumberOfRetries() {
+		return numberOfRetries;
+	}
+
 	protected void reportProblem(Exception e) {
 		problemObserver.problemOcurred(getMetric(), e);
+		// we want the next iteration to be marked as a retry
+		numberOfRetries++;
 	}
 
 }

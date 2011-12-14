@@ -52,6 +52,8 @@ import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
 public class RunningMetricsManagerImpl implements IMetricsManager,
 		IMetricProblemObserver {
 
+	public static final int NUMBER_OF_RETRIES_THRESHOLD = 3;
+
 	private final Logger logger = LoggerFactory
 			.getLogger(RunningMetricsManagerImpl.class);
 
@@ -287,9 +289,19 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 
 	@Override
 	public void problemOcurred(IMetric metric, Exception e) {
-		// we don't care what kind of exception was thrown right now - just kill
-		// the metric
-		//stopMetric(metric);
+		// retry three times
+		MetricTask task = scheduledTasks.get(metric);
+
+		if (task.getNumberOfRetries() >= NUMBER_OF_RETRIES_THRESHOLD) {
+			logger.debug("Metric: " + metric + " failed! Stopping after "
+					+ task.getNumberOfRetries() + " retries ("
+					+ NUMBER_OF_RETRIES_THRESHOLD + ")");
+			stopMetric(metric);
+		} else {
+			logger.debug("Metric: " + metric + " failed! Retrying: "
+					+ task.getNumberOfRetries() + " ("
+					+ NUMBER_OF_RETRIES_THRESHOLD + ")");
+		}
 	}
 
 	@Override

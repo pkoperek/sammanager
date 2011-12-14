@@ -31,6 +31,8 @@ import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
  * 
  */
 public interface IRuleProcessor extends IMetricListener, IMeasurementListener {
+	void setActionGracePeriod(int gracePeriod);
+	
 	void setupSLA(IServiceLevelAgreement serviceLevelAgreement);
 
 	void addRule(Rule rule);

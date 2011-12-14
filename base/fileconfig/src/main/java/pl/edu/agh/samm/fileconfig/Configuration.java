@@ -24,6 +24,15 @@ public class Configuration {
 	private ConfigurationResourceSet resourceSet = null;
 	private RuleSet ruleSet = null;
 	private ConfigurationMetricSet metricSet = null;
+	private Integer gracePeriod = null;
+
+	public Integer getGracePeriod() {
+		return gracePeriod;
+	}
+
+	public void setGracePeriod(Integer gracePeriod) {
+		this.gracePeriod = gracePeriod;
+	}
 
 	public ConfigurationMetricSet getMetricSet() {
 		return metricSet;

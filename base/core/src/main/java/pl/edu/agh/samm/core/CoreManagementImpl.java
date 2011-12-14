@@ -571,4 +571,10 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 		}
 	}
 
+	@Override
+	public void setActionGracePeriod(int gracePeriodInSeconds) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

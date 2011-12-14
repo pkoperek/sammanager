@@ -298,4 +298,6 @@ public interface ICoreManagement {
 	void clearRules();
 
 	void removeRule(String ruleName);
+	
+	void setActionGracePeriod(int gracePeriodInSeconds);
 }

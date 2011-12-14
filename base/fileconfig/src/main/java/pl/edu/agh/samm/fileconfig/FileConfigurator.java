@@ -139,6 +139,7 @@ public class FileConfigurator {
 
 		// configuration
 		xstream.alias("configuration", Configuration.class);
+		//xstream.useAttributeFor(Configuration.class, "gracePeriod");
 
 		// metrics
 		xstream.alias("metric", Metric.class);

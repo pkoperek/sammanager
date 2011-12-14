@@ -226,4 +226,9 @@ public class SAMMCoreManagement implements SAMMCoreManagementMBean {
 		coreManagement.removeRule(ruleName);
 	}
 
+	@Override
+	public void setActionGracePeriod(int gracePeriodInSeconds) {
+		coreManagement.setActionGracePeriod(gracePeriodInSeconds);
+	}
+
 }
