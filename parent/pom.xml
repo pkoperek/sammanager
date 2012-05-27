@@ -19,7 +19,7 @@
 		<!-- platform versions -->
 		<equinox.ver>3.6.0.v20100517</equinox.ver>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<site.deployUrl>scp://sammanager.ath.cx/srv/http/samm/site-snapshot</site.deployUrl>
+		<!--<site.deployUrl>scp://sammanager.ath.cx/srv/http/samm/site-snapshot</site.deployUrl>-->
 	</properties>
 
 	<profiles>
@@ -54,7 +54,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
-				<site.deployUrl>scp://sammanager.ath.cx/srv/http/samm/site</site.deployUrl>
+				<!--<site.deployUrl>scp://sammanager.ath.cx/srv/http/samm/site</site.deployUrl>-->
 			</properties>
 			<modules>
 				<module>../base/parent</module>
@@ -101,7 +101,7 @@
 		<developerConnection>scm:svn:https://sammanager.googlecode.com/svn/trunk</developerConnection>
 		<url>http://code.google.com/p/sammanager/source/browse/</url>
 	</scm>
-	<distributionManagement>
+	<!--<distributionManagement>
 		<downloadUrl>http://sammanager.ath.cx/</downloadUrl>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
@@ -122,7 +122,7 @@
 			<name>SAMM Website</name>
 			<url>${site.deployUrl}</url>
 		</site>
-	</distributionManagement>
+	</distributionManagement>-->
 	<reporting>
 		<plugins>
 			<plugin>
@@ -487,12 +487,12 @@
 
 	<repositories>
 		<!-- Pellet and such -->
-		<repository>
+		<!--<repository>
 			<id>sammanager.ath.cx</id>
 			<name>SAMM Providers Stable Repository</name>
 			<url>http://sammanager.ath.cx/repo/providers/releases</url>
 			<layout>default</layout>
-		</repository>
+		</repository>-->
 		<repository>
 			<id>com.springsource.repository.bundles.release</id>
 			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle
