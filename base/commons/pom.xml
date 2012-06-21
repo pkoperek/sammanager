@@ -18,23 +18,22 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api</artifactId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>jena</artifactId>
 		</dependency>
-                <dependency>
-                        <groupId>org.easymock</groupId>
-                        <artifactId>easymock</artifactId>
-                        <scope>test</scope>
-                </dependency>
-               <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        <scope>test</scope>
-                </dependency>
-
+		<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<scope>test</scope>
+		</dependency>
+	   <dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 

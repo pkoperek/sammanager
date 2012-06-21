@@ -23,7 +23,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api</artifactId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

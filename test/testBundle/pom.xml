@@ -19,10 +19,6 @@
 			<artifactId>jena</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
 			<artifactId>commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -32,135 +28,122 @@
 			<artifactId>registryjmx</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency> 
-			<groupId>org.springframework.osgi</groupId> 
-			<artifactId>org.springframework.osgi.test</artifactId> 
+		<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<scope>test</scope>
 		</dependency>
-		<dependency> 
-			<groupId>org.springframework.osgi</groupId> 
-			<artifactId>org.springframework.osgi.mock</artifactId> 
+		<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<scope>test</scope>
 		</dependency>
-                <dependency>
-                        <groupId>org.easymock</groupId>
-                        <artifactId>easymock</artifactId>
-                        <scope>test</scope>
-                </dependency>
-                <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        <scope>test</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.osgi</groupId>
-                        <artifactId>org.eclipse.osgi</artifactId>
-                </dependency>
+		<dependency>
+				<groupId>org.eclipse.osgi</groupId>
+				<artifactId>org.eclipse.osgi</artifactId>
+		</dependency>
 
 		<!-- need to have this in .m2 dir -->
-                <dependency>
-                        <groupId>org.objectweb.asm</groupId>
-                        <artifactId>com.springsource.org.objectweb.asm</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.junit</groupId>
-                        <artifactId>com.springsource.junit</artifactId>
-			<version>3.8.2</version>
-                        <scope>runtime</scope>
-                </dependency>
-
-		<!-- SLF4J-->
-                <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>com.springsource.slf4j.api</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>com.springsource.slf4j.log4j</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-		<dependency> 
-			<groupId>org.slf4j</groupId> 
-			<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId> 
-                        <scope>runtime</scope>
+		<dependency>
+				<groupId>org.objectweb.asm</groupId>
+				<artifactId>com.springsource.org.objectweb.asm</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>com.springsource.junit</artifactId>
+				<version>3.8.2</version>
+				<scope>runtime</scope>
 		</dependency>
 
+		<!-- SLF4J-->
+		<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<!--<scope>runtime</scope>-->
+		</dependency>
+		<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<!--<dependency> 
+			<groupId>org.slf4j</groupId> 
+			<artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId> 
+			<scope>runtime</scope>
+		</dependency>-->
 
-                <!-- Spring OSGi -->
-                <dependency>
-                        <groupId>org.springframework.osgi</groupId>
-                        <artifactId>org.springframework.osgi.core</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework.osgi</groupId>
-                        <artifactId>org.springframework.osgi.extender</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework.osgi</groupId>
-                        <artifactId>org.springframework.osgi.extensions.annotation</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework.osgi</groupId>
-                        <artifactId>org.springframework.osgi.io</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.aopalliance</groupId>
-                        <artifactId>com.springsource.org.aopalliance</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.apache.commons</groupId>
-                        <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework.osgi</groupId>
-                        <artifactId>org.springframework.osgi.test</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework.osgi</groupId>
-                        <artifactId>org.springframework.osgi.mock</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
 
-                <!-- SPRING-CORE -->
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.context</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.beans</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.aop</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.asm</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.test</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.core</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
+		<!-- Spring OSGi -->
+		<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-core</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-extender</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-annotation</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-io</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-test</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-mock</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.aopalliance</groupId>
+				<artifactId>com.springsource.org.aopalliance</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+				<scope>runtime</scope>
+		</dependency>
 
+		<!-- SPRING-CORE -->
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<scope>runtime</scope>
+		</dependency>
+		<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<scope>runtime</scope>
+		</dependency>
 	</dependencies>
+
 	<parent>
 		<artifactId>test</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>

@@ -77,17 +77,17 @@
 		<!-- Spring OSGi -->
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.core</artifactId>
+			<artifactId>spring-osgi-core</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.extender</artifactId>
+			<artifactId>spring-osgi-extender</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.io</artifactId>
+			<artifactId>spring-osgi-io</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -104,52 +104,52 @@
 		<!-- SPRING-CORE -->
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.context</artifactId>
+			<artifactId>spring-context</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
+			<artifactId>spring-beans</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.aop</artifactId>
+			<artifactId>spring-aop</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.jdbc</artifactId>
+			<artifactId>spring-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.transaction</artifactId>
+			<artifactId>spring-tx</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.core</artifactId>
+			<artifactId>spring-core</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-                <dependency> 
-                        <groupId>org.springframework</groupId> 
-                        <artifactId>org.springframework.expression</artifactId> 
+		<!--<dependency> 
+			<groupId>org.springframework</groupId> 
+			<artifactId>spring-expression</artifactId> 
 			<scope>runtime</scope>
-                </dependency>
+		</dependency>
 		<dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>org.springframework.asm</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-asm</artifactId>
 			<scope>runtime</scope>
-                </dependency>
+		</dependency>-->
 
 
 		<!-- samm providers -->
-                <dependency>
-                        <groupId>pl.edu.agh.samm.providers</groupId>
-                        <artifactId>esper</artifactId>
-                        <scope>runtime</scope>
-                </dependency>
+		<dependency>
+				<groupId>pl.edu.agh.samm.providers</groupId>
+				<artifactId>esper</artifactId>
+				<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>jena</artifactId>
@@ -171,7 +171,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-
 		<!-- misc -->
 		<dependency>
 			<groupId>org.apache.log4j</groupId>
@@ -187,19 +186,14 @@
 		<!-- SLF4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.api</artifactId>
+			<artifactId>slf4j-api</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.log4j</artifactId>
+			<artifactId>slf4j-log4j12</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>com.springsource.slf4j.jcl</artifactId>
-			<scope>runtime</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>org.eclipse.osgi</groupId>
 			<artifactId>services</artifactId>
@@ -245,10 +239,10 @@
 			<artifactId>com.springsource.org.xmlpull</artifactId> 
 			<scope>runtime</scope>
 		</dependency>
-                <dependency>
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>org.apache.felix.fileinstall</artifactId>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.fileinstall</artifactId>
 			<scope>runtime</scope>
-                </dependency>
+		</dependency>
 	</dependencies>
 </project>
