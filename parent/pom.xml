@@ -37,9 +37,6 @@
 		</profile>
 		<profile>
 			<id>functionaltests</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<modules>
 				<module>../test/parent</module>
 			</modules>
