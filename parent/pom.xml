@@ -36,13 +36,21 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>functionaltests</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>../test/parent</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>development</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
 				<module>../base/parent</module>
-				<module>../test/parent</module>
 			</modules>
 		</profile>
 		<profile>
