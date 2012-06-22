@@ -9,7 +9,7 @@
 	<packaging>bundle</packaging>
 
 	<properties>
-		<spring.core.version>2.5.6.SEC01</spring.core.version>
+		<spring.core.version>2.5.6.SEC03</spring.core.version>
 	</properties>
 
 
