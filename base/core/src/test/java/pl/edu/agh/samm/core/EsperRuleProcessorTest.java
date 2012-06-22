@@ -1,4 +1,4 @@
-package pl.edu.agh.samm.core;
+package pl.edu.agh.samm.core; 
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.expect;
@@ -46,11 +46,6 @@ public class EsperRuleProcessorTest {
 	@After
 	public void tearDown() throws Exception {
 		impl = null;
-	}
-
-	@Test
-	public void testSetupSLA() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
