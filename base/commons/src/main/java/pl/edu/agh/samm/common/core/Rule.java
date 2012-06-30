@@ -37,7 +37,7 @@ public class Rule {
 
     public Rule(String name) {
         if (name == null) {
-            throw new NullPointerException("Rule name can't be null!");
+            throw new IllegalArgumentException("Rule name can't be null!");
         }
         this.name = name;
     }

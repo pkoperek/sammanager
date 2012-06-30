@@ -38,7 +38,7 @@ public class RuleTest {
 		try {
 			Rule r2 = new Rule(null);
 			fail("NPE not thrown!");
-		} catch (NullPointerException e) {
+		} catch (IllegalArgumentException e) {
 			// everything is ok!
 		}
 	}
