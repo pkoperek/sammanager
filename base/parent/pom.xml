@@ -26,7 +26,7 @@
 				<module>../commons</module>
 				<module>../core</module>
 				<module>../fileconfig</module>
-				<module>../registries/parent</module>
+				<module>../transportproxies/parent</module>
 				<module>../knowledge</module>
 				<module>../estimator</module>
 				<module>../dblistener</module>
