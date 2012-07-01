@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.base</groupId>
-	<artifactId>registries</artifactId>
+	<artifactId>transportadapters</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SAMM - Base - Transport Adapters</name>
 
 	<modules>
-		<module>../registryjmx</module>
+		<module>../jmx_tp</module>
 		<module>../eucalyptus_tp</module>
 	</modules>
 
