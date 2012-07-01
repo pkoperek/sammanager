@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pl.edu.agh.samm.base.transportadapters</groupId>
+	<artifactId>jmx_ta</artifactId>
+	<packaging>bundle</packaging>
+	<name>SAMM - Base - Transport Adapters - JMX</name>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<parent>
+		<artifactId>transportadapters</artifactId>
+		<groupId>pl.edu.agh.samm.base</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>pl.edu.agh.samm.base</groupId>
+			<artifactId>commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>${basedir}/META-INF</manifestLocation>
+					<instructions>
+						<Import-Package>
+							javax.management,
+							javax.management.openmbean,
+							javax.management.remote,
+							org.slf4j,
+							org.springframework.beans.factory.config,
+							pl.edu.agh.samm.*
+						</Import-Package>
+						<Private-Package>pl.edu.agh.samm.registries.*</Private-Package>
+						<Export-Package>!*</Export-Package>
+						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
