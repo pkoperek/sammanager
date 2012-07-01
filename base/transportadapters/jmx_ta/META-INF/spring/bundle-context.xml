@@ -26,6 +26,11 @@
 	  http://www.springframework.org/schema/beans/spring-beans.xsd
 	 ">
 
+    <bean id="jmxMappings" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jmxadapter.mappings.properties"/>
+    </bean>
+
+
 	<bean id="jmxAdapter" class="pl.edu.agh.samm.tadapter.jmx.JMXTransportAdapterImpl"
 		init-method="init" destroy-method="destroy">
 		<property name="jmxAdapterConfigurator" ref="jmxAdapterConfigurator"></property>
