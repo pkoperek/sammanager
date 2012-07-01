@@ -24,8 +24,8 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>pl.edu.agh.samm.base.registries</groupId>
-			<artifactId>registryjmx</artifactId>
+			<groupId>pl.edu.agh.samm.base.transportadapters</groupId>
+			<artifactId>jmx_tp</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
