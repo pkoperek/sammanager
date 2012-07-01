@@ -9,7 +9,7 @@
 	<packaging>bundle</packaging>
 
 	<parent>
-		<artifactId>registries</artifactId>
+		<artifactId>transportadapters</artifactId>
 		<groupId>pl.edu.agh.samm.base</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../parent</relativePath>

@@ -52,7 +52,7 @@
 		<property name="epService" ref="defaultEpService" />
 	</bean>
 
-	<!-- Listener for changes of registries set -->
+	<!-- Listener for changes of transport adapters set -->
 	<bean id="transportAdapterListener" class="pl.edu.agh.samm.core.TransportAdapterListener">
 		<property name="registryListener" ref="coreManagementBean"></property>
 		<property name="measurementListener" ref="mmDBListener" />
