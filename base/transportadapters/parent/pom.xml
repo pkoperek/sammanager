@@ -8,8 +8,8 @@
 	<name>SAMM - Base - Transport Adapters</name>
 
 	<modules>
-		<module>../jmx_tp</module>
-		<module>../eucalyptus_tp</module>
+		<module>../jmx_ta</module>
+		<module>../eucalyptus_ta</module>
 	</modules>
 
 	<parent>

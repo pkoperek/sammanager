@@ -25,7 +25,7 @@
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base.transportadapters</groupId>
-			<artifactId>jmx_tp</artifactId>
+			<artifactId>jmx_ta</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
