@@ -15,7 +15,7 @@
  * along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.edu.agh.samm.registries.jmx;
+package pl.edu.agh.samm.tadapter.jmx;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

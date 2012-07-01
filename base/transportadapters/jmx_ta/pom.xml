@@ -43,7 +43,7 @@
 							org.springframework.beans.factory.config,
 							pl.edu.agh.samm.*
 						</Import-Package>
-						<Private-Package>pl.edu.agh.samm.registries.*</Private-Package>
+						<Private-Package>pl.edu.agh.samm.tadapter.*</Private-Package>
 						<Export-Package>!*</Export-Package>
 						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
 					</instructions>
