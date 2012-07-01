@@ -37,8 +37,6 @@ public class JMXAdapterConfigurator {
 	private Properties mappings;
     private Properties defaultMappings;
 
-    private String defaultPropertiesFile;
-    
 	public void init() throws FileNotFoundException, IOException {
 		String propertiesFileName = System.getProperty(ENV_PROPERTIES_FILE);
 		if (propertiesFileName != null) {
@@ -73,10 +71,6 @@ public class JMXAdapterConfigurator {
 	public String getProperty(String key) {
 		return mappings.getProperty(key);
 	}
-
-    public Properties getDefaultMappings() {
-        return defaultMappings;
-    }
 
     public void setDefaultMappings(Properties defaultMappings) {
         this.defaultMappings = defaultMappings;

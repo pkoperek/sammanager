@@ -2,6 +2,7 @@ package pl.edu.agh.samm.tadapter.jmx;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,7 +32,7 @@ public class JMXAdapterConfiguratorTest {
     @Test
     public void testInit() throws Exception {
         // Given
-        File tempFile = File.createTempFile("pfix","sfix");
+        File tempFile = File.createTempFile("pfix", "sfix");
         tempFile.deleteOnExit();
         storeProperties(tempFile);
 
@@ -53,5 +55,18 @@ public class JMXAdapterConfiguratorTest {
         Properties properties = new Properties();
         properties.setProperty(PROPERTY, VALUE);
         properties.store(fileOutputStream, "comment");
+    }
+
+    @Test
+    public void testContext() throws Exception {
+        // Given
+        ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("test-context.xml");
+
+        // When
+        JMXAdapterConfigurator configurator = (JMXAdapterConfigurator)xmlApplicationContext.getBean("jmxAdapterConfigurator");
+
+        // Then
+        assertNotNull(configurator);
+        assertEquals("testval",configurator.getProperty("testprop"));
     }
 }
