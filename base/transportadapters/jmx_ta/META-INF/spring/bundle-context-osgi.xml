@@ -23,7 +23,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-	<osgi:service id="jmxRegistryService" ref="jmxRegistry"
+	<osgi:service id="jmxRegistryService" ref="jmxAdapter"
 		interface="pl.edu.agh.samm.common.tadapter.ITransportAdapter">
 	</osgi:service>
 
