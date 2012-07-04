@@ -78,7 +78,7 @@
 							org.apache.commons.math.*,
 							net.sf.cglib.reflect,
 							org.slf4j</Import-Package>
-						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
+						<Include-Resource>META-INF/spring=META-INF/spring,src/main/resources/log4j.properties</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
