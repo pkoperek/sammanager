@@ -28,7 +28,7 @@
 	  http://www.springframework.org/schema/util/spring-util-2.0.xsd
 	 ">
 
-    <util:properties id="jmxMappings" location="classpath:jmxadapter.testmappings.properties"/>
+    <util:properties id="jmxMappings" location="classpath:test.properties"/>
 
 	<bean id="jmxAdapterConfigurator" class="pl.edu.agh.samm.tadapter.jmx.JMXAdapterConfigurator"
 		init-method="init">
