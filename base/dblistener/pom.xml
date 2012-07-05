@@ -57,7 +57,7 @@
 							org.springframework.jdbc.core,
 							org.apache.commons.dbcp;version="[1.2.2.osgi,1.2.2.osgi]",
 							org.hsqldb;version="[1.8.0.10,1.8.0.10]"</Import-Package>
-						<Include-Resource>META-INF/spring=META-INF/spring</Include-Resource>
+						<Include-Resource>META-INF/spring=META-INF/spring,src/main/resources/jdbc.properties</Include-Resource>
 					</instructions>
 				</configuration>
 			</plugin>
