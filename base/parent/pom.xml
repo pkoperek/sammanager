@@ -30,6 +30,7 @@
 				<module>../knowledge</module>
 				<module>../estimator</module>
 				<module>../dblistener</module>
+				<module>../log4j</module>
 				<module>../ra/parent</module>
 			</modules>
 		</profile>

@@ -2,7 +2,12 @@ package pl.edu.agh.samm.tadapter.jmx;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,10 +24,15 @@ import static junit.framework.Assert.assertNotNull;
  * Time: 14:17
  */
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"/test-context.xml"})
 public class JMXAdapterConfiguratorTest {
     public static final String VALUE = "val";
     public static final String PROPERTY = "prop";
     private JMXAdapterConfigurator jmxAdapterConfigurator;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Before
     public void setUp() throws Exception {
@@ -60,10 +70,9 @@ public class JMXAdapterConfiguratorTest {
     @Test
     public void testContext() throws Exception {
         // Given
-        ClassPathXmlApplicationContext xmlApplicationContext = new ClassPathXmlApplicationContext("test-context.xml");
 
         // When
-        JMXAdapterConfigurator configurator = (JMXAdapterConfigurator)xmlApplicationContext.getBean("jmxAdapterConfigurator");
+        JMXAdapterConfigurator configurator = (JMXAdapterConfigurator)applicationContext.getBean("jmxAdapterConfigurator");
 
         // Then
         assertNotNull(configurator);
