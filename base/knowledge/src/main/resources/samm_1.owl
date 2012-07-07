@@ -231,6 +231,14 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CApplicationServer -->
+
+    <owl:Class rdf:about="&samm_1;CApplicationServer">
+        <rdfs:subClassOf rdf:resource="&samm_1;CSoftwareType"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CCPU -->
 
     <owl:Class rdf:about="&samm_1;CCPU">
@@ -581,14 +589,6 @@
 
     <owl:Class rdf:about="&samm_1;CThreadTypeCapability">
         <rdfs:subClassOf rdf:resource="&samm_1;CSoftwareComponentTypeCapability"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#CTomcat -->
-
-    <owl:Class rdf:about="&samm_1;CTomcat">
-        <rdfs:subClassOf rdf:resource="&samm_1;CSoftwareComponentType"/>
     </owl:Class>
     
 
@@ -984,14 +984,6 @@
     
 
 
-    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#HadoopCluster -->
-
-    <owl:NamedIndividual rdf:about="&samm_1;HadoopCluster">
-        <rdf:type rdf:resource="&samm_1;CClusterType"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#HadoopDataNodeApplication -->
 
     <owl:NamedIndividual rdf:about="&samm_1;HadoopDataNodeApplication">
@@ -1004,6 +996,12 @@
 
     <owl:NamedIndividual rdf:about="&samm_1;HadoopJobTrackerApplication">
         <rdf:type rdf:resource="&samm_1;CCustomApplication"/>
+        <hasResourceTypeCapability rdf:resource="&samm_1;JobsCompletedCapability"/>
+        <hasResourceTypeCapability rdf:resource="&samm_1;JobsFailedCapability"/>
+        <hasResourceTypeCapability rdf:resource="&samm_1;JobsKilledCapability"/>
+        <hasResourceTypeCapability rdf:resource="&samm_1;JobsPreparingCapability"/>
+        <hasResourceTypeCapability rdf:resource="&samm_1;JobsRunningCapability"/>
+        <hasResourceTypeCapability rdf:resource="&samm_1;JobsSubmittedCapability"/>
     </owl:NamedIndividual>
     
 
@@ -1326,6 +1324,15 @@
         <rdf:type rdf:resource="&owl;NamedIndividual"/>
         <usesTypeCapability rdf:resource="&samm_1;TotalUnloadedClassesTypeCapability"/>
     </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#JobTrackerJobsRunningMetric -->
+
+    <owl:NamedIndividual rdf:about="&samm_1;JobTrackerJobsRunningMetric">
+        <rdf:type rdf:resource="&samm_1;CCustomApplicationMetric"/>
+        <usesTypeCapability rdf:resource="&samm_1;JobsRunningCapability"/>
+    </owl:NamedIndividual>
     
 
 
@@ -2121,7 +2128,7 @@
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#Tomcat -->
 
     <owl:Thing rdf:about="&samm_1;Tomcat">
-        <rdf:type rdf:resource="&samm_1;CTomcat"/>
+        <rdf:type rdf:resource="&samm_1;CApplicationServer"/>
         <rdf:type rdf:resource="&owl;NamedIndividual"/>
         <hasResourceTypeCapability rdf:resource="&samm_1;ProcessingTimeTypeCapability"/>
         <hasResourceTypeCapability rdf:resource="&samm_1;RequestCountTypeCapability"/>
