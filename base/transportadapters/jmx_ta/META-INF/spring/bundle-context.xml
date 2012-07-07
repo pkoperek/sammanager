@@ -30,7 +30,6 @@
         <property name="location" value="classpath:jmxadapter.mappings.properties"/>
     </bean>
 
-
 	<bean id="jmxAdapter" class="pl.edu.agh.samm.tadapter.jmx.JMXTransportAdapterImpl"
 		init-method="init" destroy-method="destroy">
 		<property name="jmxAdapterConfigurator" ref="jmxAdapterConfigurator"></property>
@@ -38,6 +37,7 @@
 
 	<bean id="jmxAdapterConfigurator" class="pl.edu.agh.samm.tadapter.jmx.JMXAdapterConfigurator"
 		init-method="init">
+        <property name="defaultMappings" ref="jmxMappings" />
 	</bean>
 
 </beans>

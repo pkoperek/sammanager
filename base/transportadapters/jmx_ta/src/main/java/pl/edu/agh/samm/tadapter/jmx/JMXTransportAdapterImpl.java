@@ -227,9 +227,7 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 	/**
 	 * In case type = jvm fullInstance should be e.g.: cluster1.node2.jvm1. In
 	 * all other cases only cluster name and node name are required.
-	 * 
-	 * @param fullInstance
-	 * @param type
+	 *
 	 * @return
 	 * @throws Exception
 	 */
