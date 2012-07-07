@@ -257,7 +257,7 @@
 			<dependency>
 				<groupId>pl.edu.agh.samm.providers</groupId>
 				<artifactId>awssdk</artifactId>
-				<version>1.3.10-SNAPSHOT</version>
+				<version>1.0.005-SNAPSHOT</version>
 			</dependency>
 
 			<dependency> 
