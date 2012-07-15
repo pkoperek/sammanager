@@ -31,7 +31,8 @@
 	<formats>
 		<format>dir</format>
 		<format>zip</format> <!--<format>tar.bz2</format> -->
-	</formats>
+        <format>tar.gz</format>
+    </formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
