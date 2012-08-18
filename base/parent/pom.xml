@@ -23,7 +23,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>../commons</module>
+				<module>../api</module>
 				<module>../core</module>
 				<module>../fileconfig</module>
 				<module>../transportadapters/parent</module>
@@ -49,9 +49,7 @@
 									<goal>copy-dependencies</goal>
 								</goals>
 								<configuration>
-									<outputDirectory>
-										${basedir}/../../../samm_tp
-	        	                                                </outputDirectory>
+									<outputDirectory>${basedir}/../../../samm_tp</outputDirectory>
 									<overWriteReleases>false</overWriteReleases>
 									<overWriteSnapshots>false</overWriteSnapshots>
 									<overWriteIfNewer>true</overWriteIfNewer>
