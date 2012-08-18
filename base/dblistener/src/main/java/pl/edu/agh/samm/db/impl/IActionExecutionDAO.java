@@ -23,7 +23,7 @@ import java.util.Set;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import pl.edu.agh.samm.common.action.ActionExecution;
+import pl.edu.agh.samm.api.action.ActionExecution;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

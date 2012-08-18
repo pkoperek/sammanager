@@ -14,7 +14,7 @@
                       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
 	<osgi:service id="eucalyptusTransportAdapter" ref="eucaTA"
-		interface="pl.edu.agh.samm.common.tadapter.ITransportAdapter"
+		interface="pl.edu.agh.samm.api.tadapter.ITransportAdapter"
 		context-class-loader="service-provider">
 	</osgi:service>
 

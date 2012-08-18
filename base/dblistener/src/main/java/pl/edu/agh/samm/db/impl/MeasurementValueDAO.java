@@ -32,7 +32,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 
-import pl.edu.agh.samm.common.metrics.MeasurementValue;
+import pl.edu.agh.samm.api.metrics.MeasurementValue;
 import pl.edu.agh.samm.db.impl.mapper.MeasurementValueRowMapper;
 
 /**

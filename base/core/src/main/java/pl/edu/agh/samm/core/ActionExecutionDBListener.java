@@ -16,9 +16,9 @@
  */
 package pl.edu.agh.samm.core;
 
-import pl.edu.agh.samm.common.action.ActionExecution;
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.db.IStorageService;
+import pl.edu.agh.samm.api.action.ActionExecution;
+import pl.edu.agh.samm.api.core.IActionExecutionListener;
+import pl.edu.agh.samm.api.db.IStorageService;
 
 /**
  * @author koperek
@@ -45,8 +45,8 @@ public class ActionExecutionDBListener implements IActionExecutionListener {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.common.core.IActionExecutionListener#notifyActionExecution
-	 * (pl.edu.agh.samm.common.action.ActionExecution)
+	 * pl.edu.agh.samm.api.core.IActionExecutionListener#notifyActionExecution
+	 * (pl.edu.agh.samm.api.action.ActionExecution)
 	 */
 	@Override
 	public void notifyActionExecution(ActionExecution actionExecution)

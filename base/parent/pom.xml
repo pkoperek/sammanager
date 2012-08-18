@@ -53,9 +53,7 @@
 										${basedir}/../../../samm_tp
 	        	                                                </outputDirectory>
 									<overWriteReleases>false</overWriteReleases>
-									<overWriteSnapshots>
-										false
-                                	        	                </overWriteSnapshots>
+									<overWriteSnapshots>false</overWriteSnapshots>
 									<overWriteIfNewer>true</overWriteIfNewer>
 									<excludeTransitive>true</excludeTransitive>
 								</configuration>

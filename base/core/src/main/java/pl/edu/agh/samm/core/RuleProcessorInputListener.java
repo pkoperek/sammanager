@@ -21,13 +21,13 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricEvent;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
-import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricEvent;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.api.tadapter.IMeasurementEvent;
+import pl.edu.agh.samm.api.tadapter.IMeasurementListener;
 import pl.edu.agh.samm.metrics.IMetricsManager;
 
 /**
@@ -53,7 +53,7 @@ public class RuleProcessorInputListener implements IMetricListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.metrics.IMetricsManagerListener#
+	 * @see pl.edu.agh.samm.api.metrics.IMetricsManagerListener#
 	 * notifyNewMetricsStarted(java.util.Collection)
 	 */
 	@Override
@@ -72,7 +72,7 @@ public class RuleProcessorInputListener implements IMetricListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.metrics.IMetricsManagerListener#
+	 * @see pl.edu.agh.samm.api.metrics.IMetricsManagerListener#
 	 * notifyMetricsHasStopped(java.util.Collection)
 	 */
 	@Override
@@ -87,8 +87,8 @@ public class RuleProcessorInputListener implements IMetricListener,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.common.metrics.IMetricListener#processMetricEvent(pl.
-	 * edu.agh.samm.common.metrics.IMetricEvent)
+	 * pl.edu.agh.samm.api.metrics.IMetricListener#processMetricEvent(pl.
+	 * edu.agh.samm.api.metrics.IMetricEvent)
 	 */
 	@Override
 	public void processMetricEvent(IMetricEvent metricEvent) throws Exception {

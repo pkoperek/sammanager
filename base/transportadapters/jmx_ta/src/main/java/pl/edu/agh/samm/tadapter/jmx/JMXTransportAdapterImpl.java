@@ -41,12 +41,12 @@ import javax.management.remote.JMXServiceURL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
-import pl.edu.agh.samm.common.impl.StringHelper;
-import pl.edu.agh.samm.common.tadapter.AbstractTransportAdapter;
-import pl.edu.agh.samm.common.tadapter.ActionNotSupportedException;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.core.ResourceNotRegisteredException;
+import pl.edu.agh.samm.api.impl.StringHelper;
+import pl.edu.agh.samm.api.tadapter.AbstractTransportAdapter;
+import pl.edu.agh.samm.api.tadapter.ActionNotSupportedException;
 
 /**
  * Engine for the JMX client communication.

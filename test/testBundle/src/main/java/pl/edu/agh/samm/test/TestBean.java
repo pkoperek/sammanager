@@ -25,21 +25,21 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.core.IResourceEvent;
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.knowledge.IKnowledge;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricEvent;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.Metric;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.metrics.ResourceEventType;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.core.ICoreManagement;
+import pl.edu.agh.samm.api.core.IResourceEvent;
+import pl.edu.agh.samm.api.core.IResourceListener;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.knowledge.IKnowledge;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricEvent;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.Metric;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.api.metrics.ResourceEventType;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.core.Resource;
+import pl.edu.agh.samm.api.core.Resource;
 
 /**
  * @author koperek

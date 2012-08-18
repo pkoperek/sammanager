@@ -17,11 +17,11 @@
 
 package pl.edu.agh.samm.core;
 
-import pl.edu.agh.samm.common.core.IAlarmListener;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
-import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
+import pl.edu.agh.samm.api.core.IAlarmListener;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.sla.IServiceLevelAgreement;
+import pl.edu.agh.samm.api.tadapter.IMeasurementListener;
 
 /**
  * Rules processing engine

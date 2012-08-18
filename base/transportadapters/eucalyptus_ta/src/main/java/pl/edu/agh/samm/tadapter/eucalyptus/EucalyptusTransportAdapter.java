@@ -27,12 +27,12 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
-import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
-import pl.edu.agh.samm.common.tadapter.AbstractTransportAdapter;
-import pl.edu.agh.samm.common.tadapter.ActionNotSupportedException;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.api.core.ResourceNotRegisteredException;
+import pl.edu.agh.samm.api.tadapter.AbstractTransportAdapter;
+import pl.edu.agh.samm.api.tadapter.ActionNotSupportedException;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -108,7 +108,7 @@ public class EucalyptusTransportAdapter extends AbstractTransportAdapter {
 	 * Find children of cluster controller in fact... Reacts only when in
 	 * <code>types</code> list the type of VirtualNode appears.
 	 * 
-	 * @see pl.edu.agh.samm.common.tadapter.ITransportAdapter#discoverChildren(pl.edu.agh.samm.common.core.Resource,
+	 * @see pl.edu.agh.samm.api.tadapter.ITransportAdapter#discoverChildren(pl.edu.agh.samm.api.core.Resource,
 	 *      java.util.List)
 	 */
 	@Override

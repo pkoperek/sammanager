@@ -17,7 +17,7 @@
 
 package pl.edu.agh.samm.corera.jmx;
 
-import pl.edu.agh.samm.common.core.ICoreManagement;
+import pl.edu.agh.samm.api.core.ICoreManagement;
 
 /**
  * Required by JMX specification

@@ -28,20 +28,18 @@ import javax.management.ObjectName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.core.IAlarmListener;
-import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
-import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.core.SLAException;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
+import pl.edu.agh.samm.api.core.IActionExecutionListener;
+import pl.edu.agh.samm.api.core.IAlarmListener;
+import pl.edu.agh.samm.api.core.ICoreManagement;
+import pl.edu.agh.samm.api.core.IResourceListener;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.api.core.ResourceNotRegisteredException;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
 
 /**
  * Simply delegates all calls to passed Core Management instance

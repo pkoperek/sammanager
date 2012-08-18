@@ -19,8 +19,8 @@ package pl.edu.agh.samm.core;
 
 import java.util.List;
 
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.core.Resource;
+import pl.edu.agh.samm.api.core.IResourceListener;
+import pl.edu.agh.samm.api.core.Resource;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

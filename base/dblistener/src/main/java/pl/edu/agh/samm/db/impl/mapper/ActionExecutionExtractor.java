@@ -27,8 +27,8 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.action.ActionExecution;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.action.ActionExecution;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

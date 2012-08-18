@@ -21,10 +21,10 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
 
 /**
  * Interface for a manager of running metrics on the Core system. <br>

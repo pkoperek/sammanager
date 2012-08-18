@@ -9,15 +9,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.ActionExecution;
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.core.IAlarm;
-import pl.edu.agh.samm.common.core.IAlarmListener;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricEvent;
-import pl.edu.agh.samm.common.sla.IServiceLevelAgreement;
-import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
+import pl.edu.agh.samm.api.action.ActionExecution;
+import pl.edu.agh.samm.api.core.IActionExecutionListener;
+import pl.edu.agh.samm.api.core.IAlarm;
+import pl.edu.agh.samm.api.core.IAlarmListener;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricEvent;
+import pl.edu.agh.samm.api.sla.IServiceLevelAgreement;
+import pl.edu.agh.samm.api.tadapter.IMeasurementEvent;
 
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPAdministrator;
@@ -66,7 +66,7 @@ public class EsperRuleProcessor implements IRuleProcessor,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.core.IRuleProcessor#setupSLA(pl.edu.agh.samm.common.sla
+	 * pl.edu.agh.samm.core.IRuleProcessor#setupSLA(pl.edu.agh.samm.api.sla
 	 * .IServiceLevelAgreement)
 	 */
 	@Override

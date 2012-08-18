@@ -32,14 +32,14 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.IResourceInstancesManager;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.knowledge.IKnowledge;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.Metric;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.api.core.IResourceInstancesManager;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.knowledge.IKnowledge;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.Metric;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
 
 /**
  * Manages a set of running metrics (objects containing descriptor of resource
@@ -113,9 +113,9 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.metrics.IRunningMetricsManager#
-	 * addRunningMetricListener(pl.edu.agh.samm.common.impl.metrics.IMetric,
-	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
+	 * @seepl.edu.agh.samm.api.metrics.IRunningMetricsManager#
+	 * addRunningMetricListener(pl.edu.agh.samm.api.impl.metrics.IMetric,
+	 * pl.edu.agh.samm.api.impl.metrics.IMetricListener)
 	 */
 	@Override
 	public void addMetricListener(IMetric metric, IMetricListener listener)
@@ -131,9 +131,9 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.metrics.IRunningMetricsManager#
-	 * removeRunningMetricListener (pl.edu.agh.samm.common.impl.metrics.IMetric,
-	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
+	 * @seepl.edu.agh.samm.api.metrics.IRunningMetricsManager#
+	 * removeRunningMetricListener (pl.edu.agh.samm.api.impl.metrics.IMetric,
+	 * pl.edu.agh.samm.api.impl.metrics.IMetricListener)
 	 */
 	@Override
 	public void removeMetricListener(IMetric metric, IMetricListener listener) {
@@ -170,8 +170,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.impl.metrics.IMetricsManager#startMetric(pl
-	 * .edu.agh.samm.common.metrics.IRunningMetric)
+	 * @see pl.edu.agh.samm.api.impl.metrics.IMetricsManager#startMetric(pl
+	 * .edu.agh.samm.api.metrics.IRunningMetric)
 	 */
 	@Override
 	public void startMetric(IMetric runningMetric) {
@@ -181,8 +181,8 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.impl.metrics.IMetricsManager#stopMetric(pl
-	 * .edu.agh.samm.common.metrics.IRunningMetric)
+	 * @see pl.edu.agh.samm.api.impl.metrics.IMetricsManager#stopMetric(pl
+	 * .edu.agh.samm.api.metrics.IRunningMetric)
 	 */
 	@Override
 	public void stopMetric(IMetric metric) {
@@ -204,9 +204,9 @@ public class RunningMetricsManagerImpl implements IMetricsManager,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.metrics.IRunningMetricsManager#
+	 * @seepl.edu.agh.samm.api.metrics.IRunningMetricsManager#
 	 * startMetricAndAddRunningMetricListener
-	 * (pl.edu.agh.samm.common.impl.metrics.IMetric, java.util.Collection)
+	 * (pl.edu.agh.samm.api.impl.metrics.IMetric, java.util.Collection)
 	 */
 	@Override
 	public void startMetricAndAddRunningMetricListener(IMetric metric,

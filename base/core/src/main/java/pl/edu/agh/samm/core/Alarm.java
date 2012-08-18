@@ -19,8 +19,8 @@ package pl.edu.agh.samm.core;
 
 import java.io.Serializable;
 
-import pl.edu.agh.samm.common.core.IAlarm;
-import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.api.core.IAlarm;
+import pl.edu.agh.samm.api.metrics.IMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

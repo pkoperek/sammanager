@@ -23,7 +23,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi-1.0.xsd">
 
-	<osgi:reference interface="pl.edu.agh.samm.common.knowledge.IKnowledge"
+	<osgi:reference interface="pl.edu.agh.samm.api.knowledge.IKnowledge"
 		id="knowledge"></osgi:reference>
 
 	<bean id="knowledgeMBean" init-method="init" destroy-method="destroy"

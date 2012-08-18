@@ -17,7 +17,7 @@
 
 package pl.edu.agh.samm.core;
 
-import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

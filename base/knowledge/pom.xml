@@ -50,18 +50,14 @@
 					<instructions>
 						<Export-Package>pl.edu.agh.samm.knowledge</Export-Package>
 						<Import-Package>
-							org.slf4j,
-							pl.edu.agh.samm.common.core,
-							pl.edu.agh.samm.common.tadapter,
-							pl.edu.agh.samm.common.knowledge,
-							pl.edu.agh.samm.common.impl,
-							pl.edu.agh.samm.common.metrics,
-							com.hp.hpl.jena.graph,
-							com.hp.hpl.jena.ontology,
-							com.hp.hpl.jena.rdf.model,
-							com.hp.hpl.jena.util.iterator,
-							org.mindswap.pellet.jena
-							</Import-Package>
+                            org.slf4j,
+                            pl.edu.agh.samm.api.*,
+                            com.hp.hpl.jena.graph,
+                            com.hp.hpl.jena.ontology,
+                            com.hp.hpl.jena.rdf.model,
+                            com.hp.hpl.jena.util.iterator,
+                            org.mindswap.pellet.jena
+                        </Import-Package>
 						<Include-Resource>META-INF/spring=META-INF/spring,src/main/resources/samm_1.owl</Include-Resource>
 					</instructions>
 				</configuration>

@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
-import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryListener;
-import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
+import pl.edu.agh.samm.api.tadapter.IMeasurementListener;
+import pl.edu.agh.samm.api.tadapter.IResourceDiscoveryListener;
+import pl.edu.agh.samm.api.tadapter.ITransportAdapter;
 
 /**
  * Bean listening for the changes of {@link Set} containing references to

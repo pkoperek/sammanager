@@ -32,9 +32,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedSingleColumnRowMapper;
 
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.Metric;
-import pl.edu.agh.samm.common.metrics.MetricValue;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.Metric;
+import pl.edu.agh.samm.api.metrics.MetricValue;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

@@ -11,15 +11,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.IAlarm;
-import pl.edu.agh.samm.common.core.IAlarmListener;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricEvent;
-import pl.edu.agh.samm.common.metrics.MetricEvent;
-import pl.edu.agh.samm.common.metrics.Metric;
-import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.core.IAlarm;
+import pl.edu.agh.samm.api.core.IAlarmListener;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricEvent;
+import pl.edu.agh.samm.api.metrics.MetricEvent;
+import pl.edu.agh.samm.api.metrics.Metric;
+import pl.edu.agh.samm.api.tadapter.IMeasurementEvent;
 
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPAdministrator;

@@ -22,8 +22,8 @@ package pl.edu.agh.samm.core;
 
 import java.io.Serializable;
 
-import pl.edu.agh.samm.common.core.IResourceEvent;
-import pl.edu.agh.samm.common.metrics.ResourceEventType;
+import pl.edu.agh.samm.api.core.IResourceEvent;
+import pl.edu.agh.samm.api.metrics.ResourceEventType;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -45,7 +45,7 @@ public class InitialResourceEvent implements IResourceEvent, Serializable {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.core.IResourceEvent#getType()
+	 * @see pl.edu.agh.samm.api.core.IResourceEvent#getType()
 	 */
 	@Override
 	public ResourceEventType getType() {
@@ -55,7 +55,7 @@ public class InitialResourceEvent implements IResourceEvent, Serializable {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.core.IResourceEvent#getAttachment()
+	 * @see pl.edu.agh.samm.api.core.IResourceEvent#getAttachment()
 	 */
 	@Override
 	public Object getAttachment() {

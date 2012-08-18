@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import pl.edu.agh.samm.common.metrics.MeasurementValue;
+import pl.edu.agh.samm.api.metrics.MeasurementValue;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

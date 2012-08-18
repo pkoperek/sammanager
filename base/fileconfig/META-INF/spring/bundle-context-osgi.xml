@@ -14,6 +14,6 @@
                       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
 	<osgi:reference id="coreManagement"
-		interface="pl.edu.agh.samm.common.core.ICoreManagement" />
+		interface="pl.edu.agh.samm.api.core.ICoreManagement" />
 
 </beans>

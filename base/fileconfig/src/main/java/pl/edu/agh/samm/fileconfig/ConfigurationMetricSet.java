@@ -19,7 +19,7 @@ package pl.edu.agh.samm.fileconfig;
 import java.util.LinkedList;
 import java.util.List;
 
-import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetric;
 
 /**
  * @author koperek

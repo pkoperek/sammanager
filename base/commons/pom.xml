@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.base</groupId>
 	<artifactId>commons</artifactId>
-	<name>SAMM - Base - Commons</name>
+	<name>SAMM - Base - API</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
@@ -46,7 +46,7 @@
 					<manifestLocation>${basedir}/META-INF</manifestLocation>
 					<instructions>
 						<Export-Package>
-							pl.edu.agh.samm.common.*
+							pl.edu.agh.samm.api.*
 						</Export-Package>
 						<Import-Package>
 							*

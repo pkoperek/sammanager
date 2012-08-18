@@ -17,7 +17,7 @@
 
 package pl.edu.agh.samm.knowledgera.jmx;
 
-import pl.edu.agh.samm.common.knowledge.IKnowledge;
+import pl.edu.agh.samm.api.knowledge.IKnowledge;
 
 /**
  * Simply extends {@link IKnowledge}

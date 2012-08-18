@@ -23,12 +23,12 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.IResourceEvent;
-import pl.edu.agh.samm.common.core.IResourceInstancesManager;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.knowledge.IKnowledge;
-import pl.edu.agh.samm.common.metrics.ResourceEventType;
-import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
+import pl.edu.agh.samm.api.core.IResourceEvent;
+import pl.edu.agh.samm.api.core.IResourceInstancesManager;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.knowledge.IKnowledge;
+import pl.edu.agh.samm.api.metrics.ResourceEventType;
+import pl.edu.agh.samm.api.tadapter.ITransportAdapter;
 
 /**
  * Performs discovery on newly registered resources

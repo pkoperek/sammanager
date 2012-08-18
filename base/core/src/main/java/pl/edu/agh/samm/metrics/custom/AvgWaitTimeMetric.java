@@ -2,7 +2,7 @@ package pl.edu.agh.samm.metrics.custom;
 
 import java.util.Map;
 
-import pl.edu.agh.samm.common.metrics.ICustomMetric;
+import pl.edu.agh.samm.api.metrics.ICustomMetric;
 
 /**
  * 

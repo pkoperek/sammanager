@@ -32,9 +32,9 @@ import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.db.IStorageService;
-import pl.edu.agh.samm.common.impl.CombinationGenerator;
-import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.api.db.IStorageService;
+import pl.edu.agh.samm.api.impl.CombinationGenerator;
+import pl.edu.agh.samm.api.metrics.IMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

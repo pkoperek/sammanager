@@ -30,11 +30,11 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.action.ActionExecution;
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.tadapter.ActionNotSupportedException;
-import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.action.ActionExecution;
+import pl.edu.agh.samm.api.core.IActionExecutionListener;
+import pl.edu.agh.samm.api.tadapter.ActionNotSupportedException;
+import pl.edu.agh.samm.api.tadapter.ITransportAdapter;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -59,7 +59,7 @@ public class IgnoringActionExecutorImpl implements IActionExecutor {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.core.IActionExecutor#executeRequest(pl.edu.agh.samm.common
+	 * pl.edu.agh.samm.core.IActionExecutor#executeRequest(pl.edu.agh.samm.api
 	 * .action.Action)
 	 */
 	@Override

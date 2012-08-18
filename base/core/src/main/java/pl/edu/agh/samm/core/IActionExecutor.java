@@ -17,8 +17,8 @@
 
 package pl.edu.agh.samm.core;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.core.IActionExecutionListener;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

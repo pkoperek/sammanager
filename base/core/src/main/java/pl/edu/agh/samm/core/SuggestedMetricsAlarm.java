@@ -22,8 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import pl.edu.agh.samm.common.core.ISuggestedMetricsAlarm;
-import pl.edu.agh.samm.common.metrics.IMetric;
+import pl.edu.agh.samm.api.core.ISuggestedMetricsAlarm;
+import pl.edu.agh.samm.api.metrics.IMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

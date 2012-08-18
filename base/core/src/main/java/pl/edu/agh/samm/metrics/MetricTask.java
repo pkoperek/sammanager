@@ -28,11 +28,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.MetricEvent;
-import pl.edu.agh.samm.common.tadapter.ITransportAdapter;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.MetricEvent;
+import pl.edu.agh.samm.api.tadapter.ITransportAdapter;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

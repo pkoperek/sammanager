@@ -27,24 +27,24 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.core.IAlarmListener;
-import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.core.IResourceInstancesManager;
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
-import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.impl.StringHelper;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.Metric;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryEvent;
-import pl.edu.agh.samm.common.tadapter.IResourceDiscoveryListener;
-import pl.edu.agh.samm.common.tadapter.ResourceDiscoveryEventType;
+import pl.edu.agh.samm.api.core.IActionExecutionListener;
+import pl.edu.agh.samm.api.core.IAlarmListener;
+import pl.edu.agh.samm.api.core.ICoreManagement;
+import pl.edu.agh.samm.api.core.IResourceInstancesManager;
+import pl.edu.agh.samm.api.core.IResourceListener;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.api.core.ResourceNotRegisteredException;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.impl.StringHelper;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.Metric;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.api.tadapter.IResourceDiscoveryEvent;
+import pl.edu.agh.samm.api.tadapter.IResourceDiscoveryListener;
+import pl.edu.agh.samm.api.tadapter.ResourceDiscoveryEventType;
 import pl.edu.agh.samm.metrics.IMetricsManager;
 
 /**
@@ -183,8 +183,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.impl.core.ICoreManagement#startMetric(pl.edu
-	 * .agh. samm.common.metrics.IMetric)
+	 * @see pl.edu.agh.samm.api.impl.core.ICoreManagement#startMetric(pl.edu
+	 * .agh. samm.api.metrics.IMetric)
 	 */
 	@Override
 	public void startMetric(IMetric metric) {
@@ -194,8 +194,8 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see pl.edu.agh.samm.common.impl.core.ICoreManagement#stopMetric(pl.edu.
-	 * agh.samm .common.metrics.IRunningMetric)
+	 * @see pl.edu.agh.samm.api.impl.core.ICoreManagement#stopMetric(pl.edu.
+	 * agh.samm .api.metrics.IRunningMetric)
 	 */
 	@Override
 	public void stopMetric(IMetric metric) {
@@ -206,9 +206,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.common.impl.core.ICoreManagement#addRunningMetricListener
-	 * (pl.edu.agh.samm.common.impl.metrics.IMetric,
-	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
+	 * pl.edu.agh.samm.api.impl.core.ICoreManagement#addRunningMetricListener
+	 * (pl.edu.agh.samm.api.impl.metrics.IMetric,
+	 * pl.edu.agh.samm.api.impl.metrics.IMetricListener)
 	 */
 	@Override
 	public void addRunningMetricListener(IMetric metric,
@@ -219,9 +219,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.core.ICoreManagement#
+	 * @seepl.edu.agh.samm.api.core.ICoreManagement#
 	 * addRunningMetricsManagerListener
-	 * (pl.edu.agh.samm.common.impl.metrics.IMetricsManagerListener)
+	 * (pl.edu.agh.samm.api.impl.metrics.IMetricsManagerListener)
 	 */
 	@Override
 	public void addRunningMetricsManagerListener(
@@ -232,9 +232,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.impl.core.ICoreManagement#
-	 * removeRunningMetricListener (pl.edu.agh.samm.common.impl.metrics.IMetric,
-	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
+	 * @seepl.edu.agh.samm.api.impl.core.ICoreManagement#
+	 * removeRunningMetricListener (pl.edu.agh.samm.api.impl.metrics.IMetric,
+	 * pl.edu.agh.samm.api.impl.metrics.IMetricListener)
 	 */
 	@Override
 	public void removeRunningMetricListener(IMetric metric,
@@ -245,9 +245,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.core.ICoreManagement#
+	 * @seepl.edu.agh.samm.api.core.ICoreManagement#
 	 * removeRunningMetricsManagerListener
-	 * (pl.edu.agh.samm.common.impl.metrics.IMetricsManagerListener)
+	 * (pl.edu.agh.samm.api.impl.metrics.IMetricsManagerListener)
 	 */
 	@Override
 	public void removeRunningMetricsManagerListener(
@@ -258,9 +258,9 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.core.ICoreManagement#
+	 * @seepl.edu.agh.samm.api.core.ICoreManagement#
 	 * startMetricAndAddRunningMetricListener
-	 * (pl.edu.agh.samm.common.impl.metrics.IMetric, java.util.Collection)
+	 * (pl.edu.agh.samm.api.impl.metrics.IMetric, java.util.Collection)
 	 */
 	@Override
 	public void startMetricAndAddRunningMetricListener(IMetric runningMetric,
@@ -272,10 +272,10 @@ public class CoreManagementImpl implements IResourceDiscoveryListener,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @seepl.edu.agh.samm.common.core.ICoreManagement#
+	 * @seepl.edu.agh.samm.api.core.ICoreManagement#
 	 * startMetricAndAddRunningMetricListener
-	 * (pl.edu.agh.samm.common.impl.metrics.IMetric,
-	 * pl.edu.agh.samm.common.impl.metrics.IMetricListener)
+	 * (pl.edu.agh.samm.api.impl.metrics.IMetric,
+	 * pl.edu.agh.samm.api.impl.metrics.IMetricListener)
 	 */
 	@Override
 	public void startMetricAndAddRunningMetricListener(IMetric runningMetric,

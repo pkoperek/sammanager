@@ -23,17 +23,15 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.ActionExecution;
-import pl.edu.agh.samm.common.core.IActionExecutionListener;
-import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.db.IStorageService;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.IMetricEvent;
-import pl.edu.agh.samm.common.metrics.IMetricListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
-import pl.edu.agh.samm.common.metrics.MetricNotRunningException;
-import pl.edu.agh.samm.common.tadapter.IMeasurementEvent;
-import pl.edu.agh.samm.common.tadapter.IMeasurementListener;
+import pl.edu.agh.samm.api.core.ICoreManagement;
+import pl.edu.agh.samm.api.db.IStorageService;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.IMetricEvent;
+import pl.edu.agh.samm.api.metrics.IMetricListener;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.metrics.MetricNotRunningException;
+import pl.edu.agh.samm.api.tadapter.IMeasurementEvent;
+import pl.edu.agh.samm.api.tadapter.IMeasurementListener;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

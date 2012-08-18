@@ -23,12 +23,12 @@ import java.io.FileReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.core.ICoreManagement;
-import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
-import pl.edu.agh.samm.common.core.Rule;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.Metric;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.core.ICoreManagement;
+import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.api.core.Rule;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.Metric;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;

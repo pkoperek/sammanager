@@ -29,12 +29,12 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.action.Action;
-import pl.edu.agh.samm.common.action.ActionExecution;
-import pl.edu.agh.samm.common.db.IStorageService;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.MeasurementValue;
-import pl.edu.agh.samm.common.metrics.MetricValue;
+import pl.edu.agh.samm.api.action.Action;
+import pl.edu.agh.samm.api.action.ActionExecution;
+import pl.edu.agh.samm.api.db.IStorageService;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.MeasurementValue;
+import pl.edu.agh.samm.api.metrics.MetricValue;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -69,7 +69,7 @@ public class StorageServiceImpl implements IStorageService {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.db.IStorageService#storeMeasurement(pl.edu.agh.samm.common
+	 * pl.edu.agh.samm.db.IStorageService#storeMeasurement(pl.edu.agh.samm.api
 	 * .metrics.IConfiguredMetric, java.lang.Number)
 	 */
 	@Override

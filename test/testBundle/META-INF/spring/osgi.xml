@@ -24,7 +24,7 @@
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi-1.0.xsd">
 
 	<osgi:reference id="coreManagement"
-		interface="pl.edu.agh.samm.common.core.ICoreManagement"></osgi:reference>
+		interface="pl.edu.agh.samm.api.core.ICoreManagement"></osgi:reference>
 
 	<bean id="testBean" class="pl.edu.agh.samm.test.TestBean"
 		init-method="init">
@@ -32,6 +32,6 @@
 		<property name="knowledge" ref="knowledge"></property>
 	</bean>
 
-	<osgi:reference id="knowledge" interface="pl.edu.agh.samm.common.knowledge.IKnowledge"> </osgi:reference>
+	<osgi:reference id="knowledge" interface="pl.edu.agh.samm.api.knowledge.IKnowledge"> </osgi:reference>
 
 </beans>

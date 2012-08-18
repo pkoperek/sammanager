@@ -1,6 +1,5 @@
 package pl.edu.agh.samm.core;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.After;
@@ -10,9 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import pl.edu.agh.samm.common.core.IResourceInstancesManager;
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.metrics.IMetricsManagerListener;
+import pl.edu.agh.samm.api.core.IResourceInstancesManager;
+import pl.edu.agh.samm.api.metrics.IMetricsManagerListener;
 import pl.edu.agh.samm.metrics.IMetricsManager;
 
 @RunWith(MockitoJUnitRunner.class)

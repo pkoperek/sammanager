@@ -19,8 +19,8 @@ package pl.edu.agh.samm.db.impl;
 
 import java.util.List;
 
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.MetricValue;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.MetricValue;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

@@ -23,9 +23,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.metrics.IMetric;
-import pl.edu.agh.samm.common.metrics.ICustomMetric;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.metrics.IMetric;
+import pl.edu.agh.samm.api.metrics.ICustomMetric;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

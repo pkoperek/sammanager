@@ -23,7 +23,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi-1.0.xsd">
 
-	<osgi:reference interface="pl.edu.agh.samm.common.core.ICoreManagement"
+	<osgi:reference interface="pl.edu.agh.samm.api.core.ICoreManagement"
 		id="coreManagement"></osgi:reference>
 
 	<bean id="sammCoreMBean" init-method="init" destroy-method="destroy"

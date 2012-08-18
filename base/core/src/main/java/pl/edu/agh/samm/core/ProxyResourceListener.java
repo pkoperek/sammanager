@@ -22,8 +22,8 @@ package pl.edu.agh.samm.core;
 
 import java.io.Serializable;
 
-import pl.edu.agh.samm.common.core.IResourceEvent;
-import pl.edu.agh.samm.common.core.IResourceListener;
+import pl.edu.agh.samm.api.core.IResourceEvent;
+import pl.edu.agh.samm.api.core.IResourceListener;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>
@@ -46,8 +46,8 @@ public class ProxyResourceListener implements IResourceListener, Serializable {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * pl.edu.agh.samm.common.core.IResourceListener#processEvent(pl.edu.agh
-	 * .samm.common.core.IResourceEvent)
+	 * pl.edu.agh.samm.api.core.IResourceListener#processEvent(pl.edu.agh
+	 * .samm.api.core.IResourceEvent)
 	 */
 	@Override
 	public void processEvent(IResourceEvent event) throws Exception {

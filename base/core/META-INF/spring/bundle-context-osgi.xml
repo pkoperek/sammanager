@@ -14,19 +14,19 @@
                       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
 	<osgi:set id="transportAdaptersSet"
-		interface="pl.edu.agh.samm.common.tadapter.ITransportAdapter">
+		interface="pl.edu.agh.samm.api.tadapter.ITransportAdapter">
 		<osgi:listener ref="transportAdapterListener"
 			bind-method="onBind" unbind-method="onUnbind">
 		</osgi:listener>
 	</osgi:set>
 
 	<osgi:reference id="knowledgeService"
-		interface="pl.edu.agh.samm.common.knowledge.IKnowledge" />
+		interface="pl.edu.agh.samm.api.knowledge.IKnowledge" />
 
 	<osgi:reference id="storageService"
-		interface="pl.edu.agh.samm.common.db.IStorageService" />
+		interface="pl.edu.agh.samm.api.db.IStorageService" />
 
-	<osgi:service interface="pl.edu.agh.samm.common.core.ICoreManagement"
+	<osgi:service interface="pl.edu.agh.samm.api.core.ICoreManagement"
 		ref="coreManagementBean" context-class-loader="service-provider">
 	</osgi:service>
 

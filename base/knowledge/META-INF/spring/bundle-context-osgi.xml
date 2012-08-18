@@ -30,6 +30,6 @@
        keeping these definitions separate is to facilitate integration
        testing of the bundle outside of an OSGi container -->
 
-	<osgi:service interface="pl.edu.agh.samm.common.knowledge.IKnowledge" ref="knowledgeBean"></osgi:service>
+	<osgi:service interface="pl.edu.agh.samm.api.knowledge.IKnowledge" ref="knowledgeBean"></osgi:service>
 
 </beans>

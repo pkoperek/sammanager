@@ -32,14 +32,14 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.common.core.DefaultResourceEventImpl;
-import pl.edu.agh.samm.common.core.IResourceEvent;
-import pl.edu.agh.samm.common.core.IResourceInstancesManager;
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.core.Resource;
-import pl.edu.agh.samm.common.core.ResourceAlreadyRegisteredException;
-import pl.edu.agh.samm.common.core.ResourceNotRegisteredException;
-import pl.edu.agh.samm.common.metrics.ResourceEventType;
+import pl.edu.agh.samm.api.core.DefaultResourceEventImpl;
+import pl.edu.agh.samm.api.core.IResourceEvent;
+import pl.edu.agh.samm.api.core.IResourceInstancesManager;
+import pl.edu.agh.samm.api.core.IResourceListener;
+import pl.edu.agh.samm.api.core.Resource;
+import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
+import pl.edu.agh.samm.api.core.ResourceNotRegisteredException;
+import pl.edu.agh.samm.api.metrics.ResourceEventType;
 
 /**
  * @author Pawel Koperek <pkoperek@gmail.com>

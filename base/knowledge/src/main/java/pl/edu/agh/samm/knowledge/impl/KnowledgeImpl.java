@@ -22,8 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import pl.edu.agh.samm.common.core.IResourceListener;
-import pl.edu.agh.samm.common.knowledge.IKnowledge;
+import pl.edu.agh.samm.api.core.IResourceListener;
+import pl.edu.agh.samm.api.knowledge.IKnowledge;
 import pl.edu.agh.samm.knowledge.IOntModelProvider;
 
 import com.hp.hpl.jena.ontology.Individual;
