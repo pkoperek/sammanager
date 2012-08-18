@@ -464,6 +464,13 @@
 				<artifactId>org.apache.felix.fileinstall</artifactId>
 				<version>3.1.2</version>
 			</dependency>
+
+            <!-- web application -->
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>8.1.4.v20120524</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

@@ -240,5 +240,12 @@
 			<artifactId>org.apache.felix.fileinstall</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+        <!-- web application -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 	</dependencies>
 </project>
