@@ -20,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package pl.edu.agh.samm.core;
 
 import pl.edu.agh.samm.api.action.ActionExecution;
