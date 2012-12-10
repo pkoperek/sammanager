@@ -19,6 +19,7 @@ package pl.edu.agh.samm.fileconfig;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,127 +36,139 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * @author koperek
- * 
  */
 public class FileConfigurator {
-	private static final Logger logger = LoggerFactory
-			.getLogger(FileConfigurator.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(FileConfigurator.class);
 
-	private ICoreManagement coreManagement = null;
+    private ICoreManagement coreManagement = null;
 
-	private XStream xstream = null;
+    private XStream xstream = null;
 
-	public static final String PROPERTIES_FILENAME_KEY = "configFile";
+    public static final String PROPERTIES_FILENAME_KEY = "configFile";
 
-	public void init() {
-		logger.info("Starting Property File Configurator!");
+    public void init() {
+        logger.info("Starting Property File Configurator!");
 
-		xstream = new XStream(new DomDriver());
-		configureXStream(xstream);
+        xstream = new XStream(new DomDriver());
+        configureXStream(xstream);
 
-		String configFilePath = System.getProperty(PROPERTIES_FILENAME_KEY);
+        String configFilePath = System.getProperty(PROPERTIES_FILENAME_KEY);
 
-		if (configFilePath == null) {
-			logger.warn("No config file specified! Please use the -D"
-					+ PROPERTIES_FILENAME_KEY + " VM option!");
-		} else {
-			File configFile = new File(configFilePath);
-			try {
-				Configuration configuration = (Configuration) xstream
-						.fromXML(new FileReader(configFile));
+        if (configFilePath == null) {
+            logger.warn("No config file specified! Please use the -D"
+                    + PROPERTIES_FILENAME_KEY + " VM option!");
+        } else {
+            File configFile = new File(configFilePath);
+            try {
+                Configuration configuration = (Configuration) xstream
+                        .fromXML(new FileReader(configFile));
 
-				RuleSet ruleSet = configuration.getRuleSet();
+                nullSafeRegisterRules(configuration.getRuleSet());
+                nullSafeRegisterResources(configuration.getResourceSet());
+                nullSafeRegisterMetrics(configuration.getMetricSet());
+            } catch (FileNotFoundException e) {
+                logger.error("File (" + configFilePath + ") doesn't exist! ", e);
+            }
+        }
 
-				if (ruleSet != null && ruleSet.getRules() != null) {
-					for (Rule rule : ruleSet.getRules()) {
-						logger.info("Adding rule: " + rule);
-						coreManagement.addRule(rule);
-					}
-				} else {
-					logger.warn("No rules specified!");
-				}
+        logger.info("Starting Property File Configurator finished!");
+    }
 
-				// configure resources
-				ConfigurationResourceSet resourceSet = configuration
-						.getResourceSet();
+    private void nullSafeRegisterRules(RuleSet ruleSet) {
+        if (ruleSet != null && ruleSet.getRules() != null) {
+            registerRules(ruleSet.getRules());
+        } else {
+            logger.warn("No rules specified!");
+        }
+    }
 
-				if (resourceSet != null && resourceSet.getResources() != null) {
-					for (ConfigurationResource configurationResource : resourceSet
-							.getResources()) {
-						try {
-							coreManagement
-									.registerResource(configurationResource
-											.getResource());
-						} catch (ResourceAlreadyRegisteredException e) {
-							logger.error("Cannot add resource: "
-									+ configurationResource, e);
-						}
-					}
-				}
+    private void registerRules(List<Rule> rules) {
+        for (Rule rule : rules) {
+            logger.info("Adding rule: " + rule);
+            coreManagement.addRule(rule);
+        }
+    }
 
-				// configure metrics
-				ConfigurationMetricSet metricSet = configuration.getMetricSet();
-				if (metricSet != null && metricSet.getMetrics() != null) {
-					for (IMetric metric : metricSet.getMetrics()) {
-						// means that user didn't set it - set the default value
-						// then
-						if (metric.getMetricPollTimeInterval() == 0) {
-							metric.setMetricPollTimeInterval(Metric.DEFAULT_METRIC_POLL_TIME_INTERVAL);
-						}
+    private void nullSafeRegisterResources(ConfigurationResourceSet resourceSet) {
+        if (resourceSet != null && resourceSet.getResources() != null) {
+            registerResources(resourceSet.getResources());
+        }
+    }
 
-						logger.info("Adding metric: " + metric.getMetricURI()
-								+ " for " + metric.getResourceURI());
+    private void nullSafeRegisterMetrics(ConfigurationMetricSet metricSet) {
+        if (metricSet != null && metricSet.getMetrics() != null) {
+            registerMetrics(metricSet.getMetrics());
+        }
+    }
 
-						logger.info("Starting metric: " + metric);
-						coreManagement.startMetric(metric);
-					}
-				}
-			} catch (FileNotFoundException e) {
-				logger.error("File (" + configFilePath + ") doesn't exist! ", e);
-			}
-		}
+    private void registerMetrics(List<IMetric> metrics) {
+        for (IMetric metric : metrics) {
+            // means that user didn't set it - set the default value
+            // then
+            if (metric.getMetricPollTimeInterval() == 0) {
+                metric.setMetricPollTimeInterval(Metric.DEFAULT_METRIC_POLL_TIME_INTERVAL);
+            }
 
-		logger.info("Starting Property File Configurator finished!");
-	}
+            logger.info("Adding metric: " + metric.getMetricURI()
+                    + " for " + metric.getResourceURI());
 
-	public static void configureXStream(XStream xstream) {
-		// resources
-		xstream.alias("resourceSet", ConfigurationResourceSet.class);
-		xstream.addImplicitCollection(ConfigurationResourceSet.class,
-				"resources");
-		xstream.alias("resource", ConfigurationResource.class);
-		xstream.alias("property", ConfigurationResourceProperty.class);
-		xstream.useAttributeFor(ConfigurationResource.class, "uri");
-		xstream.addImplicitCollection(ConfigurationResource.class, "properties");
+            logger.info("Starting metric: " + metric);
+            coreManagement.startMetric(metric);
+        }
+    }
 
-		// rules
-		xstream.alias("ruleSet", RuleSet.class);
-		xstream.addImplicitCollection(RuleSet.class, "rules");
-		xstream.alias("rule", Rule.class);
-		xstream.useAttributeFor(Rule.class, "name");
+    private void registerResources(List<ConfigurationResource> resources) {
+        for (ConfigurationResource configurationResource : resources) {
+            try {
+                coreManagement
+                        .registerResource(configurationResource
+                                .getResource());
+            } catch (ResourceAlreadyRegisteredException e) {
+                logger.error("Cannot add resource: "
+                        + configurationResource, e);
+            }
+        }
+    }
 
-		// action
-		xstream.alias("action", Action.class);
+    public static void configureXStream(XStream xstream) {
+        // resources
+        xstream.alias("resourceSet", ConfigurationResourceSet.class);
+        xstream.addImplicitCollection(ConfigurationResourceSet.class,
+                "resources");
+        xstream.alias("resource", ConfigurationResource.class);
+        xstream.alias("property", ConfigurationResourceProperty.class);
+        xstream.useAttributeFor(ConfigurationResource.class, "uri");
+        xstream.addImplicitCollection(ConfigurationResource.class, "properties");
 
-		// configuration
-		xstream.alias("configuration", Configuration.class);
-		//xstream.useAttributeFor(Configuration.class, "gracePeriod");
+        // rules
+        xstream.alias("ruleSet", RuleSet.class);
+        xstream.addImplicitCollection(RuleSet.class, "rules");
+        xstream.alias("rule", Rule.class);
+        xstream.useAttributeFor(Rule.class, "name");
 
-		// metrics
-		xstream.alias("metric", Metric.class);
-		xstream.useAttributeFor(Metric.class, "metricURI");
-		xstream.useAttributeFor(Metric.class, "resourceURI");
-		xstream.useAttributeFor(Metric.class, "metricPollTimeInterval");
-		xstream.alias("metricSet", ConfigurationMetricSet.class);
-		xstream.addImplicitCollection(ConfigurationMetricSet.class, "metrics");
-	}
+        // action
+        xstream.alias("action", Action.class);
 
-	XStream getXstream() {
-		return xstream;
-	}
+        // configuration
+        xstream.alias("configuration", Configuration.class);
+        //xstream.useAttributeFor(Configuration.class, "gracePeriod");
 
-	public void setCoreManagement(ICoreManagement coreManagement) {
-		this.coreManagement = coreManagement;
-	}
+        // metrics
+        xstream.alias("metric", Metric.class);
+        xstream.useAttributeFor(Metric.class, "metricURI");
+        xstream.useAttributeFor(Metric.class, "resourceURI");
+        xstream.useAttributeFor(Metric.class, "metricPollTimeInterval");
+        xstream.alias("metricSet", ConfigurationMetricSet.class);
+        xstream.addImplicitCollection(ConfigurationMetricSet.class, "metrics");
+    }
+
+    XStream getXstream() {
+        return xstream;
+    }
+
+    public void setCoreManagement(ICoreManagement coreManagement) {
+        this.coreManagement = coreManagement;
+    }
 
 }
