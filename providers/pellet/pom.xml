@@ -18,16 +18,15 @@
 	</parent>
 
 	<properties>
-		<pellet.version>2.2.0</pellet.version>
+		<pellet.version>2.3.6-ansell</pellet.version>
 	</properties>
 
 	<!-- Dependencies OSGi bundle version -->
 	<dependencies>
 		<dependency>
-			<groupId>com.owldl</groupId>
-			<artifactId>pellet</artifactId>
-			<!-- latest version is 2.2.0, or earlier 2.1.1, ... -->
-			<version>${pellet.version}</version>
+		    <groupId>com.github.ansell.pellet</groupId>
+		    <artifactId>pellet-core</artifactId>
+		    <version>${pellet.version}</version>
 		</dependency>
 	</dependencies>
 
