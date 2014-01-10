@@ -24,12 +24,6 @@
 
 	<profiles>
 		<profile>
-			<id>providers</id>
-			<modules>
-				<module>../providers/parent</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>targetplatform</id>
 			<modules>
 				<module>../base/parent</module>
@@ -48,12 +42,7 @@
 			</activation>
 			<modules>
 				<module>../base/parent</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>gui</id>
-			<modules>
-				<module>../eclipse/parent</module>
+				<module>../providers/parent</module>
 			</modules>
 		</profile>
 		<profile>
