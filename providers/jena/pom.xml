@@ -12,7 +12,7 @@
 
 	<!-- Dependencies OSGi bundle version -->
 	<properties>
-		<jena.version>2.7.5</jena.version>
+		<jena.version>2.11.0</jena.version>
 	</properties>
 
 	<parent>
