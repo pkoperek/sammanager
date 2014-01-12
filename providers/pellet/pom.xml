@@ -17,10 +17,6 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
-	<properties>
-		<pellet.version>2.3.6-ansell</pellet.version>
-	</properties>
-
 	<!-- Dependencies OSGi bundle version -->
 	<dependencies>
         <dependency>
