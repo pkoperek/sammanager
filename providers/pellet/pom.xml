@@ -23,6 +23,11 @@
 
 	<!-- Dependencies OSGi bundle version -->
 	<dependencies>
+        <dependency>
+            <groupId>com.github.ansell.pellet</groupId>
+            <artifactId>pellet-jena</artifactId>
+            <version>${pellet.version}</version>
+        </dependency>
 		<dependency>
 		    <groupId>com.github.ansell.pellet</groupId>
 		    <artifactId>pellet-core</artifactId>
