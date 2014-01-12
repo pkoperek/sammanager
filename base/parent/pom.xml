@@ -15,7 +15,6 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-
 	<profiles>
 		<profile>
 			<id>development</id>
@@ -139,12 +138,11 @@
 			<scope>runtime</scope>
 		</dependency>-->
 
-
 		<!-- samm providers -->
 		<dependency>
-				<groupId>pl.edu.agh.samm.providers</groupId>
-				<artifactId>esper</artifactId>
-				<scope>runtime</scope>
+			<groupId>pl.edu.agh.samm.providers</groupId>
+			<artifactId>esper</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>

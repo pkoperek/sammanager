@@ -10,11 +10,6 @@
 	   ${pom.artifactId} wrapper OSGi bundle.   
 	</description>
 
-	<!-- Dependencies OSGi bundle version -->
-	<properties>
-		<jfree-version>1.0.13</jfree-version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>jfree</groupId>

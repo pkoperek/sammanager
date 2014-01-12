@@ -18,10 +18,6 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
-	<properties>
-		<esper.version>4.1.0</esper.version>
-	</properties>
-
 	<!-- Dependencies OSGi bundle version -->
 	<dependencies>
 		<dependency>

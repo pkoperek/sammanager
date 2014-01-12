@@ -17,13 +17,6 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
-	<properties>
-		<weka.version>3.6.7</weka.version>
-	</properties>
-
-	<!-- Dependencies OSGi bundle version -->
-
-
 	<dependencies>
 		<dependency>
 			<groupId>nz.ac.waikato.cms.weka</groupId>

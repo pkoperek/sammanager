@@ -10,11 +10,6 @@
 	</description>
 	<packaging>bundle</packaging>
 
-	<!-- Dependencies OSGi bundle version -->
-	<properties>
-		<jena.version>2.11.0</jena.version>
-	</properties>
-
 	<parent>
 		<artifactId>providers</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
@@ -25,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.jena</groupId>
-			<artifactId>jena</artifactId>
+			<artifactId>jena-core</artifactId>
 			<version>${jena.version}</version>
 		</dependency>
 	</dependencies>

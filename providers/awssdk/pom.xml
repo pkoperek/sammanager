@@ -18,10 +18,6 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
-	<properties>
-		<awssdk.version>1.0.005</awssdk.version>
-	</properties>
-
 	<!-- Dependencies OSGi bundle version -->
 	<dependencies>
 		<dependency>
