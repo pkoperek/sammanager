@@ -36,7 +36,13 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
 		<file>
-			<source>src/main/scripts/run.sh</source>
+			<source>src/main/scripts/stop.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<filtered>true</filtered>
+			<fileMode>755</fileMode>
+		</file>
+		<file>
+			<source>src/main/scripts/start.sh</source>
 			<outputDirectory>.</outputDirectory>
 			<filtered>true</filtered>
 			<fileMode>755</fileMode>

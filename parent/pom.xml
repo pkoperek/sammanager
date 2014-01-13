@@ -43,6 +43,7 @@
 			<id>targetplatform</id>
 			<modules>
 				<module>../base/parent</module>
+				<module>../providers/parent</module>
 			</modules>
 		</profile>
 		<profile>
@@ -65,6 +66,7 @@
 			<id>release</id>
 			<modules>
 				<module>../base/parent</module>
+				<module>../providers/parent</module>
 			</modules>
 			<build>
 				<plugins>
