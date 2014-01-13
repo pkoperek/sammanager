@@ -24,7 +24,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import pl.edu.agh.samm.api.action.Action;
 import pl.edu.agh.samm.api.core.ICoreManagement;
 import pl.edu.agh.samm.api.core.ResourceAlreadyRegisteredException;
 import pl.edu.agh.samm.api.core.Rule;
@@ -32,26 +31,23 @@ import pl.edu.agh.samm.api.metrics.IMetric;
 import pl.edu.agh.samm.api.metrics.Metric;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * @author koperek
  */
 public class FileConfigurator {
-    private static final Logger logger = LoggerFactory
-            .getLogger(FileConfigurator.class);
-
-    private ICoreManagement coreManagement = null;
-
-    private XStream xstream = null;
 
     public static final String PROPERTIES_FILENAME_KEY = "configFile";
+    private static final Logger logger = LoggerFactory.getLogger(FileConfigurator.class);
+
+    private ICoreManagement coreManagement;
+    private XStreamFactory xStreamFactory;
+    private XStream xstream;
 
     public void init() {
         logger.info("Starting Property File Configurator!");
 
-        xstream = new XStream(new DomDriver());
-        configureXStream(xstream);
+        xstream = xStreamFactory.createXStream();
 
         String configFilePath = System.getProperty(PROPERTIES_FILENAME_KEY);
 
@@ -131,44 +127,12 @@ public class FileConfigurator {
         }
     }
 
-    public static void configureXStream(XStream xstream) {
-        // resources
-        xstream.alias("resourceSet", ConfigurationResourceSet.class);
-        xstream.addImplicitCollection(ConfigurationResourceSet.class,
-                "resources");
-        xstream.alias("resource", ConfigurationResource.class);
-        xstream.alias("property", ConfigurationResourceProperty.class);
-        xstream.useAttributeFor(ConfigurationResource.class, "uri");
-        xstream.addImplicitCollection(ConfigurationResource.class, "properties");
-
-        // rules
-        xstream.alias("ruleSet", RuleSet.class);
-        xstream.addImplicitCollection(RuleSet.class, "rules");
-        xstream.alias("rule", Rule.class);
-        xstream.useAttributeFor(Rule.class, "name");
-
-        // action
-        xstream.alias("action", Action.class);
-
-        // configuration
-        xstream.alias("configuration", Configuration.class);
-        //xstream.useAttributeFor(Configuration.class, "gracePeriod");
-
-        // metrics
-        xstream.alias("metric", Metric.class);
-        xstream.useAttributeFor(Metric.class, "metricURI");
-        xstream.useAttributeFor(Metric.class, "resourceURI");
-        xstream.useAttributeFor(Metric.class, "metricPollTimeInterval");
-        xstream.alias("metricSet", ConfigurationMetricSet.class);
-        xstream.addImplicitCollection(ConfigurationMetricSet.class, "metrics");
-    }
-
-    XStream getXstream() {
-        return xstream;
-    }
-
     public void setCoreManagement(ICoreManagement coreManagement) {
         this.coreManagement = coreManagement;
+    }
+
+    public void setxStreamFactory(XStreamFactory xStreamFactory) {
+        this.xStreamFactory = xStreamFactory;
     }
 
 }
