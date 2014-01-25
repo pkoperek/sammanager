@@ -59,6 +59,7 @@
 			</activation>
 			<modules>
 				<module>../base/parent</module>
+				<module>../test/parent</module>
 				<module>../providers/parent</module>
 			</modules>
 		</profile>
