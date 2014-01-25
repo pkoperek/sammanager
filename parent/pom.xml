@@ -38,52 +38,11 @@
 		</repository>
 	</repositories>
 
-	<profiles>
-		<profile>
-			<id>targetplatform</id>
-			<modules>
-				<module>../base/parent</module>
-				<module>../providers/parent</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>functionaltests</id>
-			<modules>
-				<module>../test/parent</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>development</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>../base/parent</module>
-				<module>../test/parent</module>
-				<module>../providers/parent</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>release</id>
-			<modules>
-				<module>../base/parent</module>
-				<module>../providers/parent</module>
-			</modules>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/bin.xml</descriptor>
-							</descriptors>
-						</configuration>
-						<inherited>false</inherited>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+	<modules>
+		<module>../base/parent</module>
+		<module>../test/parent</module>
+		<module>../providers/parent</module>
+	</modules>
 
 	<developers>
 		<developer>
@@ -167,6 +126,15 @@
 		</resources>
 
 		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+				<descriptors>
+					<descriptor>src/main/assembly/bin.xml</descriptor>
+				</descriptors>
+				</configuration>
+				<inherited>false</inherited>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
