@@ -24,6 +24,7 @@
 			</activation>
 			<modules>
 				<module>../testBundle</module>
+				<module>../testApp</module>
 			</modules>
 			<build>
 				<plugins>
