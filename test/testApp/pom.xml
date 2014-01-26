@@ -11,8 +11,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <vaadin.version>6.8.2</vaadin.version>
-        <!--<gwt.version>2.3.0</gwt.version>-->
-        <!--<gwt.plugin.version>2.2.0</gwt.plugin.version>-->
         <jettyVersion>9.0.2.v20130417</jettyVersion>
     </properties>
 
@@ -85,6 +83,11 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
+            <version>${jettyVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
             <version>${jettyVersion}</version>
         </dependency>
     </dependencies>
