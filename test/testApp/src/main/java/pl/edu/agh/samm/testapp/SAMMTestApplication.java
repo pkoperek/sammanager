@@ -15,47 +15,34 @@
  */
 package pl.edu.agh.samm.testapp;
 
-import com.vaadin.Application;
-import com.vaadin.ui.Button;
+import com.vaadin.annotations.Title;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.Window;
-import pl.edu.agh.samm.testapp.core.ExpressionGenerator;
 
 /**
  * The Application's "main" class
  */
 @SuppressWarnings("serial")
-public class SAMMTestApplication extends Application {
+@Title("SAMM Test Application")
+public class SAMMTestApplication extends UI {
 
     private static final String START_WORKLOAD = "Start workload";
     private static final String STOP_WORKLOAD = "Stop workload";
 
-    private WorkloadGenerator workloadGenerator;
+    private WorkloadGenerator workloadGenerator = new WorkloadGenerator();
 
     private TextArea generationLogTextArea;
-    private Window mainWindow;
-
-    @Override
-    public void init() {
-        workloadGenerator = new WorkloadGenerator();
-
-        mainWindow = new Window("SAMM Test Application");
-        mainWindow.addComponent(createGenerationControlPanel());
-
-        setMainWindow(mainWindow);
-    }
 
     private Panel createGenerationControlPanel() {
-        final Panel generationControlPanel = new Panel("Data generation control:");
+        final VerticalLayout generationControlLayout = new VerticalLayout();
 
         Button generationControlButton = createGenerationControlButton();
         generationLogTextArea = createGenerationLogTextArea();
-        generationControlPanel.addComponent(generationControlButton);
-        generationControlPanel.addComponent(generationLogTextArea);
+        generationControlLayout.addComponent(generationControlButton);
+        generationControlLayout.addComponent(generationLogTextArea);
 
-        return generationControlPanel;
+        return new Panel("Control workload generation", generationControlLayout);
     }
 
     private TextArea createGenerationLogTextArea() {
@@ -83,5 +70,10 @@ public class SAMMTestApplication extends Application {
             }
         });
         return generationControl;
+    }
+
+    @Override
+    protected void init(VaadinRequest vaadinRequest) {
+        setContent(createGenerationControlPanel());
     }
 }
