@@ -31,22 +31,17 @@ public class SAMMTestApplication extends Application {
 
     private static final String START_WORKLOAD = "Start workload";
     private static final String STOP_WORKLOAD = "Stop workload";
-    private static final int MAX_LVL = 10;
 
-    private Window mainWindow;
+    private WorkloadGenerator workloadGenerator;
 
-    private Thread expressionGeneratorThread;
-    private ExpressionGenerator expressionGenerator;
     private TextArea generationLogTextArea;
+    private Window mainWindow;
 
     @Override
     public void init() {
-        expressionGenerator = new ExpressionGenerator(MAX_LVL);
-        expressionGeneratorThread = new Thread(expressionGenerator);
-        expressionGeneratorThread.start();
+        workloadGenerator = new WorkloadGenerator();
 
         mainWindow = new Window("SAMM Test Application");
-
         mainWindow.addComponent(createGenerationControlPanel());
 
         setMainWindow(mainWindow);
@@ -63,14 +58,6 @@ public class SAMMTestApplication extends Application {
         return generationControlPanel;
     }
 
-    private void stopGenerating() {
-        expressionGenerator.stopGeneration();
-    }
-
-    private void startGenerating() {
-        expressionGenerator.startGeneration();
-    }
-
     private TextArea createGenerationLogTextArea() {
         TextArea log = new TextArea();
         log.setWidth("100%");
@@ -82,12 +69,16 @@ public class SAMMTestApplication extends Application {
         final Button generationControl = new Button(START_WORKLOAD);
         generationControl.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
-                if (generationControl.getCaption().equals(START_WORKLOAD)) {
-                    startGenerating();
-                    generationControl.setCaption(STOP_WORKLOAD);
-                } else {
-                    stopGenerating();
-                    generationControl.setCaption(START_WORKLOAD);
+                try {
+                    if (generationControl.getCaption().equals(START_WORKLOAD)) {
+                        workloadGenerator.startGenerating();
+                        generationControl.setCaption(STOP_WORKLOAD);
+                    } else {
+                        workloadGenerator.stopGenerating();
+                        generationControl.setCaption(START_WORKLOAD);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });
