@@ -41,6 +41,7 @@ public class SAMMTestApplication extends UI {
         generationLogTextArea = createGenerationLogTextArea();
         generationControlLayout.addComponent(generationControlButton);
         generationControlLayout.addComponent(generationLogTextArea);
+        generationControlLayout.setMargin(true);
 
         return new Panel("Control workload generation", generationControlLayout);
     }
@@ -54,22 +55,37 @@ public class SAMMTestApplication extends UI {
 
     private Button createGenerationControlButton() {
         final Button generationControl = new Button(START_WORKLOAD);
-        generationControl.addListener(new Button.ClickListener() {
+        generationControl.addClickListener(new Button.ClickListener() {
+            @Override
             public void buttonClick(ClickEvent event) {
                 try {
                     if (generationControl.getCaption().equals(START_WORKLOAD)) {
+                        publishMessage("Starting expressions generation...");
                         workloadGenerator.startGenerating();
+                        publishMessage("Started expressions generation");
                         generationControl.setCaption(STOP_WORKLOAD);
                     } else {
+                        publishMessage("Stopping expressions generation...");
                         workloadGenerator.stopGenerating();
+                        publishMessage("Stopped expressions generation");
                         generationControl.setCaption(START_WORKLOAD);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
             }
         });
         return generationControl;
+    }
+
+    private void publishMessage(final String message) {
+        access(new Runnable() {
+            @Override
+            public void run() {
+                generationLogTextArea.setValue(generationLogTextArea.getValue() + '\n' + message);
+            }
+        });
     }
 
     @Override
