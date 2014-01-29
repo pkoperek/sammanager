@@ -2,7 +2,7 @@ package pl.edu.agh.samm.testapp;
 
 import pl.edu.agh.samm.testapp.core.ExpressionGenerator;
 import pl.edu.agh.samm.testapp.core.SlaveDispatcher;
-import pl.edu.agh.samm.testapp.core.SlaveResolver;
+import pl.edu.agh.samm.testapp.core.SlaveManager;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public class WorkloadGenerator implements Serializable {
 
     private Thread expressionGeneratorThread;
     private ExpressionGenerator expressionGenerator;
-    private SlaveResolver slaveResolver;
+    private SlaveManager slaveManager;
     private SlaveDispatcher slaveDispatcher;
     private Thread slaveDispatcherThread;
 
@@ -20,7 +20,7 @@ public class WorkloadGenerator implements Serializable {
         expressionGenerator = new ExpressionGenerator(MAX_LVL);
 
         initExpressionGenerator();
-        initSlaveResolver();
+        initSlaveManager();
         initSlaveDispatcher();
     }
 
@@ -38,13 +38,13 @@ public class WorkloadGenerator implements Serializable {
     }
 
     private void initSlaveDispatcher() {
-        slaveDispatcher = new SlaveDispatcher(expressionGenerator, slaveResolver);
+        slaveDispatcher = new SlaveDispatcher(expressionGenerator, slaveManager);
         slaveDispatcherThread = new Thread(slaveDispatcher);
         slaveDispatcherThread.start();
     }
 
-    private void initSlaveResolver() {
-        slaveResolver = new SlaveResolver();
+    private void initSlaveManager() {
+        slaveManager = new SlaveManager();
     }
 
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Slave extends LoggingClass implements SlaveMBean, Runnable, Serializable {
+public class Slave extends LoggingClass implements Runnable, Serializable {
 
     /**
      *
@@ -27,7 +27,7 @@ public class Slave extends LoggingClass implements SlaveMBean, Runnable, Seriali
     private long processedCount = 0;
     private long sumProcessingTime = 0;
 
-    public double numericIntegration(final String formula, double min, double max) throws ConvergenceException, FunctionEvaluationException, IllegalArgumentException {
+    private double numericIntegration(final String formula, double min, double max) throws ConvergenceException, FunctionEvaluationException, IllegalArgumentException {
         logMessage("Integrating: " + formula + "(" + min + "," + max + ")");
         UnivariateRealFunction function = new UnivariateRealFunction() {
 

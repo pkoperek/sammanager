@@ -1,7 +1,6 @@
 package pl.edu.agh.samm.testapp.core;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 public class SlaveDispatcher extends LoggingClass implements Runnable,
 		Stoppable, Serializable {
@@ -12,10 +11,10 @@ public class SlaveDispatcher extends LoggingClass implements Runnable,
 	private static final long serialVersionUID = -8745913791313753914L;
 	private static final long SLAVE_WAIT_TIME = 5000;
 	private IExpressionGenerator master;
-	private ISlaveResolver resolver;
+	private ISlaveManager resolver;
 	private boolean running = true;
 
-	public SlaveDispatcher(IExpressionGenerator master, ISlaveResolver resolver) {
+	public SlaveDispatcher(IExpressionGenerator master, ISlaveManager resolver) {
 		this.master = master;
 		this.resolver = resolver;
 	}
@@ -32,11 +31,11 @@ public class SlaveDispatcher extends LoggingClass implements Runnable,
 						+ master.getQueueLength());
 
 				boolean scheduled = false;
-				IRemoteSlave firstSlaveInLoop = null;
+				ISlave firstSlaveInLoop = null;
 				boolean firstSlave = true;
 				while (!scheduled && running) {
 
-					IRemoteSlave slave = resolver.getNextSlave();
+					ISlave slave = resolver.getNextSlave();
 
 					if (slave == null) {
 						logMessage("ERROR", "Can't schedule expression: "

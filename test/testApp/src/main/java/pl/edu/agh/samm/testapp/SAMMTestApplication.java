@@ -15,6 +15,7 @@
  */
 package pl.edu.agh.samm.testapp;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
@@ -23,6 +24,7 @@ import com.vaadin.ui.Button.ClickEvent;
 /**
  * The Application's "main" class
  */
+@Push
 @SuppressWarnings("serial")
 @Title("SAMM Test Application")
 public class SAMMTestApplication extends UI {
@@ -73,7 +75,6 @@ public class SAMMTestApplication extends UI {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         });
         return generationControl;
