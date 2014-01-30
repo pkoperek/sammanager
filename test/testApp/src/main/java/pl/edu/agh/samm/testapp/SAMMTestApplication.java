@@ -29,7 +29,6 @@ public class SAMMTestApplication extends UI {
     private static final String START_WORKLOAD = "Start workload";
     private static final String STOP_WORKLOAD = "Stop workload";
 
-    private WorkloadGenerator workloadGenerator = new WorkloadGenerator();
     private TextArea generationLogTextArea;
 
     private Panel createGenerationControlPanel() {
@@ -57,6 +56,7 @@ public class SAMMTestApplication extends UI {
             @Override
             public void buttonClick(ClickEvent event) {
                 try {
+                    WorkloadGenerator workloadGenerator = WorkloadGenerator.getInstance();
                     if (generationControl.getCaption().equals(START_WORKLOAD)) {
                         publishMessage("Starting expressions generation...");
                         workloadGenerator.startGenerating();

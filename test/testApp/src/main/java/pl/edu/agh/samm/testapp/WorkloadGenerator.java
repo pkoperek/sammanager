@@ -10,13 +10,15 @@ public class WorkloadGenerator implements Serializable {
 
     private static final int MAX_LVL = 10;
 
+    private static final WorkloadGenerator workloadGenerator = new WorkloadGenerator();
+
     private Thread expressionGeneratorThread;
     private ExpressionGenerator expressionGenerator;
     private SlaveManager slaveManager;
     private SlaveDispatcher slaveDispatcher;
     private Thread slaveDispatcherThread;
 
-    public WorkloadGenerator() {
+    private WorkloadGenerator() {
         expressionGenerator = new ExpressionGenerator(MAX_LVL);
 
         initExpressionGenerator();
@@ -45,6 +47,10 @@ public class WorkloadGenerator implements Serializable {
 
     private void initSlaveManager() {
         slaveManager = new SlaveManager();
+    }
+
+    public static WorkloadGenerator getInstance() {
+        return workloadGenerator;
     }
 
 }
