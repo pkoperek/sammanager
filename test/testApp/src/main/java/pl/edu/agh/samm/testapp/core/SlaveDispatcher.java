@@ -36,20 +36,12 @@ public class SlaveDispatcher extends LoggingClass implements Runnable, Stoppable
                         master.giveBack(expression);
                         break;
                     } else {
-                        logMessage("Sending expression " + iteration + " to " + resolver.getId(slave));
-                        try {
-                            if (slave.canTakeMore()) {
-                                slave.scheduleIntegration(expression);
-                                scheduled = true;
-                            } else {
-                                logMessage("Slave " + slave + " has enough");
-                            }
-                        } catch (Exception e) {
-                            logMessage("ERROR", "Remote exception thrown!");
-                            e.printStackTrace();
-                            logMessage("Unregistering failing slave! "
-                                    + resolver.getId(slave));
-                            resolver.unregisterSlave(slave);
+                        logMessage("Sending expression " + iteration + " to " + slave.getSlaveId());
+                        if (slave.canTakeMore()) {
+                            slave.scheduleIntegration(expression);
+                            scheduled = true;
+                        } else {
+                            logMessage("Slave " + slave + " has enough");
                         }
                     }
 

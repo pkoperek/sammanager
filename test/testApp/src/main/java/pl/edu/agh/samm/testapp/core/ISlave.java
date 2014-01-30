@@ -7,9 +7,7 @@ public interface ISlave extends Stoppable {
 
     void scheduleIntegration(String expression);
 
-    String getSlaveId();
-
-    void setSlaveId(String string);
-
     boolean canTakeMore();
+
+    String getSlaveId();
 }

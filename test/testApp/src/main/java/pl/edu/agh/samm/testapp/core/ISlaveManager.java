@@ -4,17 +4,9 @@ public interface ISlaveManager {
 
     void addNextSlave();
 
-    void removeSlave();
+    void removeSlave() throws Exception;
 
-    String registerSlave(ISlave slave);
-
-	void unregisterSlave(String id);
-
-	int getSlavesCount();
+    int getSlavesCount();
 
 	ISlave getNextSlave();
-
-    String getId(ISlave slave);
-
-	void unregisterSlave(ISlave slave);
 }
