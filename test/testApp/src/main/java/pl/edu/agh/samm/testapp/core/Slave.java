@@ -11,23 +11,21 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Slave extends LoggingClass implements Runnable, Serializable {
+public class Slave extends LoggingClass implements Runnable, Serializable, ISlave {
 
-    /**
-     *
-     */
+    private static final LegendreGaussIntegrator integrator = new LegendreGaussIntegrator(5, 100);
+    private static final Interpreter beanShellInterpreter = new Interpreter();
     private static final long serialVersionUID = -2694496615585780331L;
     private static final int MAX_QUEUE_SIZE = 25;
-    private boolean running = true;
-    private List<String> expressionsQueue = new LinkedList<String>();
-    private String id;
-    private static final Interpreter beanShellInterpreter = new Interpreter();
-    private static LegendreGaussIntegrator integrator = new LegendreGaussIntegrator(5, 100);
 
-    private long processedCount = 0;
+    private List<String> expressionsQueue = new LinkedList<>();
     private long sumProcessingTime = 0;
+    private long processedCount = 0;
+    private boolean running = true;
+    private String id;
 
-    private double numericIntegration(final String formula, double min, double max) throws ConvergenceException, FunctionEvaluationException, IllegalArgumentException {
+    @Override
+    public double numericIntegration(final String formula, double min, double max) throws ConvergenceException, FunctionEvaluationException, IllegalArgumentException {
         logMessage("Integrating: " + formula + "(" + min + "," + max + ")");
         UnivariateRealFunction function = new UnivariateRealFunction() {
 
@@ -59,6 +57,7 @@ public class Slave extends LoggingClass implements Runnable, Serializable {
         return retVal;
     }
 
+    @Override
     public void scheduleIntegration(String expression) {
         synchronized (expressionsQueue) {
             expressionsQueue.add(expression);
@@ -70,36 +69,46 @@ public class Slave extends LoggingClass implements Runnable, Serializable {
 
     public void run() {
         while (running) {
-            if (id == null) {
-                Thread.currentThread().setName("Slave_NOID");
-            } else {
-                Thread.currentThread().setName("Slave_" + id);
-            }
-            logMessage("Slave: " + id + ": Waiting for data...");
-            String expression = null;
-            synchronized (expressionsQueue) {
-                while (expressionsQueue.size() == 0 && running) {
-                    try {
-                        expressionsQueue.wait(1000);
-                    } catch (InterruptedException e) {
-                        // nothing happens
-                    }
-                }
+            initId();
 
-                if (running) {
-                    expression = expressionsQueue.remove(0);
-                }
-            }
+            logMessage("Slave: " + id + ": Waiting for data...");
+
+            String expression = retrieveExpression();
 
             if (running) {
                 try {
                     this.numericIntegration(expression, 1, 100);
                 } catch (Exception e) {
-                    logMessage("Slave: " + id + ": Computations failure! "
-                            + e.getMessage());
+                    logMessage("Slave: " + id + ": Computations failure! " + e.getMessage());
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private String retrieveExpression() {
+        String expression = null;
+        synchronized (expressionsQueue) {
+            while (expressionsQueue.size() == 0 && running) {
+                try {
+                    expressionsQueue.wait(1000);
+                } catch (InterruptedException e) {
+                    // nothing happens
+                }
+            }
+
+            if (running) {
+                expression = expressionsQueue.remove(0);
+            }
+        }
+        return expression;
+    }
+
+    private void initId() {
+        if (id == null) {
+            Thread.currentThread().setName("Slave_NOID");
+        } else {
+            Thread.currentThread().setName("Slave_" + id);
         }
     }
 
@@ -123,15 +132,18 @@ public class Slave extends LoggingClass implements Runnable, Serializable {
         return sumProcessingTime / processedCount;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         logMessage("setId: " + id);
         this.id = id;
     }
 
+    @Override
     public boolean canTakeMore() {
         boolean canTakeMore = false;
         synchronized (expressionsQueue) {

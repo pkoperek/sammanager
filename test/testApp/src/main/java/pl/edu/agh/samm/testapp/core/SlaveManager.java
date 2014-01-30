@@ -7,14 +7,11 @@ import java.util.Map;
 
 public class SlaveManager extends LoggingClass implements ISlaveManager, Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 901969699794692223L;
     private Map<String, ISlave> idsToSlaves = new HashMap<>();
     private Map<ISlave, String> slavesToIds = new HashMap<>();
-    private long id = 0;
     private int slaveNum = 0;
+    private long id = 0;
 
     public synchronized String registerSlave(ISlave slave) {
         String id = generateId();
@@ -39,9 +36,9 @@ public class SlaveManager extends LoggingClass implements ISlaveManager, Seriali
 
     public synchronized ISlave getNextSlave() {
         ISlave retVal = null;
+
         if (idsToSlaves.size() > 0) {
-            ArrayList<String> slavesIds = new ArrayList<String>(
-                    idsToSlaves.keySet());
+            ArrayList<String> slavesIds = new ArrayList<>(idsToSlaves.keySet());
             if (slaveNum >= slavesIds.size()) {
                 slaveNum = 0;
             }

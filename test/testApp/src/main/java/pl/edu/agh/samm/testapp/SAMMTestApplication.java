@@ -21,19 +21,15 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 
-/**
- * The Application's "main" class
- */
-@Push
 @SuppressWarnings("serial")
 @Title("SAMM Test Application")
+@Push
 public class SAMMTestApplication extends UI {
 
     private static final String START_WORKLOAD = "Start workload";
     private static final String STOP_WORKLOAD = "Stop workload";
 
     private WorkloadGenerator workloadGenerator = new WorkloadGenerator();
-
     private TextArea generationLogTextArea;
 
     private Panel createGenerationControlPanel() {
