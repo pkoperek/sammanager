@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Slave extends LoggingClass implements Runnable, Serializable, ISlave {
+public class SlaveTask extends LoggingClass implements Runnable, Serializable, ISlave {
 
     private static final LegendreGaussIntegrator integrator = new LegendreGaussIntegrator(5, 100);
     private static final Interpreter beanShellInterpreter = new Interpreter();
@@ -24,8 +24,7 @@ public class Slave extends LoggingClass implements Runnable, Serializable, ISlav
     private boolean running = true;
     private String id;
 
-    @Override
-    public double numericIntegration(final String formula, double min, double max) throws ConvergenceException, FunctionEvaluationException, IllegalArgumentException {
+    private double numericIntegration(final String formula, double min, double max) throws ConvergenceException, FunctionEvaluationException, IllegalArgumentException {
         logMessage("Integrating: " + formula + "(" + min + "," + max + ")");
         UnivariateRealFunction function = new UnivariateRealFunction() {
 
@@ -67,6 +66,7 @@ public class Slave extends LoggingClass implements Runnable, Serializable, ISlav
         }
     }
 
+    @Override
     public void run() {
         while (running) {
             initId();
@@ -133,13 +133,13 @@ public class Slave extends LoggingClass implements Runnable, Serializable, ISlav
     }
 
     @Override
-    public String getId() {
+    public String getSlaveId() {
         return id;
     }
 
     @Override
-    public void setId(String id) {
-        logMessage("setId: " + id);
+    public void setSlaveId(String id) {
+        logMessage("setSlaveId: " + id);
         this.id = id;
     }
 

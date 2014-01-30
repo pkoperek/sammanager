@@ -13,6 +13,19 @@ public class SlaveManager extends LoggingClass implements ISlaveManager, Seriali
     private int slaveNum = 0;
     private long id = 0;
 
+    @Override
+    public void addNextSlave() {
+        SlaveTask slaveTask = new SlaveTask();
+
+        Thread slaveThread = new Thread(slaveTask);
+        slaveThread.start();
+    }
+
+    @Override
+    public void removeSlave() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public synchronized String registerSlave(ISlave slave) {
         String id = generateId();
         idsToSlaves.put(id, slave);
