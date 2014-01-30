@@ -80,7 +80,11 @@ public class SAMMTestApplication extends UI {
         access(new Runnable() {
             @Override
             public void run() {
-                generationLogTextArea.setValue(generationLogTextArea.getValue() + '\n' + message);
+                if (!generationLogTextArea.getValue().trim().isEmpty()) {
+                    generationLogTextArea.setValue(generationLogTextArea.getValue() + '\n' + message);
+                } else {
+                    generationLogTextArea.setValue(message);
+                }
             }
         });
     }
