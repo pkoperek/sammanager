@@ -9,8 +9,8 @@ import org.apache.commons.math.analysis.integration.LegendreGaussIntegrator;
 
 public class SlaveTask extends LoggingClass {
 
-    private static final LegendreGaussIntegrator integrator = new LegendreGaussIntegrator(5, 100);
-    private static final Interpreter beanShellInterpreter = new Interpreter();
+    private final LegendreGaussIntegrator integrator = new LegendreGaussIntegrator(5, 100);
+    private final Interpreter beanShellInterpreter = new Interpreter();
 
     private long sumProcessingTime = 0;
 

@@ -19,7 +19,7 @@ public class ExpressionGenerator extends LoggingClass implements Runnable,
      *
      */
     private static final long serialVersionUID = 5045355327465779200L;
-    private long waitTime = 500;
+    private long waitTime = 1000;
     private boolean running = true;
     private ExpressionGeneratorEngine generator = new ExpressionGeneratorEngine();
     private List<String> expressionQueue = new LinkedList<String>();
@@ -189,8 +189,7 @@ public class ExpressionGenerator extends LoggingClass implements Runnable,
         if (recordedSession == null) {
             // running until user stops us
             while (running) {
-                logMessage("Iteration: " + iteration++ + " generating: "
-                        + generating + " maxLvl: " + maxLvl);
+                logMessage("Iteration: " + iteration++ + " generating: " + generating + " maxLvl: " + maxLvl);
 
                 if (generating) {
                     String expression = generator.generateExpression(maxLvl);
