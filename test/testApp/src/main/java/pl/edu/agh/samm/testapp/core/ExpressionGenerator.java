@@ -201,11 +201,7 @@ public class ExpressionGenerator extends LoggingClass implements Runnable,
                     }
                 }
 
-                try {
-                    Thread.sleep(waitTime);
-                } catch (InterruptedException e) {
-                    // nothing happens...
-                }
+                sleep();
             }
         } else {
             while (!generating && running) {
@@ -243,6 +239,16 @@ public class ExpressionGenerator extends LoggingClass implements Runnable,
                                 "Played session not the same as recorded! Somebody woke up the thread!");
                     }
                 }
+            }
+        }
+    }
+
+    private void sleep() {
+        if (waitTime > 0) {
+            try {
+                Thread.sleep(waitTime);
+            } catch (InterruptedException e) {
+                // nothing happens...
             }
         }
     }
@@ -292,5 +298,9 @@ public class ExpressionGenerator extends LoggingClass implements Runnable,
 
     public long getServedCount() {
         return numHandled;
+    }
+
+    public void setWaitTime(long waitTime) {
+        this.waitTime = waitTime;
     }
 }
