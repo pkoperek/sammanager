@@ -29,28 +29,64 @@ public class SAMMTestApplication extends UI {
     private static final String START_WORKLOAD = "Start workload";
     private static final String STOP_WORKLOAD = "Stop workload";
 
-    private TextArea generationLogTextArea;
+    private TextField expressionsPerMinuteTextField;
+    private TextArea logTextArea;
 
-    private Panel createGenerationControlPanel() {
+    private Layout createGenerationControlPanel() {
+        Panel controlPanel = createControlPanel();
+        Panel chartsPanel = createChartsPanel();
+
+        VerticalLayout panels = new VerticalLayout(controlPanel, chartsPanel);
+        panels.setMargin(true);
+        return panels;
+    }
+
+    private Panel createChartsPanel() {
+        return new Panel("Charts");
+    }
+
+    private Panel createControlPanel() {
         final VerticalLayout generationControlLayout = new VerticalLayout();
-        generationControlLayout.setCaption("Control workload generation");
 
-        Button generationControlButton = createGenerationControlButton();
-        generationLogTextArea = createGenerationLogTextArea();
-        generationControlLayout.addComponent(generationControlButton);
-        generationControlLayout.addComponent(generationLogTextArea);
+        generationControlLayout.addComponent(createGenerationControlButton());
+        generationControlLayout.addComponent(
+                wrapHorizontalLayout(
+                        createExpressionsPerMinuteLabel(),
+                        expressionsPerMinuteTextField = createExpressionsPerMinuteTextField()
+                )
+        );
+
+        generationControlLayout.addComponent(logTextArea = createGenerationLogTextArea());
         generationControlLayout.addComponent(
                 wrapHorizontalLayout(
                         createAddSlaveButton(),
                         createRemoveSlaveButton()
-                ));
+                )
+        );
+
         generationControlLayout.setMargin(true);
 
-        return new Panel(generationControlLayout);
+        return new Panel("Control workload generation", generationControlLayout);
     }
 
-    private Component wrapHorizontalLayout(Button addSlaveButton, Button removeSlaveButton) {
-        return new HorizontalLayout(addSlaveButton, removeSlaveButton);
+    private Label createExpressionsPerMinuteLabel() {
+        return new Label("Number of expressions generated per minute (negative value - as many as possible)");
+    }
+
+    private TextField createExpressionsPerMinuteTextField() {
+        TextField textField = new TextField();
+        textField.setValue("60");
+        return textField;
+    }
+
+    private Component wrapHorizontalLayout(Component... componentsToAdd) {
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+
+        for (Component component : componentsToAdd) {
+            horizontalLayout.addComponent(component);
+        }
+
+        return horizontalLayout;
     }
 
     private Button createRemoveSlaveButton() {
@@ -99,7 +135,7 @@ public class SAMMTestApplication extends UI {
                     WorkloadGenerator workloadGenerator = WorkloadGenerator.getInstance();
                     if (generationControl.getCaption().equals(START_WORKLOAD)) {
                         publishMessage("Starting expressions generation...");
-                        workloadGenerator.startGenerating();
+                        workloadGenerator.startGenerating(Long.parseLong(expressionsPerMinuteTextField.getValue()));
                         publishMessage("Started expressions generation");
                         generationControl.setCaption(STOP_WORKLOAD);
                     } else {
@@ -109,6 +145,7 @@ public class SAMMTestApplication extends UI {
                         generationControl.setCaption(START_WORKLOAD);
                     }
                 } catch (InterruptedException e) {
+                    publishMessage("Error! " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -120,10 +157,10 @@ public class SAMMTestApplication extends UI {
         access(new Runnable() {
             @Override
             public void run() {
-                if (!generationLogTextArea.getValue().trim().isEmpty()) {
-                    generationLogTextArea.setValue(generationLogTextArea.getValue() + '\n' + message);
+                if (!logTextArea.getValue().trim().isEmpty()) {
+                    logTextArea.setValue(logTextArea.getValue() + '\n' + message);
                 } else {
-                    generationLogTextArea.setValue(message);
+                    logTextArea.setValue(message);
                 }
             }
         });

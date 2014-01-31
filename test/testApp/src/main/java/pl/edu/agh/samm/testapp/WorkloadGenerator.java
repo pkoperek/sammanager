@@ -30,8 +30,16 @@ public class WorkloadGenerator implements Serializable {
         expressionGenerator.stopGeneration();
     }
 
-    public void startGenerating() {
+    public void startGenerating(long expressionsPerMinute) {
+        expressionGenerator.setWaitTime(computeWaitTime(expressionsPerMinute));
         expressionGenerator.startGeneration();
+    }
+
+    private long computeWaitTime(long expressionsPerMinute) {
+        if (expressionsPerMinute < 0) {
+            return -1;
+        }
+        return 60000 / expressionsPerMinute;
     }
 
     private void initExpressionGenerator() {
