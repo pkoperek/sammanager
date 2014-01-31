@@ -33,14 +33,54 @@ public class SAMMTestApplication extends UI {
 
     private Panel createGenerationControlPanel() {
         final VerticalLayout generationControlLayout = new VerticalLayout();
+        generationControlLayout.setCaption("Control workload generation");
 
         Button generationControlButton = createGenerationControlButton();
         generationLogTextArea = createGenerationLogTextArea();
         generationControlLayout.addComponent(generationControlButton);
         generationControlLayout.addComponent(generationLogTextArea);
+        generationControlLayout.addComponent(
+                wrapHorizontalLayout(
+                        createAddSlaveButton(),
+                        createRemoveSlaveButton()
+                ));
         generationControlLayout.setMargin(true);
 
-        return new Panel("Control workload generation", generationControlLayout);
+        return new Panel(generationControlLayout);
+    }
+
+    private Component wrapHorizontalLayout(Button addSlaveButton, Button removeSlaveButton) {
+        return new HorizontalLayout(addSlaveButton, removeSlaveButton);
+    }
+
+    private Button createRemoveSlaveButton() {
+        final Button removeSlaveButton = new Button("Remove slave");
+
+        removeSlaveButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                try {
+                    WorkloadGenerator.getInstance().removeSlave();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        return removeSlaveButton;
+    }
+
+    private Button createAddSlaveButton() {
+        final Button addSlaveButton = new Button("Add slave");
+
+        addSlaveButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                WorkloadGenerator.getInstance().addSlave();
+            }
+        });
+
+        return addSlaveButton;
     }
 
     private TextArea createGenerationLogTextArea() {

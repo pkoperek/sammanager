@@ -2,9 +2,7 @@ package pl.edu.agh.samm.testapp.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SlaveManager extends LoggingClass implements ISlaveManager, Serializable {
 
@@ -14,11 +12,11 @@ public class SlaveManager extends LoggingClass implements ISlaveManager, Seriali
     private long id = 0;
 
     public SlaveManager() {
-        addNextSlave();
+        addNewSlave();
     }
 
     @Override
-    public void addNextSlave() {
+    public void addNewSlave() {
         synchronized (slaves) {
             slaves.add(new SlaveThread(++id));
         }
@@ -28,7 +26,7 @@ public class SlaveManager extends LoggingClass implements ISlaveManager, Seriali
     public void removeSlave() throws Exception {
         synchronized (slaves) {
             if (slaves.size() > 0) {
-                SlaveThread slaveToRemove = slaves.get(0);
+                SlaveThread slaveToRemove = slaves.remove(0);
                 slaveToRemove.stopExecution();
                 slaveToRemove.join();
             }

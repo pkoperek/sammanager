@@ -53,4 +53,11 @@ public class WorkloadGenerator implements Serializable {
         return workloadGenerator;
     }
 
+    public void addSlave() {
+        slaveManager.addNewSlave();
+    }
+
+    public void removeSlave() throws Exception {
+        slaveManager.removeSlave();
+    }
 }

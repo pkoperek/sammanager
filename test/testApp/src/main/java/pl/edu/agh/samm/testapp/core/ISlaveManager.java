@@ -2,7 +2,7 @@ package pl.edu.agh.samm.testapp.core;
 
 public interface ISlaveManager {
 
-    void addNextSlave();
+    void addNewSlave();
 
     void removeSlave() throws Exception;
 
