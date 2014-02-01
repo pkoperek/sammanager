@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlaveManager extends LoggingClass implements ISlaveManager, Serializable {
+public class SlaveManager extends LoggingClass implements SlaveManagerMBean, Serializable {
 
     private static final long serialVersionUID = 901969699794692223L;
     private List<SlaveThread> slaves = new ArrayList<>();

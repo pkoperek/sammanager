@@ -1,16 +1,27 @@
-package pl.edu.agh.samm.testapp;
+package pl.edu.agh.samm.testapp.core;
 
-import pl.edu.agh.samm.testapp.core.ExpressionGenerator;
-import pl.edu.agh.samm.testapp.core.SlaveDispatcher;
-import pl.edu.agh.samm.testapp.core.SlaveManager;
-
+import javax.management.*;
 import java.io.Serializable;
+import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorkloadGenerator implements Serializable {
 
     private static final int MAX_LVL = 10;
 
-    private static final WorkloadGenerator workloadGenerator = new WorkloadGenerator();
+    private static WorkloadGenerator workloadGenerator;
+
+    private List<WorkloadGeneratorListener> workloadGeneratorListeners = new ArrayList<>();
+
+    static {
+        try {
+            workloadGenerator = new WorkloadGenerator();
+        } catch (Exception e) {
+            System.err.println("ERROR!");
+            e.printStackTrace();
+        }
+    }
 
     private Thread expressionGeneratorThread;
     private ExpressionGenerator expressionGenerator;
@@ -18,12 +29,19 @@ public class WorkloadGenerator implements Serializable {
     private SlaveDispatcher slaveDispatcher;
     private Thread slaveDispatcherThread;
 
-    private WorkloadGenerator() {
+    private WorkloadGenerator() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         expressionGenerator = new ExpressionGenerator(MAX_LVL);
 
         initExpressionGenerator();
         initSlaveManager();
         initSlaveDispatcher();
+
+        registerMBeans();
+    }
+
+    private void registerMBeans() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
+        MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
+        mbeanServer.registerMBean(slaveManager, new ObjectName("pl.edu.agh.samm:name=TestApp"));
     }
 
     public void stopGenerating() throws InterruptedException {
@@ -63,9 +81,23 @@ public class WorkloadGenerator implements Serializable {
 
     public void addSlave() {
         slaveManager.addNewSlave();
+
+        fireSlavesCountChangedEvent(slaveManager.getSlavesCount());
     }
 
     public void removeSlave() throws Exception {
         slaveManager.removeSlave();
+
+        fireSlavesCountChangedEvent(slaveManager.getSlavesCount());
+    }
+
+    private void fireSlavesCountChangedEvent(int slavesCount) {
+        for (WorkloadGeneratorListener workloadGeneratorListener : workloadGeneratorListeners) {
+            workloadGeneratorListener.handleSlavesCountChangedEvent(slavesCount);
+        }
+    }
+
+    public void addWorkloadGeneratorListener(WorkloadGeneratorListener listener) {
+        this.workloadGeneratorListeners.add(listener);
     }
 }

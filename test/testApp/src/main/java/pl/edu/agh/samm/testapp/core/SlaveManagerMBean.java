@@ -1,6 +1,6 @@
 package pl.edu.agh.samm.testapp.core;
 
-public interface ISlaveManager {
+public interface SlaveManagerMBean {
 
     void addNewSlave();
 

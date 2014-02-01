@@ -20,6 +20,8 @@ import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import pl.edu.agh.samm.testapp.core.WorkloadGenerator;
+import pl.edu.agh.samm.testapp.core.WorkloadGeneratorListener;
 
 @SuppressWarnings("serial")
 @Title("SAMM Test Application")
@@ -30,9 +32,10 @@ public class SAMMTestApplication extends UI {
     private static final String STOP_WORKLOAD = "Stop workload";
 
     private TextField expressionsPerMinuteTextField;
+    private TextField slavesCountTextField;
     private TextArea logTextArea;
 
-    private Layout createGenerationControlPanel() {
+    private Layout createContentPanel() {
         Panel controlPanel = createControlPanel();
         Panel chartsPanel = createChartsPanel();
 
@@ -59,6 +62,8 @@ public class SAMMTestApplication extends UI {
         generationControlLayout.addComponent(logTextArea = createGenerationLogTextArea());
         generationControlLayout.addComponent(
                 wrapHorizontalLayout(
+                        new Label("Slaves count: "),
+                        slavesCountTextField = createSlavesCountTextField(),
                         createAddSlaveButton(),
                         createRemoveSlaveButton()
                 )
@@ -67,6 +72,14 @@ public class SAMMTestApplication extends UI {
         generationControlLayout.setMargin(true);
 
         return new Panel("Control workload generation", generationControlLayout);
+    }
+
+    private TextField createSlavesCountTextField() {
+        TextField slavesCount = new TextField();
+        slavesCount.setValue("1");
+        slavesCount.setEnabled(false);
+        slavesCount.setColumns(3);
+        return slavesCount;
     }
 
     private Label createExpressionsPerMinuteLabel() {
@@ -166,8 +179,30 @@ public class SAMMTestApplication extends UI {
         });
     }
 
+    private void publishSlavesCount(final int slavesCount) {
+        access(new Runnable() {
+            @Override
+            public void run() {
+                slavesCountTextField.setValue(Integer.toString(slavesCount));
+            }
+        });
+    }
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        setContent(createGenerationControlPanel());
+        registerWorkloadGeneratorListener();
+        setContent(createContentPanel());
+    }
+
+    private void registerWorkloadGeneratorListener() {
+        WorkloadGenerator.getInstance().addWorkloadGeneratorListener(new UIUpdatingWorkloadGeneratorListener());
+    }
+
+    private class UIUpdatingWorkloadGeneratorListener implements WorkloadGeneratorListener {
+
+        @Override
+        public void handleSlavesCountChangedEvent(int count) {
+            publishSlavesCount(count);
+        }
     }
 }
