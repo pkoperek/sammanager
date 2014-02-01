@@ -13,6 +13,11 @@ public class WorkloadGenerator implements Serializable {
     private static WorkloadGenerator workloadGenerator;
 
     private List<WorkloadGeneratorListener> workloadGeneratorListeners = new ArrayList<>();
+    private ExpressionGenerator expressionGenerator;
+    private Thread expressionGeneratorThread;
+    private SlaveDispatcher slaveDispatcher;
+    private Thread slaveDispatcherThread;
+    private SlaveManager slaveManager;
 
     static {
         try {
@@ -22,12 +27,6 @@ public class WorkloadGenerator implements Serializable {
             e.printStackTrace();
         }
     }
-
-    private Thread expressionGeneratorThread;
-    private ExpressionGenerator expressionGenerator;
-    private SlaveManager slaveManager;
-    private SlaveDispatcher slaveDispatcher;
-    private Thread slaveDispatcherThread;
 
     private WorkloadGenerator() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         expressionGenerator = new ExpressionGenerator(MAX_LVL);
@@ -99,5 +98,9 @@ public class WorkloadGenerator implements Serializable {
 
     public void addWorkloadGeneratorListener(WorkloadGeneratorListener listener) {
         this.workloadGeneratorListeners.add(listener);
+    }
+
+    public SlaveManager getSlaveManager() {
+        return slaveManager;
     }
 }
