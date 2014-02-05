@@ -25,7 +25,6 @@ import pl.edu.agh.samm.testapp.core.WorkloadGenerator;
 import pl.edu.agh.samm.testapp.core.WorkloadGeneratorListener;
 import pl.edu.agh.samm.testapp.flot.FlotChart;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -41,8 +40,8 @@ public class SAMMTestApplication extends UI {
 
     private TextField expressionsPerMinuteTextField;
     private TextField slavesCountTextField;
+    private FlotChart slavesCountChart;
     private TextArea logTextArea;
-    private FlotChart flotChart;
 
     private Layout createContentPanel() {
         Panel controlPanel = createControlPanel();
@@ -55,8 +54,8 @@ public class SAMMTestApplication extends UI {
 
     private Panel createChartsPanel() {
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.addComponent(flotChart = new FlotChart("Chart 1"));
-        verticalLayout.setComponentAlignment(flotChart, Alignment.TOP_CENTER);
+        verticalLayout.addComponent(slavesCountChart = new FlotChart("Slaves count"));
+        verticalLayout.setComponentAlignment(slavesCountChart, Alignment.TOP_CENTER);
         return new Panel("Charts", verticalLayout);
     }
 
@@ -204,7 +203,7 @@ public class SAMMTestApplication extends UI {
         access(new Runnable() {
             @Override
             public void run() {
-                flotChart.addPoint(dataPointIndex, slavesCount);
+                slavesCountChart.addPoint(dataPointIndex, slavesCount);
             }
         });
     }
@@ -218,7 +217,7 @@ public class SAMMTestApplication extends UI {
     }
 
     private void startMonitoringTasks() {
-        executorService.scheduleAtFixedRate(new SlaveCountChartUpdatingTask(WorkloadGenerator.getInstance().getSlaveManager()), 0l, 60l, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(new SlaveCountChartUpdatingTask(WorkloadGenerator.getInstance().getSlaveManager()), 0l, 5l, TimeUnit.SECONDS);
     }
 
     private void registerWorkloadGeneratorListener() {
