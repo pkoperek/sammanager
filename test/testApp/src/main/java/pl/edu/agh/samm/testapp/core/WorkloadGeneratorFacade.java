@@ -108,17 +108,17 @@ public class WorkloadGeneratorFacade implements Serializable, WorkloadGeneratorF
     }
 
     @Override
-    public long getProcessedCount() {
+    public long getProcessedExpressionsCount() {
         return this.expressionGenerator.getServedCount();
     }
 
     @Override
-    public long getQueueLength() {
+    public long getExpressionsQueueLength() {
         return this.expressionGenerator.getQueueLength();
     }
 
     @Override
-    public long getSlavesCount() {
+    public int getSlavesCount() {
         return this.slaveManager.getSlavesCount();
     }
 }

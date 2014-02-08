@@ -20,8 +20,7 @@ import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import pl.edu.agh.samm.testapp.core.SlaveManager;
-import pl.edu.agh.samm.testapp.core.WorkloadGenerator;
+import pl.edu.agh.samm.testapp.core.WorkloadGeneratorFacade;
 import pl.edu.agh.samm.testapp.core.WorkloadGeneratorListener;
 import pl.edu.agh.samm.testapp.flot.FlotChart;
 
@@ -41,6 +40,8 @@ public class SAMMTestApplication extends UI {
     private TextField expressionsPerMinuteTextField;
     private TextField slavesCountTextField;
     private FlotChart slavesCountChart;
+    private FlotChart queueLengthCountChart;
+    private FlotChart processedExpressionsCountChart;
     private TextArea logTextArea;
 
     private Layout createContentPanel() {
@@ -56,6 +57,10 @@ public class SAMMTestApplication extends UI {
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.addComponent(slavesCountChart = new FlotChart("Slaves count"));
         verticalLayout.setComponentAlignment(slavesCountChart, Alignment.TOP_CENTER);
+        verticalLayout.addComponent(queueLengthCountChart = new FlotChart("Queue length"));
+        verticalLayout.setComponentAlignment(queueLengthCountChart, Alignment.TOP_CENTER);
+        verticalLayout.addComponent(processedExpressionsCountChart = new FlotChart("Processed expressions"));
+        verticalLayout.setComponentAlignment(processedExpressionsCountChart, Alignment.TOP_CENTER);
         return new Panel("Charts", verticalLayout);
     }
 
@@ -120,7 +125,7 @@ public class SAMMTestApplication extends UI {
             @Override
             public void buttonClick(ClickEvent event) {
                 try {
-                    WorkloadGenerator.getInstance().removeSlave();
+                    WorkloadGeneratorFacade.getInstance().removeSlave();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -136,7 +141,7 @@ public class SAMMTestApplication extends UI {
         addSlaveButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                WorkloadGenerator.getInstance().addSlave();
+                WorkloadGeneratorFacade.getInstance().addSlave();
             }
         });
 
@@ -156,15 +161,15 @@ public class SAMMTestApplication extends UI {
             @Override
             public void buttonClick(ClickEvent event) {
                 try {
-                    WorkloadGenerator workloadGenerator = WorkloadGenerator.getInstance();
+                    WorkloadGeneratorFacade workloadGeneratorFacade = WorkloadGeneratorFacade.getInstance();
                     if (generationControl.getCaption().equals(START_WORKLOAD)) {
                         publishMessage("Starting expressions generation...");
-                        workloadGenerator.startGenerating(Long.parseLong(expressionsPerMinuteTextField.getValue()));
+                        workloadGeneratorFacade.startGenerating(Long.parseLong(expressionsPerMinuteTextField.getValue()));
                         publishMessage("Started expressions generation");
                         generationControl.setCaption(STOP_WORKLOAD);
                     } else {
                         publishMessage("Stopping expressions generation...");
-                        workloadGenerator.stopGenerating();
+                        workloadGeneratorFacade.stopGenerating();
                         publishMessage("Stopped expressions generation");
                         generationControl.setCaption(START_WORKLOAD);
                     }
@@ -208,6 +213,24 @@ public class SAMMTestApplication extends UI {
         });
     }
 
+    private void publishExpressionsQueueLengthChart(final int dataPointIndex, final long queueLength) {
+        access(new Runnable() {
+            @Override
+            public void run() {
+                queueLengthCountChart.addPoint(dataPointIndex, queueLength);
+            }
+        });
+    }
+
+    private void publishProcessedExpressionsChart(final int dataPointIndex, final long processedExpressionsCount) {
+        access(new Runnable() {
+            @Override
+            public void run() {
+                processedExpressionsCountChart.addPoint(dataPointIndex, processedExpressionsCount);
+            }
+        });
+    }
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         registerWorkloadGeneratorListener();
@@ -217,11 +240,11 @@ public class SAMMTestApplication extends UI {
     }
 
     private void startMonitoringTasks() {
-        executorService.scheduleAtFixedRate(new SlaveCountChartUpdatingTask(WorkloadGenerator.getInstance().getSlaveManager()), 0l, 5l, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(new ChartUpdatingTask(WorkloadGeneratorFacade.getInstance()), 0l, 5l, TimeUnit.SECONDS);
     }
 
     private void registerWorkloadGeneratorListener() {
-        WorkloadGenerator.getInstance().addWorkloadGeneratorListener(new UIUpdatingWorkloadGeneratorListener());
+        WorkloadGeneratorFacade.getInstance().addWorkloadGeneratorListener(new UIUpdatingWorkloadGeneratorListener());
     }
 
     private class UIUpdatingWorkloadGeneratorListener implements WorkloadGeneratorListener {
@@ -232,19 +255,21 @@ public class SAMMTestApplication extends UI {
         }
     }
 
-    private class SlaveCountChartUpdatingTask implements Runnable {
-
-        private final SlaveManager slaveManager;
+    private class ChartUpdatingTask implements Runnable {
+        private final WorkloadGeneratorFacade workloadGenerator;
         private int dataPoint = 0;
 
-        public SlaveCountChartUpdatingTask(SlaveManager slaveManager) {
-            this.slaveManager = slaveManager;
+        public ChartUpdatingTask(WorkloadGeneratorFacade workloadGenerator) {
+            this.workloadGenerator = workloadGenerator;
         }
 
         @Override
         public void run() {
 //            publishMessage("Logging: " + System.currentTimeMillis());
-            publishSlavesCountChart(dataPoint++, slaveManager.getSlavesCount());
+            publishSlavesCountChart(dataPoint++, workloadGenerator.getSlavesCount());
+            publishExpressionsQueueLengthChart(dataPoint++, workloadGenerator.getExpressionsQueueLength());
+            publishProcessedExpressionsChart(dataPoint++, workloadGenerator.getProcessedExpressionsCount());
         }
+
     }
 }

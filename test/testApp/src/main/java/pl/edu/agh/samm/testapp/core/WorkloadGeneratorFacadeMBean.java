@@ -14,9 +14,9 @@ public interface WorkloadGeneratorFacadeMBean {
 
     void removeSlave() throws Exception;
 
-    long getProcessedCount();
+    long getProcessedExpressionsCount();
 
-    long getQueueLength();
+    long getExpressionsQueueLength();
 
-    long getSlavesCount();
+    int getSlavesCount();
 }

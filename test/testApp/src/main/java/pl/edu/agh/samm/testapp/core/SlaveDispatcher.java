@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class SlaveDispatcher extends LoggingClass implements Runnable, Stoppable, Serializable {
 
     private static final long serialVersionUID = -8745913791313753914L;
-    private static final long SLAVE_WAIT_TIME = 5000;
+    private static final long SLAVE_WAIT_TIME = 1000;
     private ExpressionGenerator master;
     private SlaveManager resolver;
     private boolean running = true;
