@@ -6,11 +6,11 @@ public class SlaveDispatcher extends LoggingClass implements Runnable, Stoppable
 
     private static final long serialVersionUID = -8745913791313753914L;
     private static final long SLAVE_WAIT_TIME = 5000;
-    private IExpressionGenerator master;
+    private ExpressionGenerator master;
     private SlaveManager resolver;
     private boolean running = true;
 
-    public SlaveDispatcher(IExpressionGenerator master, SlaveManager resolver) {
+    public SlaveDispatcher(ExpressionGenerator master, SlaveManager resolver) {
         this.master = master;
         this.resolver = resolver;
     }

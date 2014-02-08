@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlaveManager extends LoggingClass implements SlaveManagerMBean, Serializable {
+public class SlaveManager extends LoggingClass implements Serializable {
 
     private static final long serialVersionUID = 901969699794692223L;
     private List<SlaveThread> slaves = new ArrayList<>();
@@ -15,14 +15,12 @@ public class SlaveManager extends LoggingClass implements SlaveManagerMBean, Ser
         addNewSlave();
     }
 
-    @Override
     public void addNewSlave() {
         synchronized (slaves) {
             slaves.add(new SlaveThread(++id));
         }
     }
 
-    @Override
     public void removeSlave() throws Exception {
         synchronized (slaves) {
             if (slaves.size() > 0) {

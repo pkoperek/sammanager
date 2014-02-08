@@ -12,8 +12,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import pl.edu.agh.samm.testapp.core.record.ExpressionsSet;
 import pl.edu.agh.samm.testapp.core.record.RecordedSession;
 
-public class ExpressionGenerator extends LoggingClass implements Runnable,
-        ExpressionGeneratorMBean, Serializable {
+public class ExpressionGenerator extends LoggingClass implements Runnable, Serializable {
 
     /**
      *

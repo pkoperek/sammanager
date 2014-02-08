@@ -6,11 +6,11 @@ import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkloadGenerator implements Serializable {
+public class WorkloadGeneratorFacade implements Serializable, WorkloadGeneratorFacadeMBean {
 
     private static final int MAX_LVL = 10;
 
-    private static WorkloadGenerator workloadGenerator;
+    private static WorkloadGeneratorFacade workloadGeneratorFacade;
 
     private List<WorkloadGeneratorListener> workloadGeneratorListeners = new ArrayList<>();
     private ExpressionGenerator expressionGenerator;
@@ -21,31 +21,32 @@ public class WorkloadGenerator implements Serializable {
 
     static {
         try {
-            workloadGenerator = new WorkloadGenerator();
+            workloadGeneratorFacade = new WorkloadGeneratorFacade();
         } catch (Exception e) {
             System.err.println("ERROR!");
             e.printStackTrace();
         }
     }
 
-    private WorkloadGenerator() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
+    private WorkloadGeneratorFacade() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         initExpressionGenerator();
         initSlaveManager();
         initSlaveDispatcher();
 
-        registerMBeans();
+        registerMBean();
     }
 
-    private void registerMBeans() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
+    private void registerMBean() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
-        mbeanServer.registerMBean(slaveManager, new ObjectName("pl.edu.agh.samm.testapp:name=SlaveManager"));
-        mbeanServer.registerMBean(expressionGenerator, new ObjectName("pl.edu.agh.samm.testapp:name=ExpressionGenerator"));
+        mbeanServer.registerMBean(this, new ObjectName("pl.edu.agh.samm.testapp:name=WorkloadGenerator"));
     }
 
+    @Override
     public void stopGenerating() throws InterruptedException {
         expressionGenerator.stopGeneration();
     }
 
+    @Override
     public void startGenerating(long expressionsPerMinute) {
         expressionGenerator.setWaitTime(computeWaitTime(expressionsPerMinute));
         expressionGenerator.startGeneration();
@@ -74,16 +75,18 @@ public class WorkloadGenerator implements Serializable {
         slaveManager = new SlaveManager();
     }
 
-    public static WorkloadGenerator getInstance() {
-        return workloadGenerator;
+    public static WorkloadGeneratorFacade getInstance() {
+        return workloadGeneratorFacade;
     }
 
+    @Override
     public void addSlave() {
         slaveManager.addNewSlave();
 
         fireSlavesCountChangedEvent(slaveManager.getSlavesCount());
     }
 
+    @Override
     public void removeSlave() throws Exception {
         slaveManager.removeSlave();
 
@@ -104,11 +107,18 @@ public class WorkloadGenerator implements Serializable {
         return slaveManager;
     }
 
+    @Override
     public long getProcessedCount() {
         return this.expressionGenerator.getServedCount();
     }
 
+    @Override
     public long getQueueLength() {
         return this.expressionGenerator.getQueueLength();
+    }
+
+    @Override
+    public long getSlavesCount() {
+        return this.slaveManager.getSlavesCount();
     }
 }
