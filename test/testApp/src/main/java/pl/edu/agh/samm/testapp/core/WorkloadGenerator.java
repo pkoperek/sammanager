@@ -29,8 +29,6 @@ public class WorkloadGenerator implements Serializable {
     }
 
     private WorkloadGenerator() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
-        expressionGenerator = new ExpressionGenerator(MAX_LVL);
-
         initExpressionGenerator();
         initSlaveManager();
         initSlaveDispatcher();
@@ -40,7 +38,8 @@ public class WorkloadGenerator implements Serializable {
 
     private void registerMBeans() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
         MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
-        mbeanServer.registerMBean(slaveManager, new ObjectName("pl.edu.agh.samm:name=TestApp"));
+        mbeanServer.registerMBean(slaveManager, new ObjectName("pl.edu.agh.samm.testapp:name=SlaveManager"));
+        mbeanServer.registerMBean(expressionGenerator, new ObjectName("pl.edu.agh.samm.testapp:name=ExpressionGenerator"));
     }
 
     public void stopGenerating() throws InterruptedException {
@@ -60,6 +59,7 @@ public class WorkloadGenerator implements Serializable {
     }
 
     private void initExpressionGenerator() {
+        expressionGenerator = new ExpressionGenerator(MAX_LVL);
         expressionGeneratorThread = new Thread(expressionGenerator);
         expressionGeneratorThread.start();
     }
@@ -102,5 +102,13 @@ public class WorkloadGenerator implements Serializable {
 
     public SlaveManager getSlaveManager() {
         return slaveManager;
+    }
+
+    public long getProcessedCount() {
+        return this.expressionGenerator.getServedCount();
+    }
+
+    public long getQueueLength() {
+        return this.expressionGenerator.getQueueLength();
     }
 }

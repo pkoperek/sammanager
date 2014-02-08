@@ -22,8 +22,8 @@ public class ExpressionGenerator extends LoggingClass implements Runnable,
     private long waitTime = 1000;
     private boolean running = true;
     private ExpressionGeneratorEngine generator = new ExpressionGeneratorEngine();
-    private List<String> expressionQueue = new LinkedList<String>();
-    private List<Long> timestamps = new LinkedList<Long>();
+    private List<String> expressionQueue = new LinkedList<>();
+    private List<Long> timestamps = new LinkedList<>();
     private boolean generating = false;
     private int maxLvl;
     private XStream xstream = null;
