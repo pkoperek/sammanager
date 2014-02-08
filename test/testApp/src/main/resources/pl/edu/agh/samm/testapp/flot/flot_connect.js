@@ -11,7 +11,10 @@ window.pl_edu_agh_samm_testapp_flot_FlotChart = function () {
                     {
                         data: this.getState().values
                     }
-                ]
+                ],
+                {
+                    colors: [this.getState().color]
+                }
             );
         } else {
             plot.setData(this.getState().values);

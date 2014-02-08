@@ -12,10 +12,11 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
 @JavaScript({"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js", "jquery.flot.js", "flot_connect.js"})
 public class FlotChart extends AbstractJavaScriptComponent {
 
-    public FlotChart(String chartCaption) {
+    public FlotChart(String chartCaption, String color) {
         setCaption(chartCaption);
         setWidth(Double.toString(Page.getCurrent().getBrowserWindowWidth() * 0.95));
         setHeight("300");
+        getState().setColor(color);
     }
 
     public void addPoint(double x, double y) {

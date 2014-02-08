@@ -55,11 +55,11 @@ public class SAMMTestApplication extends UI {
 
     private Panel createChartsPanel() {
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.addComponent(slavesCountChart = new FlotChart("Slaves count"));
+        verticalLayout.addComponent(slavesCountChart = new FlotChart("Slaves count", "#0062FF"));
         verticalLayout.setComponentAlignment(slavesCountChart, Alignment.TOP_CENTER);
-        verticalLayout.addComponent(queueLengthCountChart = new FlotChart("Queue length"));
+        verticalLayout.addComponent(queueLengthCountChart = new FlotChart("Queue length", "#D11739"));
         verticalLayout.setComponentAlignment(queueLengthCountChart, Alignment.TOP_CENTER);
-        verticalLayout.addComponent(processedExpressionsCountChart = new FlotChart("Processed expressions"));
+        verticalLayout.addComponent(processedExpressionsCountChart = new FlotChart("Processed expressions", "#1ABD28"));
         verticalLayout.setComponentAlignment(processedExpressionsCountChart, Alignment.TOP_CENTER);
         return new Panel("Charts", verticalLayout);
     }

@@ -14,6 +14,15 @@ import java.util.List;
 public class FlotChartState extends JavaScriptComponentState {
 
     private List<List<Double>> values = new ArrayList<>();
+    private String color = "#0000FF";
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public List<List<Double>> getValues() {
         return values;
