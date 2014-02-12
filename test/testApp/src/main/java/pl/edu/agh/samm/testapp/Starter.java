@@ -5,9 +5,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import javax.management.MBeanServer;
-import java.lang.management.ManagementFactory;
-
 /**
  * User: koperek
  * Date: 26.01.14
@@ -18,11 +15,22 @@ public class Starter {
     public static final String VAADIN_SERVLET = "vaadinServlet";
 
     public static void main(String[] args) throws Exception {
-        startWebServer();
+        int port = 8080;
+
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+                System.out.println("Using value: " + port + " as server port");
+            } catch (NumberFormatException nfe) {
+                System.err.println("Passed string is not a number! (" + args[0] + ")");
+            }
+        }
+
+        startWebServer(port);
     }
 
-    private static void startWebServer() throws Exception {
-        Server server = new Server(8080);
+    private static void startWebServer(int port) throws Exception {
+        Server server = new Server(port);
 
         ServletHolder servletHolder = new ServletHolder();
         servletHolder.setName(VAADIN_SERVLET);
