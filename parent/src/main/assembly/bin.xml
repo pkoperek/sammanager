@@ -35,6 +35,10 @@
     </formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
+        <file>
+            <source>../base/fileconfig/src/main/resources/config_test.xml</source>
+            <outputDirectory>.</outputDirectory>
+        </file>
 		<file>
 			<source>src/main/scripts/stop.sh</source>
 			<outputDirectory>.</outputDirectory>
