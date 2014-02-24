@@ -6,12 +6,11 @@
 	<artifactId>jmx_ta</artifactId>
 	<packaging>bundle</packaging>
 	<name>SAMM - Base - Transport Adapters - JMX</name>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<parent>
 		<artifactId>transportadapters</artifactId>
 		<groupId>pl.edu.agh.samm.base</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../parent</relativePath>
 	</parent>
 
@@ -32,6 +31,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+            <scope>test</scope>
         </dependency>
 	</dependencies>
 	<build>

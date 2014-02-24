@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.samm.providers</groupId>
 	<artifactId>awssdk</artifactId>
-	<version>${awssdk.version}-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<name>SAMM - Providers - AWS SDK ${awssdk.version}</name>
@@ -14,7 +13,7 @@
 	<parent>
 		<artifactId>providers</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 

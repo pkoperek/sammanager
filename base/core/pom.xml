@@ -5,13 +5,12 @@
 	<groupId>pl.edu.agh.samm.base</groupId>
 	<artifactId>core</artifactId>
 	<name>SAMM - Base - Core</name>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<parent>
 		<artifactId>base</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
@@ -20,10 +19,10 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>esper</artifactId>
+            <version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.base</groupId>
@@ -54,7 +53,6 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>

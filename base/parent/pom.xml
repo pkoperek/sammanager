@@ -5,13 +5,12 @@
 	<groupId>pl.edu.agh.samm</groupId>
 	<artifactId>base</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>SAMM - Base</name>
 
 	<parent>
 		<artifactId>samm</artifactId>
 		<groupId>pl.edu.agh</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
@@ -31,34 +30,6 @@
 				<module>../log4j</module>
 				<module>../ra/parent</module>
 			</modules>
-		</profile>
-		<profile>
-			<id>targetplatform</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin
-	                                	</artifactId>
-						<executions>
-							<execution>
-								<id>copy-dependencies</id>
-								<phase>package</phase>
-								<goals>
-									<goal>copy-dependencies</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${basedir}/../../../samm_tp</outputDirectory>
-									<overWriteReleases>false</overWriteReleases>
-									<overWriteSnapshots>false</overWriteSnapshots>
-									<overWriteIfNewer>true</overWriteIfNewer>
-									<excludeTransitive>true</excludeTransitive>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
@@ -127,41 +98,24 @@
 			<artifactId>spring-core</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!--<dependency> 
-			<groupId>org.springframework</groupId> 
-			<artifactId>spring-expression</artifactId> 
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-asm</artifactId>
-			<scope>runtime</scope>
-		</dependency>-->
 
-		<!-- samm providers -->
+        <!-- samm providers -->
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>esper</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>pl.edu.agh.samm.providers</groupId>
-			<artifactId>jena</artifactId>
+            <version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>awssdk</artifactId>
+            <version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>weka</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>pl.edu.agh.samm.providers</groupId>
-			<artifactId>pellet</artifactId>
+            <version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 

@@ -18,44 +18,43 @@ package pl.edu.agh.samm.fileconfig;
 
 /**
  * @author koperek
- * 
  */
 public class Configuration {
-	private ConfigurationResourceSet resourceSet = null;
-	private RuleSet ruleSet = null;
-	private ConfigurationMetricSet metricSet = null;
-	private Integer gracePeriod = null;
+    private ConfigurationResourceSet resourceSet = null;
+    private RuleSet ruleSet = null;
+    private ConfigurationMetricSet metricSet = null;
+    private Integer gracePeriod = null;
 
-	public Integer getGracePeriod() {
-		return gracePeriod;
-	}
+    public Integer getGracePeriod() {
+        return gracePeriod;
+    }
 
-	public void setGracePeriod(Integer gracePeriod) {
-		this.gracePeriod = gracePeriod;
-	}
+    public void setGracePeriod(Integer gracePeriod) {
+        this.gracePeriod = gracePeriod;
+    }
 
-	public ConfigurationMetricSet getMetricSet() {
-		return metricSet;
-	}
+    public ConfigurationMetricSet getMetricSet() {
+        return metricSet;
+    }
 
-	public ConfigurationResourceSet getResourceSet() {
-		return resourceSet;
-	}
+    public ConfigurationResourceSet getResourceSet() {
+        return resourceSet;
+    }
 
-	public void setResourceSet(ConfigurationResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
+    public void setResourceSet(ConfigurationResourceSet resourceSet) {
+        this.resourceSet = resourceSet;
+    }
 
-	public RuleSet getRuleSet() {
-		return ruleSet;
-	}
+    public RuleSet getRuleSet() {
+        return ruleSet;
+    }
 
-	public void setRuleSet(RuleSet ruleSet) {
-		this.ruleSet = ruleSet;
-	}
+    public void setRuleSet(RuleSet ruleSet) {
+        this.ruleSet = ruleSet;
+    }
 
-	public void setMetricSet(ConfigurationMetricSet metricSet) {
-		this.metricSet = metricSet;
-	}
+    public void setMetricSet(ConfigurationMetricSet metricSet) {
+        this.metricSet = metricSet;
+    }
 
 }

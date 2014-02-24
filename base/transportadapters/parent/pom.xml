@@ -4,7 +4,6 @@
 	<groupId>pl.edu.agh.samm.base</groupId>
 	<artifactId>transportadapters</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>SAMM - Base - Transport Adapters</name>
 
 	<modules>
@@ -15,7 +14,7 @@
 	<parent>
 		<artifactId>base</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../../parent</relativePath>
 	</parent>
 

@@ -5,7 +5,7 @@
     <groupId>pl.edu.agh</groupId>
     <artifactId>samm</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <name>SAMM</name>
     <description>Autonomic semantic-based management for distributed
         applications
@@ -21,7 +21,6 @@
         <jena.version>2.11.0</jena.version>
         <awssdk.version>1.0.005</awssdk.version>
         <esper.version>4.1.0</esper.version>
-        <jfree-version>1.0.13</jfree-version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <weka.version>3.6.7</weka.version>
     </properties>
@@ -202,38 +201,11 @@
     </build>
     <dependencyManagement>
         <dependencies>
-            <!-- SAMM provider libs -->
             <dependency>
-                <groupId>pl.edu.agh.samm.providers</groupId>
-                <artifactId>jena</artifactId>
-                <version>${jena.version}-SNAPSHOT</version>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>2.7.1</version>
             </dependency>
-            <dependency>
-                <groupId>pl.edu.agh.samm.providers</groupId>
-                <artifactId>weka</artifactId>
-                <version>${weka.version}-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>pl.edu.agh.samm.providers</groupId>
-                <artifactId>esper</artifactId>
-                <version>${esper.version}-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>pl.edu.agh.samm.providers</groupId>
-                <artifactId>pellet</artifactId>
-                <version>${pellet.version}-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>pl.edu.agh.samm.providers</groupId>
-                <artifactId>jfreechart</artifactId>
-                <version>1.0.13-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>pl.edu.agh.samm.providers</groupId>
-                <artifactId>awssdk</artifactId>
-                <version>${awssdk.version}-SNAPSHOT</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>com.springsource.slf4j.org.apache.commons.logging</artifactId>

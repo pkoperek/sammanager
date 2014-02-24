@@ -23,16 +23,15 @@ import pl.edu.agh.samm.api.metrics.IMetric;
 
 /**
  * @author koperek
- * 
  */
 public class ConfigurationMetricSet {
-	private List<IMetric> metrics = new LinkedList<IMetric>();
+    private List<IMetric> metrics = new LinkedList<IMetric>();
 
-	public void addMetric(IMetric metric) {
-		metrics.add(metric);
-	}
+    public void addMetric(IMetric metric) {
+        metrics.add(metric);
+    }
 
-	public List<IMetric> getMetrics() {
-		return metrics;
-	}
+    public List<IMetric> getMetrics() {
+        return metrics;
+    }
 }

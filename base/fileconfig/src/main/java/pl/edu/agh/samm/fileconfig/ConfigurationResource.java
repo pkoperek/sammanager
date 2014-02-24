@@ -25,47 +25,46 @@ import pl.edu.agh.samm.api.core.Resource;
 
 /**
  * @author koperek
- * 
  */
 public class ConfigurationResource {
-	private String uri;
-	private String type;
-	private List<ConfigurationResourceProperty> properties = new LinkedList<ConfigurationResourceProperty>();
+    private String uri;
+    private String type;
+    private List<ConfigurationResourceProperty> properties = new LinkedList<ConfigurationResourceProperty>();
 
-	public String getUri() {
-		return uri;
-	}
+    public String getUri() {
+        return uri;
+    }
 
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void addProperty(ConfigurationResourceProperty property) {
-		properties.add(property);
-	}
+    public void addProperty(ConfigurationResourceProperty property) {
+        properties.add(property);
+    }
 
-	public List<ConfigurationResourceProperty> getProperties() {
-		return properties;
-	}
+    public List<ConfigurationResourceProperty> getProperties() {
+        return properties;
+    }
 
-	public Resource getResource() {
-		Map<String, Object> resourceProperties = new HashMap<String, Object>();
-		for (ConfigurationResourceProperty property : properties) {
-			resourceProperties.put(property.getKey(), property.getValue());
-		}
-		return new Resource(uri, type, resourceProperties);
-	}
+    public Resource getResource() {
+        Map<String, Object> resourceProperties = new HashMap<String, Object>();
+        for (ConfigurationResourceProperty property : properties) {
+            resourceProperties.put(property.getKey(), property.getValue());
+        }
+        return new Resource(uri, type, resourceProperties);
+    }
 
-	@Override
-	public String toString() {
-		return "ConfigurationResource: URI: " + uri + " type: " + type;
-	}
+    @Override
+    public String toString() {
+        return "ConfigurationResource: URI: " + uri + " type: " + type;
+    }
 }

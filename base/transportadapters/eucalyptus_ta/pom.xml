@@ -5,13 +5,12 @@
 	<groupId>pl.edu.agh.samm.base.transportadapters</groupId>
 	<artifactId>eucalyptus_ta</artifactId>
 	<name>SAMM - Base - Transport Adapters - Eucalyptus</name>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 	<parent>
 		<artifactId>transportadapters</artifactId>
 		<groupId>pl.edu.agh.samm.base</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../parent</relativePath>
 	</parent>
 
@@ -28,6 +27,7 @@
 		<dependency>
 			<groupId>pl.edu.agh.samm.providers</groupId>
 			<artifactId>awssdk</artifactId>
+            <version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -23,20 +23,19 @@ import pl.edu.agh.samm.api.core.Rule;
 
 /**
  * @author koperek
- * 
  */
 public class RuleSet {
-	private List<Rule> rules = new LinkedList<Rule>();
+    private List<Rule> rules = new LinkedList<Rule>();
 
-	public void addRule(Rule rule) {
-		rules.add(rule);
-	}
+    public void addRule(Rule rule) {
+        rules.add(rule);
+    }
 
-	public void removeRule(Rule rule) {
-		rules.remove(rule);
-	}
+    public void removeRule(Rule rule) {
+        rules.remove(rule);
+    }
 
-	public List<Rule> getRules() {
-		return rules;
-	}
+    public List<Rule> getRules() {
+        return rules;
+    }
 }
