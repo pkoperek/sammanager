@@ -18,8 +18,9 @@
 
     <bean id="fileConfig" class="pl.edu.agh.samm.fileconfig.FileConfigurator" init-method="init">
         <property name="coreManagement" ref="coreManagement"></property>
+        <property name="xStreamFactory">
+            <bean class="pl.edu.agh.samm.fileconfig.XStreamFactory"/>
+        </property>
     </bean>
-
-    <bean id="xStreamFactory" class="pl.edu.agh.samm.fileconfig.XStreamFactory"/>
 
 </beans>
