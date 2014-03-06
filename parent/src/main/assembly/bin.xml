@@ -52,6 +52,12 @@
 			<fileMode>755</fileMode>
 		</file>
 		<file>
+			<source>src/main/scripts/start_debug.sh</source>
+			<outputDirectory>.</outputDirectory>
+			<filtered>true</filtered>
+			<fileMode>755</fileMode>
+		</file>
+		<file>
 			<source>../base/core/server.policy</source>
 			<outputDirectory>.</outputDirectory>
 		</file>
