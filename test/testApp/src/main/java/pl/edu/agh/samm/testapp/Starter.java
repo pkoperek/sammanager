@@ -4,6 +4,7 @@ import com.vaadin.server.VaadinServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import pl.edu.agh.samm.testapp.core.WorkloadGeneratorFacade;
 
 /**
  * User: koperek
@@ -15,6 +16,8 @@ public class Starter {
     public static final String VAADIN_SERVLET = "vaadinServlet";
 
     public static void main(String[] args) throws Exception {
+        initSystemVariables();
+
         int port = 8080;
 
         if (args.length > 0) {
@@ -26,7 +29,17 @@ public class Starter {
             }
         }
 
+        WorkloadGeneratorFacade.getInstance(); // init workload generator
+
         startWebServer(port);
+    }
+
+    private static void initSystemVariables() {
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        System.setProperty("com.sun.management.jmxremote", "");
+        System.setProperty("com.sun.management.jmxremote.authenticate", "false");
+        System.setProperty("com.sun.management.jmxremote.ssl", "false");
+        System.setProperty("com.sun.management.jmxremote.port", "12345");
     }
 
     private static void startWebServer(int port) throws Exception {

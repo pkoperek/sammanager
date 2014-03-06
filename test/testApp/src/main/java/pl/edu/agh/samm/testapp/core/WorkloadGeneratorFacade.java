@@ -37,6 +37,7 @@ public class WorkloadGeneratorFacade implements Serializable, WorkloadGeneratorF
     }
 
     private void registerMBean() throws MalformedObjectNameException, NotCompliantMBeanException, InstanceAlreadyExistsException, MBeanRegistrationException {
+        System.out.println("Starting MBean server");
         MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
         mbeanServer.registerMBean(this, new ObjectName("pl.edu.agh.samm.testapp:name=WorkloadGenerator"));
     }
@@ -120,5 +121,10 @@ public class WorkloadGeneratorFacade implements Serializable, WorkloadGeneratorF
     @Override
     public int getSlavesCount() {
         return this.slaveManager.getSlavesCount();
+    }
+
+    @Override
+    public String getId() {
+        return "WG1";
     }
 }

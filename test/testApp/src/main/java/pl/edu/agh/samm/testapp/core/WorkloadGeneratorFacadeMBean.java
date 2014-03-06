@@ -6,6 +6,8 @@ package pl.edu.agh.samm.testapp.core;
  * Time: 15:15
  */
 public interface WorkloadGeneratorFacadeMBean {
+    String getId();
+
     void stopGenerating() throws InterruptedException;
 
     void startGenerating(long expressionsPerMinute);
