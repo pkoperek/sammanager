@@ -13,8 +13,7 @@ public class XStreamFactory {
 
         // resources
         xstream.alias("resourceSet", ConfigurationResourceSet.class);
-        xstream.addImplicitCollection(ConfigurationResourceSet.class,
-                "resources");
+        xstream.addImplicitCollection(ConfigurationResourceSet.class, "resources");
         xstream.alias("resource", ConfigurationResource.class);
         xstream.alias("property", ConfigurationResourceProperty.class);
         xstream.useAttributeFor(ConfigurationResource.class, "uri");
