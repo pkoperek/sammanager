@@ -394,6 +394,7 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
             throws ActionNotSupportedException {
         if (EXECUTE_MBEAN_ACTION.equals(actionToExecute.getActionURI())) {
             logger.debug("Executing action: " + actionToExecute.getActionURI());
+            return;
         }
 
         throw new ActionNotSupportedException();

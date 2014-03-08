@@ -113,7 +113,7 @@ along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
 		<property name="transportAdapters" ref="transportAdaptersSet" />
 	</bean>
 
-	<bean id="ignoringActionExecutor" class="pl.edu.agh.samm.core.IgnoringActionExecutorImpl">
+	<bean id="ignoringActionExecutor" class="pl.edu.agh.samm.core.IgnoringActionExecutorDecorator">
 		<property name="transportAdapters" ref="transportAdaptersSet" />
 	</bean>
 </beans>
