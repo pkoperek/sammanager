@@ -13,40 +13,36 @@ import pl.edu.agh.samm.testapp.core.WorkloadGeneratorFacade;
  */
 public class Starter {
 
-    public static final String VAADIN_SERVLET = "vaadinServlet";
+    public static final String HTTP_PORT_PROPERTY = "pl.edu.agh.samm.testapp.httpport";
+    public static final String DEFAULT_HTTP_PORT = "8080";
 
     public static void main(String[] args) throws Exception {
         initSystemVariables();
 
-        int port = 8080;
-
-        if (args.length > 0) {
-            try {
-                port = Integer.parseInt(args[0]);
-                System.out.println("Using value: " + port + " as server port");
-            } catch (NumberFormatException nfe) {
-                System.err.println("Passed string is not a number! (" + args[0] + ")");
-            }
-        }
-
         WorkloadGeneratorFacade.getInstance(); // init workload generator
 
-        startWebServer(port);
+        startWebServer(getPort());
+    }
+
+    private static int getPort() {
+        try {
+            return Integer.parseInt(System.getProperty(HTTP_PORT_PROPERTY, DEFAULT_HTTP_PORT));
+        } catch (NumberFormatException e) {
+            System.out.println("Couldn't read the pl.edu.agh.samm.testapp.httpport parameter! Using default http port: " + DEFAULT_HTTP_PORT);
+        }
+
+        return Integer.parseInt(DEFAULT_HTTP_PORT);
     }
 
     private static void initSystemVariables() {
         System.setProperty("java.net.preferIPv4Stack", "true");
-        System.setProperty("com.sun.management.jmxremote", "");
-        System.setProperty("com.sun.management.jmxremote.authenticate", "false");
-        System.setProperty("com.sun.management.jmxremote.ssl", "false");
-        System.setProperty("com.sun.management.jmxremote.port", "12345");
     }
 
     private static void startWebServer(int port) throws Exception {
         Server server = new Server(port);
 
         ServletHolder servletHolder = new ServletHolder();
-        servletHolder.setName(VAADIN_SERVLET);
+        servletHolder.setName("vaadinServlet");
         servletHolder.setClassName(VaadinServlet.class.getName());
         servletHolder.setInitParameter("UI", SAMMTestApplication.class.getCanonicalName());
 
