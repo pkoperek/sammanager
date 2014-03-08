@@ -19,6 +19,10 @@
                 <actionURI>http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction</actionURI>
                 <parameterValues>
                     <entry>
+                        <string>MBEAN_JMXURL</string>
+                        <string>service:jmx:rmi:///jndi/rmi://localhost:33333/jmxrmi</string>
+                    </entry>
+                    <entry>
                         <string>MBEAN_URI</string>
                         <string>pl.edu.agh.samm.testapp:name=WorkloadGenerator</string>
                     </entry>
@@ -37,6 +41,10 @@
             <actionToExecute>
                 <actionURI>http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction</actionURI>
                 <parameterValues>
+                    <entry>
+                        <string>MBEAN_JMXURL</string>
+                        <string>service:jmx:rmi:///jndi/rmi://localhost:33333/jmxrmi</string>
+                    </entry>
                     <entry>
                         <string>MBEAN_URI</string>
                         <string>pl.edu.agh.samm.testapp:name=WorkloadGenerator</string>

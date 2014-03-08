@@ -27,10 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanServerConnection;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
+import javax.management.*;
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.TabularData;
 import javax.management.remote.JMXConnector;
@@ -55,13 +52,16 @@ import pl.edu.agh.samm.api.tadapter.ActionNotSupportedException;
  */
 public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 
-    private static final String CAPABILITY_KEY_PART = ".capability.";
-    private static final String INSTANCE_NAME_PREFIX = ".instance.prefix";
-    private static final String INSTANCE_QUERY_SUFFIX = ".instance.name";
-
+    public static final String EXECUTE_MBEAN_ACTION = "http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction";
     public static final String JMX_TRANSPORT_PROPERTY_KEY = "JMXURL";
 
-    public static final String EXECUTE_MBEAN_ACTION = "http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction";
+    private static final String INSTANCE_NAME_PREFIX = ".instance.prefix";
+    private static final String INSTANCE_QUERY_SUFFIX = ".instance.name";
+    private static final String CAPABILITY_KEY_PART = ".capability.";
+
+    private static final String MBEAN_METHOD_NAME_PARAMETER = "MBEAN_METHOD_NAME";
+    private static final String MBEAN_JMXURL_PARAMETER = "MBEAN_JMXURL";
+    private static final String MBEAN_URI_PARAMETER = "MBEAN_URI";
 
     private static final Logger logger = LoggerFactory.getLogger(JMXTransportAdapterImpl.class);
 
@@ -91,14 +91,11 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
         return jmxAdapterConfigurator.getProperty(propertyKey);
     }
 
-    private Object getAttribute(MBeanServerConnection beanServerConnection,
-                                String query, String uri) throws Exception {
+    private Object getAttribute(MBeanServerConnection beanServerConnection, String query, String uri) throws Exception {
         return getAttribute(beanServerConnection, query, uri, null);
     }
 
-    private Object getAttribute(MBeanServerConnection beanServerConnection,
-                                String query, String uri, String prefixToRemove) throws Exception {
-
+    private Object getAttribute(MBeanServerConnection beanServerConnection, String query, String uri, String prefixToRemove) throws Exception {
         Object attributeValue = null;
 
         String[] queryElements = query.split("\\|");
@@ -179,8 +176,7 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
      * @param queryLevel
      * @return
      */
-    private Object getScalarValue(Object attributeValue, String query,
-                                  int queryLevel) {
+    private Object getScalarValue(Object attributeValue, String query, int queryLevel) {
         final String[] queryElements = query.split("\\|");
         Object retVal = attributeValue;
 
@@ -229,8 +225,7 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
      * @throws Exception
      */
     @Override
-    public Object getCapabilityValue(Resource resource, String capabilityType)
-            throws Exception {
+    public Object getCapabilityValue(Resource resource, String capabilityType) throws Exception {
 
         String capabilityName = StringHelper.getNameFromURI(capabilityType);
 
@@ -246,13 +241,11 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
         String prefixToRemove = getProperty(lcType + INSTANCE_NAME_PREFIX);
 
         MBeanServerConnection connection = getConnectionForResource(resource);
-        Object retVal = getAttribute(connection, query, resource.getUri(),
-                prefixToRemove);
+        Object retVal = getAttribute(connection, query, resource.getUri(), prefixToRemove);
 
         logger.info("Returning value: " + retVal);
 
-        fireNewCapabilityValueEvent(capabilityType, resource.getUri(),
-                resource.getType(), retVal);
+        fireNewCapabilityValueEvent(capabilityType, resource.getUri(), resource.getType(), retVal);
 
         return retVal;
     }
@@ -271,8 +264,12 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
     @Override
     public void unregisterResource(Resource resource) {
         logger.info("Unregistering URI: " + resource.getUri());
-        Object transportUri = resource.getProperty(JMX_TRANSPORT_PROPERTY_KEY);
+        String transportUri = resource.getProperty(JMX_TRANSPORT_PROPERTY_KEY).toString();
 
+        removeConnectionFromCache(transportUri);
+    }
+
+    private void removeConnectionFromCache(String transportUri) {
         connections.remove(transportUri);
     }
 
@@ -282,22 +279,35 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
 
         Object transportUri = resource.getProperty(JMX_TRANSPORT_PROPERTY_KEY);
 
+        MBeanServerConnection mBeanServerConnection = retrieveCachedJMXConnection(transportUri);
+
+        tryToRegisterJimsMBean(mBeanServerConnection);
+    }
+
+    private MBeanServerConnection retrieveCachedJMXConnection(Object transportUri) throws IOException {
         if (!connections.containsKey(transportUri)) {
-            JMXServiceURL url = new JMXServiceURL(transportUri.toString());
-            final JMXConnector jmxc = JMXConnectorFactory.connect(url, null);
+            MBeanServerConnection mBeanServerConnection = openMBeanServerConnection(transportUri);
+            connections.put(transportUri.toString(), mBeanServerConnection);
+        }
 
-            final MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();
-            connections.put(transportUri.toString(), mbsc);
+        return connections.get(transportUri);
+    }
 
-            try {
-                mbsc.createMBean(
-                        "org.crossgrid.wp3.monitoring.jims.mbeans.Linux.SystemInformation",
-                        new ObjectName("linuxMonitoringExtension:type=SystemInformation"));
-            } catch (InstanceAlreadyExistsException e) {
-                // fall-through - if this mbean already exists, everything is ok
-            } catch (ReflectionException e) {
-                logger.warn("Error creating jims mBean, some information will be unavailable");
-            }
+    private MBeanServerConnection openMBeanServerConnection(Object transportUri) throws IOException {
+        JMXServiceURL serviceUrl = new JMXServiceURL(transportUri.toString());
+        JMXConnector connector = JMXConnectorFactory.connect(serviceUrl, null);
+        return connector.getMBeanServerConnection();
+    }
+
+    private void tryToRegisterJimsMBean(MBeanServerConnection mbsc) throws MBeanException, NotCompliantMBeanException, IOException, MalformedObjectNameException {
+        try {
+            mbsc.createMBean(
+                    "org.crossgrid.wp3.monitoring.jims.mbeans.Linux.SystemInformation",
+                    new ObjectName("linuxMonitoringExtension:type=SystemInformation"));
+        } catch (InstanceAlreadyExistsException e) {
+            // fall-through - if this mbean already exists, everything is ok
+        } catch (ReflectionException e) {
+            logger.warn("Error creating jims mBean, some information will be unavailable");
         }
     }
 
@@ -306,8 +316,7 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
         return resource.hasProperty(JMX_TRANSPORT_PROPERTY_KEY);
     }
 
-    private MBeanServerConnection getConnectionForResource(Resource resource)
-            throws ResourceNotRegisteredException {
+    private MBeanServerConnection getConnectionForResource(Resource resource) throws ResourceNotRegisteredException {
         Object transportUri = resource.getProperty(JMX_TRANSPORT_PROPERTY_KEY);
         MBeanServerConnection mBeanServerConnection = connections.get(transportUri);
 
@@ -390,14 +399,30 @@ public class JMXTransportAdapterImpl extends AbstractTransportAdapter {
     }
 
     @Override
-    public void executeAction(Action actionToExecute)
-            throws ActionNotSupportedException {
+    public void executeAction(Action actionToExecute) throws ActionNotSupportedException {
         if (EXECUTE_MBEAN_ACTION.equals(actionToExecute.getActionURI())) {
             logger.debug("Executing action: " + actionToExecute.getActionURI());
+
+            String mbeanMethodName = actionToExecute.getParameterValues().get(MBEAN_METHOD_NAME_PARAMETER);
+            String mbeanJmxUrl = actionToExecute.getParameterValues().get(MBEAN_JMXURL_PARAMETER);
+            String mbeanUri = actionToExecute.getParameterValues().get(MBEAN_URI_PARAMETER);
+
+            try {
+                invokeMBeanMethod(mbeanJmxUrl, mbeanUri, mbeanMethodName);
+            } catch (Exception e) {
+                logger.error("Error executing action!", e);
+                throw new RuntimeException("Error executing action!", e);
+            }
+
             return;
         }
 
         throw new ActionNotSupportedException();
+    }
+
+    private void invokeMBeanMethod(String transportUri, String mbeanUri, String mbeanMethodName) throws Exception {
+        MBeanServerConnection mBeanServerConnection = retrieveCachedJMXConnection(transportUri);
+        mBeanServerConnection.invoke(new ObjectName(mbeanUri),mbeanMethodName, new Object[0], new String[0]);
     }
 
     @Override

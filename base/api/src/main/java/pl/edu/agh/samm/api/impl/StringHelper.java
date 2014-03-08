@@ -95,7 +95,6 @@ public class StringHelper {
 		if (indexOfSlash == -1) {
 			return null;
 		}
-		String parentURI = uri.substring(0, indexOfSlash);
-		return parentURI;
+        return uri.substring(0, indexOfSlash);
 	}
 }
