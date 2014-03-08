@@ -36,7 +36,7 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<files>
         <file>
-            <source>../base/fileconfig/src/main/resources/config_test.xml</source>
+            <source>../base/fileconfig/src/main/resources/config_tutorial.xml</source>
             <outputDirectory>.</outputDirectory>
         </file>
 		<file>

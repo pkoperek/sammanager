@@ -1,0 +1,57 @@
+<configuration>
+    <resourceSet>
+        <resource uri="/TutorialApp">
+            <type>http://www.icsr.agh.edu.pl/samm_1.owl#TutorialApplication</type>
+            <property>
+                <key>JMXURL</key>
+                <value>service:jmx:rmi:///jndi/rmi://localhost:33333/jmxrmi</value>
+            </property>
+        </resource>
+    </resourceSet>
+    <ruleSet>
+        <rule name="ruleForAddingASlave">
+            <resourceTypeUri>http://www.icsr.agh.edu.pl/samm_1.owl#TutorialApplication</resourceTypeUri>
+            <resourceUri>%TutorialApp%</resourceUri>
+            <!--<condition>cast(value,double) > 0</condition>-->
+            <condition>cast(value,double) >= 0</condition>
+            <metricUri>http://www.icsr.agh.edu.pl/samm_1.owl#ExpressionsQueueLengthMetric</metricUri>
+            <actionToExecute>
+                <actionURI>http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction</actionURI>
+                <parameterValues>
+                    <entry>
+                        <string>MBEAN_URI</string>
+                        <string>pl.edu.agh.samm.testapp:name=WorkloadGenerator</string>
+                    </entry>
+                    <entry>
+                        <string>MBEAN_METHOD_NAME</string>
+                        <string>addSlave</string>
+                    </entry>
+                </parameterValues>
+            </actionToExecute>
+        </rule>
+        <rule name="ruleForRemovingASlave">
+            <resourceTypeUri>http://www.icsr.agh.edu.pl/samm_1.owl#TutorialApplication</resourceTypeUri>
+            <resourceUri>%TutorialApp%</resourceUri>
+            <condition>cast(value,double) = 0</condition>
+            <metricUri>http://www.icsr.agh.edu.pl/samm_1.owl#ExpressionsQueueLengthMetric</metricUri>
+            <actionToExecute>
+                <actionURI>http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction</actionURI>
+                <parameterValues>
+                    <entry>
+                        <string>MBEAN_URI</string>
+                        <string>pl.edu.agh.samm.testapp:name=WorkloadGenerator</string>
+                    </entry>
+                    <entry>
+                        <string>MBEAN_METHOD_NAME</string>
+                        <string>removeSlave</string>
+                    </entry>
+                </parameterValues>
+            </actionToExecute>
+        </rule>
+    </ruleSet>
+    <metricSet>
+        <metric resourceURI="/TutorialApp"
+                metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#ExpressionsQueueLengthMetric"/>
+    </metricSet>
+</configuration>
+
