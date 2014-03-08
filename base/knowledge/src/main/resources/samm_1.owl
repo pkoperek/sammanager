@@ -937,6 +937,15 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ExecuteMBeanAction -->
+
+    <owl:NamedIndividual rdf:about="&samm_1;ExecuteMBeanAction">
+        <rdf:type rdf:resource="&samm_1;CAction"/>
+        <hasActionParameter rdf:resource="&samm_1;MBeanParameter"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#ExpressionsQueueLengthCapability -->
 
     <owl:NamedIndividual rdf:about="&samm_1;ExpressionsQueueLengthCapability">
@@ -1420,6 +1429,23 @@
         <rdf:type rdf:resource="&samm_1;COperatingSystemTypeCapability"/>
         <rdf:type rdf:resource="&owl;NamedIndividual"/>
     </owl:Thing>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MBean -->
+
+    <owl:NamedIndividual rdf:about="&samm_1;MBean">
+        <rdf:type rdf:resource="&samm_1;CSoftwareComponentType"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#MBeanParameter -->
+
+    <owl:NamedIndividual rdf:about="&samm_1;MBeanParameter">
+        <rdf:type rdf:resource="&samm_1;CActionParameter"/>
+        <hasActionParameterType rdf:resource="&samm_1;MBean"/>
+    </owl:NamedIndividual>
     
 
 
@@ -2051,6 +2077,7 @@
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#StopVMAction -->
 
     <owl:Thing rdf:about="&samm_1;StopVMAction">
+        <rdf:type rdf:resource="&samm_1;CAction"/>
         <rdf:type rdf:resource="&owl;NamedIndividual"/>
         <hasActionParameter rdf:resource="&samm_1;ClusterParameter"/>
     </owl:Thing>
