@@ -3,7 +3,7 @@
 # This file is part of SAMM.
 #
 # SAMM is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
+# it undert he terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
@@ -16,5 +16,8 @@
 # along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+PORT=9999
 CODEBASE="file://$(pwd)/core-0.1-SNAPSHOT.jar file://$(pwd)/api-0.1-SNAPSHOT.jar"
-java -DconfigFile=$1 -Dosgi.compatibility.bootdelegation=true -Djava.security.manager=java.rmi.RMISecurityManager -Djava.security.policy=server.policy -Djava.rmi.server.codebase="$CODEBASE" -jar osgi/org.eclipse.osgi-3.6.0.v20100517.jar -console
+SERVER=y
+
+java  -Xdebug -Xrunjdwp:transport=dt_socket,address="$PORT",server="$SERVER" -DconfigFile="$1" -Dosgi.compatibility.bootdelegation=true -Djava.security.manager=java.rmi.RMISecurityManager -Djava.security.policy=server.policy -Djava.rmi.server.codebase="$CODEBASE" -jar osgi/org.eclipse.osgi-3.6.0.v20100517.jar -console
