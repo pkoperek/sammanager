@@ -1,0 +1,15 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+
+  config.vm.define "samm" do |samm|
+    samm.vm.box = "sammdemo"
+    samm.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/20140226/saucy-server-cloudimg-amd64-vagrant-disk1.box"
+    samm.vm.synced_folder "../test/testApp", "/opt/testapp"
+    samm.vm.network :forwarded_port, guest: 8080, host: 8080
+    samm.vm.network :forwarded_port, guest: 33333, host: 33333
+    samm.vm.provision "shell", path: "provision.sh"
+  end
+
+end
