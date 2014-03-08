@@ -16,7 +16,7 @@
  */
 
 /**
- * 
+ *
  */
 package pl.edu.agh.samm.core;
 
@@ -42,111 +42,110 @@ import pl.edu.agh.samm.api.tadapter.ITransportAdapter;
  */
 public class ParallelActionExecutorImpl implements IActionExecutor {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(ParallelActionExecutorImpl.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(ParallelActionExecutorImpl.class);
 
-	private ExecutorService executor = Executors.newCachedThreadPool();
-	private List<IActionExecutionListener> listeners = new CopyOnWriteArrayList<IActionExecutionListener>();
+    private ExecutorService executor = Executors.newCachedThreadPool();
+    private List<IActionExecutionListener> listeners = new CopyOnWriteArrayList<IActionExecutionListener>();
 
-	/**
-	 * This field should be thread safe! SpringDM's osgi:set is thread-safe
-	 */
-	private Set<ITransportAdapter> transportAdapters;
+    /**
+     * This field should be thread safe! SpringDM's osgi:set is thread-safe
+     */
+    private Set<ITransportAdapter> transportAdapters;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * pl.edu.agh.samm.core.IActionExecutor#executeRequest(pl.edu.agh.samm.api
-	 * .action.Action)
-	 */
-	@Override
-	public void executeRequest(Action actionToExecute) {
-		ActionExecutionRunnable command = new ActionExecutionRunnable(
-				actionToExecute);
-		executor.execute(command);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * pl.edu.agh.samm.core.IActionExecutor#executeRequest(pl.edu.agh.samm.api
+     * .action.Action)
+     */
+    @Override
+    public void executeRequest(Action actionToExecute) {
+        ActionExecutionRunnable command = new ActionExecutionRunnable(actionToExecute);
+        executor.execute(command);
+    }
 
-	private class ActionExecutionRunnable implements Runnable {
+    private class ActionExecutionRunnable implements Runnable {
 
-		private Action action;
+        private Action action;
 
-		public ActionExecutionRunnable(Action action) {
-			this.action = action;
-		}
+        public ActionExecutionRunnable(Action action) {
+            this.action = action;
+        }
 
-		@Override
-		public void run() {
-			executeAction(action);
-		}
+        @Override
+        public void run() {
+            executeAction(action);
+        }
 
-	}
+    }
 
-	public void setTransportAdapters(Set<ITransportAdapter> transportAdapters) {
-		this.transportAdapters = transportAdapters;
-	}
+    public void setTransportAdapters(Set<ITransportAdapter> transportAdapters) {
+        this.transportAdapters = transportAdapters;
+    }
 
-	private void executeAction(Action action) {
-		Date start = null;
-		Date end = null;
-		boolean executed = false;
-		try {
+    private void executeAction(Action action) {
+        Date start = null;
+        Date end = null;
+        boolean executed = false;
+        try {
 
-			for (ITransportAdapter adapter : transportAdapters) {
-				if (adapter.isActionSupported(action.getActionURI())) {
-					logger.info("Executing action " + action);
-					start = new Date();
-					adapter.executeAction(action);
-					end = new Date();
-					logger.info("Done executing action " + action);
-					executed = true;
-					break;
-				}
-			}
+            for (ITransportAdapter adapter : transportAdapters) {
+                if (adapter.isActionSupported(action.getActionURI())) {
+                    logger.info("Executing action " + action);
+                    start = new Date();
+                    adapter.executeAction(action);
+                    end = new Date();
+                    logger.info("Done executing action " + action);
+                    executed = true;
+                    break;
+                }
+            }
 
-		} catch (RuntimeException e) {
-			logger.error("Error running action", e);
-		} catch (ActionNotSupportedException e) {
-			logger.error("Bad TransportAdapter action implementation", e);
-		} catch (Exception e) {
-			logger.error(e.toString(), e);
-		}
+        } catch (RuntimeException e) {
+            logger.error("Error running action", e);
+        } catch (ActionNotSupportedException e) {
+            logger.error("Bad TransportAdapter action implementation", e);
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+        }
 
-		if (executed) {
-			fireActionExecuted(new ActionExecution(action, start, end));
-		}
-	}
+        if (executed) {
+            fireActionExecuted(new ActionExecution(action, start, end));
+        }
+    }
 
-	@Override
-	public void executeRequest(Action actionToExecute, boolean sync) {
-		if (sync == false) {
-			executeRequest(actionToExecute);
-		} else {
-			executeAction(actionToExecute);
-		}
+    @Override
+    public void executeRequest(Action actionToExecute, boolean sync) {
+        if (sync == false) {
+            executeRequest(actionToExecute);
+        } else {
+            executeAction(actionToExecute);
+        }
 
-	}
+    }
 
-	@Override
-	public void addActionExecutorListener(IActionExecutionListener listener) {
-		this.listeners.add(listener);
-	}
+    @Override
+    public void addActionExecutorListener(IActionExecutionListener listener) {
+        this.listeners.add(listener);
+    }
 
-	@Override
-	public void removeActionExecutorListener(IActionExecutionListener listener) {
-		this.listeners.remove(listener);
-	}
+    @Override
+    public void removeActionExecutorListener(IActionExecutionListener listener) {
+        this.listeners.remove(listener);
+    }
 
-	protected void fireActionExecuted(ActionExecution actionExecution) {
-		for (IActionExecutionListener listener : listeners) {
-			try {
-				listener.notifyActionExecution(actionExecution);
-			} catch (Exception e) {
-				logger.error(
-						"Listener failed on notification about action execution! ("
-								+ actionExecution.toString() + ")", e);
-			}
-		}
-	}
+    protected void fireActionExecuted(ActionExecution actionExecution) {
+        for (IActionExecutionListener listener : listeners) {
+            try {
+                listener.notifyActionExecution(actionExecution);
+            } catch (Exception e) {
+                logger.error(
+                        "Listener failed on notification about action execution! ("
+                                + actionExecution.toString() + ")", e);
+            }
+        }
+    }
 
 }

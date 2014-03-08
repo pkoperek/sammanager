@@ -33,104 +33,100 @@ import pl.edu.agh.samm.metrics.IMetricsManager;
 
 /**
  * @author koperek
- * 
  */
 public class RuleProcessorInputListener implements IMetricListener,
-		IMetricsManagerListener, IMeasurementListener {
+        IMetricsManagerListener, IMeasurementListener {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(RuleProcessorInputListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(RuleProcessorInputListener.class);
 
-	private IRuleProcessor ruleProcessor = null;
-	private IMetricsManager metricsManager = null;
-	private boolean enabled = false;
+    private IRuleProcessor ruleProcessor = null;
+    private IMetricsManager metricsManager = null;
+    private boolean enabled = false;
 
-	public RuleProcessorInputListener(IRuleProcessor ruleProcessor,
-			IMetricsManager metricsManager) {
-		this.ruleProcessor = ruleProcessor;
-		this.metricsManager = metricsManager;
-	}
+    public RuleProcessorInputListener(IRuleProcessor ruleProcessor, IMetricsManager metricsManager) {
+        this.ruleProcessor = ruleProcessor;
+        this.metricsManager = metricsManager;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pl.edu.agh.samm.api.metrics.IMetricsManagerListener#
-	 * notifyNewMetricsStarted(java.util.Collection)
-	 */
-	@Override
-	public void notifyNewMetricsStarted(Collection<IMetric> startedMetrics)
-			throws Exception {
-		for (IMetric metric : startedMetrics) {
-			try {
-				metricsManager.addMetricListener(metric, this);
-			} catch (MetricNotRunningException e) {
-				logger.warn("Metric: " + metric
-						+ " not running while it should be... Ignoring", e);
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see pl.edu.agh.samm.api.metrics.IMetricsManagerListener#
+     * notifyNewMetricsStarted(java.util.Collection)
+     */
+    @Override
+    public void notifyNewMetricsStarted(Collection<IMetric> startedMetrics)
+            throws Exception {
+        for (IMetric metric : startedMetrics) {
+            try {
+                metricsManager.addMetricListener(metric, this);
+            } catch (MetricNotRunningException e) {
+                logger.warn("Metric: " + metric + " not running while it should be... Ignoring", e);
+            }
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see pl.edu.agh.samm.api.metrics.IMetricsManagerListener#
-	 * notifyMetricsHasStopped(java.util.Collection)
-	 */
-	@Override
-	public void notifyMetricsHasStopped(Collection<IMetric> stoppedMetrics)
-			throws Exception {
-		for (IMetric metric : stoppedMetrics) {
-			metricsManager.removeMetricListener(metric, this);
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see pl.edu.agh.samm.api.metrics.IMetricsManagerListener#
+     * notifyMetricsHasStopped(java.util.Collection)
+     */
+    @Override
+    public void notifyMetricsHasStopped(Collection<IMetric> stoppedMetrics)
+            throws Exception {
+        for (IMetric metric : stoppedMetrics) {
+            metricsManager.removeMetricListener(metric, this);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * pl.edu.agh.samm.api.metrics.IMetricListener#processMetricEvent(pl.
-	 * edu.agh.samm.api.metrics.IMetricEvent)
-	 */
-	@Override
-	public void processMetricEvent(IMetricEvent metricEvent) throws Exception {
-		if (enabled) {
-			ruleProcessor.processMetricEvent(metricEvent);
-		}
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * pl.edu.agh.samm.api.metrics.IMetricListener#processMetricEvent(pl.
+     * edu.agh.samm.api.metrics.IMetricEvent)
+     */
+    @Override
+    public void processMetricEvent(IMetricEvent metricEvent) throws Exception {
+        if (enabled) {
+            ruleProcessor.processMetricEvent(metricEvent);
+        }
+    }
 
-	@Override
-	public void processMeasurementEvent(IMeasurementEvent event) {
-		if (enabled) {
-			ruleProcessor.processMeasurementEvent(event);
-		}
-	}
+    @Override
+    public void processMeasurementEvent(IMeasurementEvent event) {
+        if (enabled) {
+            ruleProcessor.processMeasurementEvent(event);
+        }
+    }
 
-	public void enable() {
-		enabled = true;
-		metricsManager.addMetricsManagerListener(this);
-		Collection<IMetric> runningMetrics = metricsManager.getRunningMetrics();
-		for (IMetric runningMetric : runningMetrics) {
-			try {
-				metricsManager.addMetricListener(runningMetric, this);
-			} catch (MetricNotRunningException e) {
-				logger.warn("Metric: " + runningMetric
-						+ " not running while it should be... Ignoring", e);
-			}
-		}
-	}
+    public void enable() {
+        enabled = true;
+        metricsManager.addMetricsManagerListener(this);
+        Collection<IMetric> runningMetrics = metricsManager.getRunningMetrics();
+        for (IMetric runningMetric : runningMetrics) {
+            try {
+                metricsManager.addMetricListener(runningMetric, this);
+            } catch (MetricNotRunningException e) {
+                logger.warn("Metric: " + runningMetric
+                        + " not running while it should be... Ignoring", e);
+            }
+        }
+    }
 
-	public void disable() {
-		enabled = false;
-		metricsManager.removeMetricsManagerListener(this);
-		Collection<IMetric> runningMetrics = metricsManager.getRunningMetrics();
-		for (IMetric runningMetric : runningMetrics) {
-			try {
-				metricsManager.addMetricListener(runningMetric, this);
-			} catch (MetricNotRunningException e) {
-				logger.warn("Metric: " + runningMetric
-						+ " not running while it should be... Ignoring", e);
-			}
-		}
-	}
+    public void disable() {
+        enabled = false;
+        metricsManager.removeMetricsManagerListener(this);
+        Collection<IMetric> runningMetrics = metricsManager.getRunningMetrics();
+        for (IMetric runningMetric : runningMetrics) {
+            try {
+                metricsManager.addMetricListener(runningMetric, this);
+            } catch (MetricNotRunningException e) {
+                logger.warn("Metric: " + runningMetric
+                        + " not running while it should be... Ignoring", e);
+            }
+        }
+    }
 
 }
