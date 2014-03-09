@@ -2054,6 +2054,15 @@
     
 
 
+    <!-- http://www.icsr.agh.edu.pl/samm_1.owl#SlavesCountMetric -->
+
+    <owl:NamedIndividual rdf:about="&samm_1;SlavesCountMetric">
+        <rdf:type rdf:resource="&samm_1;CCustomApplicationMetric"/>
+        <usesTypeCapability rdf:resource="&samm_1;SlavesCountCapability"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.icsr.agh.edu.pl/samm_1.owl#StartMVCBasicVMAction -->
 
     <owl:Thing rdf:about="&samm_1;StartMVCBasicVMAction">
