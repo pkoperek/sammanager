@@ -161,6 +161,7 @@ public class EsperRuleProcessorTest {
 		// addRule
 		String RULE_NAME = "TestRule1";
 		expect(rule.getName()).andReturn(RULE_NAME);
+		expect(rule.getName()).andReturn(RULE_NAME);
 		expect(rule.getCustomStatement()).andReturn(null);
 		expect(rule.getResourceTypeUri()).andReturn(null);
 		expect(rule.getResourceUri()).andReturn(null);

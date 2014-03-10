@@ -20,6 +20,7 @@ package pl.edu.agh.samm.core;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.espertech.esper.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,14 +33,6 @@ import pl.edu.agh.samm.api.metrics.IMetric;
 import pl.edu.agh.samm.api.metrics.IMetricEvent;
 import pl.edu.agh.samm.api.sla.IServiceLevelAgreement;
 import pl.edu.agh.samm.api.tadapter.IMeasurementEvent;
-
-import com.espertech.esper.client.Configuration;
-import com.espertech.esper.client.EPAdministrator;
-import com.espertech.esper.client.EPRuntime;
-import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPStatement;
-import com.espertech.esper.client.EventBean;
-import com.espertech.esper.client.UpdateListener;
 
 /**
  * @author koperek
@@ -90,9 +83,18 @@ public class EsperRuleProcessor implements IRuleProcessor,
 
     @Override
     public void addRule(final Rule rule) {
-        // get all info from rule
-        final String ruleName = rule.getName();
+        String statementString = createStatement(rule);
 
+        logger.debug("Adding rule: " + statementString);
+
+        // create the statement and add a listener
+        EPStatement statement = administrator.createEPL(statementString, rule.getName());
+        UpdateListener updateListener = new ReactingUpdateListener(rule);
+
+        statement.addListener(updateListener);
+    }
+
+    private String createStatement(Rule rule) {
         String statementString = null;
         String customStatement = rule.getCustomStatement();
         if (customStatement != null) {
@@ -134,58 +136,7 @@ public class EsperRuleProcessor implements IRuleProcessor,
                 statementString += " where " + condition;
             }
         }
-
-        logger.debug("Adding rule: " + statementString);
-
-        // create the statement and add a listener
-        EPStatement statement = administrator.createEPL(statementString, ruleName);
-        statement.addListener(new UpdateListener() {
-
-            @Override
-            public void update(EventBean[] newEvents, EventBean[] oldEvents) {
-                // according to javadoc
-                // http://esper.codehaus.org/esper-4.1.0/doc/api/com/espertech/esper/client/UpdateListener.html#update%28com.espertech.esper.client.EventBean[],%20com.espertech.esper.client.EventBean[]%29
-                // newEvents may be null!
-                if (newEvents != null) {
-                    for (EventBean event : newEvents) {
-                        // log all info
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Event: " + event);
-                            logger.debug("Event rule: " + ruleName);
-                            logger.debug("Event metric: " + event.get("metric"));
-                            logger.debug("Event value: " + event.get("value"));
-                        }
-
-                        Number value = (Number) event.get("value");
-                        IMetric metric = (IMetric) event.get("metric");
-                        IAlarm alarm = new Alarm(metric, ruleName, value);
-                        fireAlarm(alarm);
-
-                        if (rule.getActionToExecute() != null) {
-                            // gracePeriod and lastActionExecutionEndTime are <
-                            // 0 by default - currentTimeMillis
-                            // - lastActionExecutionEndTime should be always
-                            // positive - so event if no values are provided it
-                            // should work out of the box
-                            long now = System.currentTimeMillis();
-                            if (gracePeriod < 0
-                                    || lastActionExecutionEndTime < 0
-                                    || now - lastActionExecutionEndTime >= gracePeriod * 1000) {
-                                actionExecutor.executeRequest(rule
-                                        .getActionToExecute());
-                            } else {
-                                logger.info("Omitting action execution: gracePeriod: "
-                                        + gracePeriod
-                                        + " lastActionExecutionEndTime: "
-                                        + lastActionExecutionEndTime
-                                        + " now: "
-                                        + now);
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        return statementString;
     }
 
     @Override
@@ -208,8 +159,7 @@ public class EsperRuleProcessor implements IRuleProcessor,
             try {
                 alarmListener.handleAlarm(alarm);
             } catch (Exception e) {
-                logger.error("SuggestedMetricsAlarm Listener: " + alarmListener
-                        + " thrown an exception!", e);
+                logger.error("SuggestedMetricsAlarm Listener: " + alarmListener + " thrown an exception!", e);
             }
         }
     }
@@ -245,4 +195,68 @@ public class EsperRuleProcessor implements IRuleProcessor,
         this.lastActionExecutionEndTime = System.currentTimeMillis();
     }
 
+    private class ReactingUpdateListener implements UpdateListener {
+        private final Rule rule;
+
+        public ReactingUpdateListener(Rule rule) {
+            this.rule = rule;
+        }
+
+        @Override
+        public void update(EventBean[] newEvents, EventBean[] oldEvents) {
+            // according to javadoc
+            // http://esper.codehaus.org/esper-4.1.0/doc/api/com/espertech/esper/client/UpdateListener.html#update%28com.espertech.esper.client.EventBean[],%20com.espertech.esper.client.EventBean[]%29
+            // newEvents may be null!
+            if (newEvents != null) {
+                processEvents(newEvents);
+            }
+        }
+
+        private void processEvents(EventBean[] newEvents) {
+            for (EventBean event : newEvents) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Event: " + event);
+                    logger.debug("Event rule: " + rule.getName());
+                }
+
+                fireAlarm(event);
+                executeAction();
+            }
+        }
+
+        private void executeAction() {
+            if (rule.getActionToExecute() != null) {
+                // gracePeriod and lastActionExecutionEndTime are <
+                // 0 by default - currentTimeMillis
+                // - lastActionExecutionEndTime should be always
+                // positive - so event if no values are provided it
+                // should work out of the box
+                long now = System.currentTimeMillis();
+                if (gracePeriod < 0
+                        || lastActionExecutionEndTime < 0
+                        || now - lastActionExecutionEndTime >= gracePeriod * 1000) {
+                    actionExecutor.executeRequest(rule
+                            .getActionToExecute());
+                } else {
+                    logger.info("Omitting action execution: gracePeriod: "
+                            + gracePeriod
+                            + " lastActionExecutionEndTime: "
+                            + lastActionExecutionEndTime
+                            + " now: "
+                            + now);
+                }
+            }
+        }
+
+        private void fireAlarm(EventBean event) {
+            try {
+                Number value = (Number) event.get("value");
+                IMetric metric = (IMetric) event.get("metric");
+
+                EsperRuleProcessor.this.fireAlarm(new Alarm(metric, rule.getName(), value));
+            } catch (PropertyAccessException e) {
+                logger.info("Properties value, metric not found in statement result: can't fire alarm!");
+            }
+        }
+    }
 }
