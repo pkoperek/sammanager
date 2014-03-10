@@ -232,11 +232,8 @@ public class EsperRuleProcessor implements IRuleProcessor,
                 // positive - so event if no values are provided it
                 // should work out of the box
                 long now = System.currentTimeMillis();
-                if (gracePeriod < 0
-                        || lastActionExecutionEndTime < 0
-                        || now - lastActionExecutionEndTime >= gracePeriod * 1000) {
-                    actionExecutor.executeRequest(rule
-                            .getActionToExecute());
+                if (gracePeriod < 0 || lastActionExecutionEndTime < 0 || now - lastActionExecutionEndTime >= gracePeriod * 1000) {
+                    actionExecutor.executeRequest(rule.getActionToExecute());
                 } else {
                     logger.info("Omitting action execution: gracePeriod: "
                             + gracePeriod
