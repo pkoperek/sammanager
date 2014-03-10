@@ -16,8 +16,7 @@
 # along with SAMM.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-PORT=9999
 CODEBASE="file://$(pwd)/core-0.1-SNAPSHOT.jar file://$(pwd)/api-0.1-SNAPSHOT.jar"
-SERVER=y
+DEBUG_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=9999,server=y"
 
-java  -Xdebug -Xrunjdwp:transport=dt_socket,address="$PORT",server="$SERVER" -DconfigFile="$1" -Dosgi.compatibility.bootdelegation=true -Djava.security.manager=java.rmi.RMISecurityManager -Djava.security.policy=server.policy -Djava.rmi.server.codebase="$CODEBASE" -jar osgi/org.eclipse.osgi-3.6.0.v20100517.jar -console
+java $DEBUG_OPTS -DconfigFile="$1" -Dosgi.compatibility.bootdelegation=true -Djava.security.manager=java.rmi.RMISecurityManager -Djava.security.policy=server.policy -Djava.rmi.server.codebase="$CODEBASE" -jar osgi/org.eclipse.osgi-3.6.0.v20100517.jar -console
