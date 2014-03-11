@@ -25,4 +25,4 @@ fi
 CODEBASE="file://$(pwd)/core-0.1-SNAPSHOT.jar file://$(pwd)/api-0.1-SNAPSHOT.jar"
 java -DconfigFile=$1 -Dosgi.compatibility.bootdelegation=true -Djava.security.manager=java.rmi.RMISecurityManager -Djava.security.policy=server.policy -Djava.rmi.server.codebase="$CODEBASE" -jar osgi/org.eclipse.osgi-3.6.0.v20100517.jar &
 PID=$!
-echo $PID > ../samm.pid
+echo $PID > samm.pid
