@@ -62,9 +62,12 @@
 			<outputDirectory>.</outputDirectory>
 		</file>
 		<file>
+			<source>../base/dblistener/db/sammdb.script</source>
+			<outputDirectory>.</outputDirectory>
+		</file>
+		<file>
 			<source>../base/dblistener/ddl/schema.sql</source>
 			<outputDirectory>.</outputDirectory>
-			<destName>sammdb.script</destName>
 		</file>
 	</files>
 	<fileSets>
