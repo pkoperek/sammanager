@@ -54,9 +54,11 @@
     </ruleSet>
     <metricSet>
         <metric resourceURI="/TutorialApp"
-                metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#ExpressionsQueueLengthMetric"/>
+                metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#ExpressionsQueueLengthMetric"
+                metricPollTimeInterval="20000"/>
         <metric resourceURI="/TutorialApp"
-                metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#SlavesCountMetric"/>
+                metricURI="http://www.icsr.agh.edu.pl/samm_1.owl#SlavesCountMetric"
+                metricPollTimeInterval="20000"/>
     </metricSet>
 </configuration>
 
