@@ -37,7 +37,7 @@ public class SlaveManager extends LoggingClass implements Serializable {
         }
     }
 
-    public synchronized ISlave getNextSlave() {
+    public ISlave getNextSlave() {
         ISlave retVal = null;
 
         synchronized (slaves) {
