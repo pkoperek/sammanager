@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>base</artifactId>
 		<groupId>pl.edu.agh.samm</groupId>
-		<version>0.1.0-SNAPSHOT</version>
+		<version>0.1.0</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 
